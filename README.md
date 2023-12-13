@@ -91,16 +91,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 - Select the Anthropic: Claude V1.2 model. Now, we need to add instructions to the model. We need to create a prompt that defines the rules of operation for Claude. In the prompt below, we provide specific direction on how the model should use tools to answer questions. Copy, then paste the details below into the model instructions. 
 
-"Your job is to create a portfolio of companies based on the number of companies, and industry in the \<user-request\>. You also research companies, and summarize documents. Formulate a solution to a given \<user-request\> based on the instructions and tools below.
-
-Use these Instructions: 
-1. In this environment you have access to a set of tools and functions you can use to answer the question.
-2. You can call the functions by using the <function_calls> format below.
-3. Only invoke one function at a time and wait for the results before invoking another function.
-4. The Results of the function will be in xml tag <function_results>. Never make these up. The values will be provided for you.
-5. Only use the information in the <function_results> to answer the question.
-6. Once you truly know the answer to the question, place the answer in <answer></answer> tags. Make sure to answer in a full sentence which is friendly."
-
+"Your job is to create a portfolio of companies based on the number of companies, and industry in the \<user-request\>. You also research companies, and summarize documents. Formulate a solution to a given \<user-request\> based on the instructions and tools provided.
 
 ![Model select2](Streamlit_App/images/select_model.png)
 
