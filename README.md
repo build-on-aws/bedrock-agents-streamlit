@@ -22,13 +22,13 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![Bucket create 2](Streamlit_App/images/bucket_pic_2.png)
 
-- After creation, add the .pdf files located [here](https://github.com/jossai87/bedrock-agents-streamlit/tree/main/s3Docs) to the s3 bucket.
+- After creation, add the .pdf files located [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/s3Docs) to the s3 bucket.
 (These files are the Federal Open Market Committee documents describing monetary policy decisions made at the Federal Reserved board meetings. The documents include discussion of economic conditions, policy directives to the Federal Reserve Bank of New York for open market operations, and votes on target ranges for the federal funds rate. More information can be found [here](https://www.federalreserve.gov/newsevents/pressreleases/monetary20231011a.htm). Once uploaded, please select one of the documents to open and review the content.
 
 ![bucket domain data](Streamlit_App/images/bucket_domain_data.png)
 
 
-- **Artifacts Bucket**: Create another S3 bucket to store artifacts. For example, call it "artifacts-bedrock-agent-creator-alias". You will need to download, then add the API schema file to this S3 bucket. This .json file can be found [here](https://github.com/jossai87/bedrock-agents-streamlit/blob/main/ActionSchema.json). 
+- **Artifacts Bucket**: Create another S3 bucket to store artifacts. For example, call it "artifacts-bedrock-agent-creator-alias". You will need to download, then add the API schema file to this S3 bucket. This .json file can be found [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionSchema.json). 
 (The provided schema is an OpenAPI specification for the "PortfolioCreator API," which outlines the structure and capabilities of a service designed for stock portfolio creation and company financial research. It defines two primary endpoints, "/companyResearch" and "/createPortfolio," detailing how to interact with the API, the required parameters, and the expected responses.) Once uploaded, please select and open the .json document to review the content.
 
 ![Loaded Artifact](Streamlit_App/images/loaded_artifact.png)
@@ -63,7 +63,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![Create Function2](Streamlit_App/images/create_function2.png)
 
-- Copy the provided code from the ["ActionLambda.py"](https://github.com/jossai87/bedrock-agents-streamlit/blob/main/ActionLambda.py) file into your Lambda function. After, select the deploy button in the tab section in the Lambda console. Review the code provided before moving to the next step. (Make sure that the IAM role associated with the Bedrock agent can invoke the Lambda function)
+- Copy the provided code from the ["ActionLambda.py"](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionLambda.py) file into your Lambda function. After, select the deploy button in the tab section in the Lambda console. Review the code provided before moving to the next step. (Make sure that the IAM role associated with the Bedrock agent can invoke the Lambda function)
 
 ![Lambda deploy](Streamlit_App/images/lambda_deploy.png)
 
@@ -191,7 +191,7 @@ Review, then select the “Create Agent” button.
 
 
 ## Step 9: Setting Up and Running the Streamlit App
-1. **Obtain the Streamlit App ZIP File**: Download the zip file of the project [here](https://github.com/jossai87/bedrock-agents-streamlit/archive/refs/heads/main.zip).
+1. **Obtain the Streamlit App ZIP File**: Download the zip file of the project [here](https://github.com/build-on-aws/bedrock-agents-streamlit/archive/refs/heads/main.zip).
 
 2. **Upload to Cloud9**:
    - In your Cloud9 environment, upload the ZIP file.
