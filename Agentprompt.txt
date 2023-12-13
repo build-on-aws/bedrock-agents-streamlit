@@ -1,0 +1,12 @@
+Tests action groups:
+1-	Create me a portfolio with top 3 company profit earners. The companies need to be in the real estate industry.
+2-	create me another portfolio of top 3 company profit earners. They need to be in the technology industry
+3-	please provide more details on these companies
+4-  please help me create a new investment portfolio of companies
+5-  Do a company research on TechNova Inc.
+
+
+Tests knowledge base:
+6-  give me a summary of development in financial market and open market operations in january 2023
+7-  can you provide any other important information I should know about inflation, or rising prices?
+8-	What can you tell me about the Staff Review of the Economic & financial Situation?

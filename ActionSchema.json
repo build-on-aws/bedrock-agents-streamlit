@@ -1,0 +1,126 @@
+
+
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "PortfolioCreator API",
+    "description": "API for creating a stock portfolio based on company research", 
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/companyResearch": {
+      "post": {
+        "description": "Get financial data for a company by name",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name of the company to research",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with company data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/createPortfolio": {
+      "post": {
+        "description": "Create a stock portfolio by specifying number of companies and industry",
+        "parameters": [
+          {
+            "name": "numCompanies",
+            "in": "query",
+            "description": "Number of companies to include in the portfolio",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "industry",
+            "in": "query",
+            "description": "Industry sector for the portfolio companies",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "portfolioName",
+            "in": "query",
+            "description": "Name of the portfolio",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with generated portfolio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CompanyData": {
+        "type": "object",
+        "description": "Financial data for a single company",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Company name"
+          },
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol" 
+          },
+          "revenue": {
+            "type": "number",
+            "description": "Annual revenue"
+          },
+          "profit": {
+            "type": "number",
+            "description": "Annual profit"
+          }
+        }
+      },
+      "Portfolio": {
+        "type": "object",
+        "description": "Stock portfolio with specified number of companies",
+        "properties": {
+          "companies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyData"
+            },
+            "description": "List of companies in the portfolio" 
+          }
+        }
+      }
+    }
+  }
+}
