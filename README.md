@@ -93,7 +93,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![Lambda resource policy create](Streamlit_App/images/lambda_resource_policy_create.png)
 
-- Here is an example of the resource policy. (At this part of the setup, we will not have a Bedrock agent Source ARN, so enter in a dummy value. We will include the ARN once it’s generated in step 6 after creating the Bedrock Agent alias):
+- Here is an example of the resource policy. (At this part of the setup, we will not have a Bedrock agent Source ARN. So, enter in "arn:aws:bedrock:us-west-2:{accoundID}:agent/BedrockAgentID" for now. We will include the ARN once it’s generated in step 6 after creating the Bedrock Agent alias):
 
 ![Lambda resource policy](Streamlit_App/images/lambda_resource_policy.png)
 
