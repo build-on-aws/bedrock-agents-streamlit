@@ -133,11 +133,11 @@ st.markdown("""
 
 - do a company research on TechNova Inc.
 
-- create me a portfolio with top 3 company profit earners. The companies need to be in the real estate industry.
+- Create a portfolio with 3 companies in the real estate industry
 
 - please provide more details on these companies
 
-- create me another portfolio of top 3 company profit earners. They need to be in the technology industry
+- Create another portfolio of 5 companies, but in technology industry
 
 - please help me create a new investment portfolio of companies
 
