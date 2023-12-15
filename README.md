@@ -171,8 +171,8 @@ Review, then select the “Create Agent” button.
     4. "What can you tell me about the Staff Review of the Economic & financial Situation?"
 
 - Test prompts for action groups:
-    1. "Create a portfolio with top 3 company profit earners in real estate."
-    2. "Create another portfolio of top 3 profit earners in technology."
+    1. "Create a portfolio with 3 companies in the real estate industry."
+    2. "Create another portfolio of 3 companies, but in technology industry."
     3. "Provide more details on these companies."
     4. "Help me create a new investment portfolio of companies."
     5. "Do company research on TechNova Inc."
