@@ -191,7 +191,7 @@ Review, then select the “Create Agent” button.
 
 ![ce2](Streamlit_App/images/ce2.png)
 
-   - Once complete, select the "Create" button at the bottom of the screen. The environment will take a couple of minutes to spin up. If you get an error spinning up Cloud9 due to lack of resources, you can also choose t2.micro for the instance type and try again.
+   - Once complete, select the "Create" button at the bottom of the screen. The environment will take a couple of minutes to spin up. If you get an error spinning up Cloud9 due to lack of resources, you can also choose t2.micro for the instance type and try again. (The Cloud9 environment has Python 3.10.12 version at the time of this publication)
 
 
 ![ce3](Streamlit_App/images/ce3.png)
