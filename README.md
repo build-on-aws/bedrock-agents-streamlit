@@ -109,9 +109,9 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![Agent details 2](Streamlit_App/images/agent_details_2.png)
 
-- Select the Anthropic: Claude V1.2 model. Now, we need to add instructions to the model. We need to create a prompt that defines the rules of operation for Claude. In the prompt below, we provide specific direction on how the model should use tools to answer questions. Copy, then paste the details below into the model instructions. 
+- Select the Anthropic: Claude V1.2 model. Now, we need to add instructions by creating a prompt that defines the rules of operation for the agent. In the prompt below, we provide specific direction on how the model should use tools to answer questions. Copy, then paste the details below into the agent instructions. 
 
-"Your job is to create a portfolio of companies based on the number of companies, and industry in the \<user-request\>. You also research companies, and summarize documents. Formulate a solution to a given \<user-request\> based on the instructions and tools provided.
+"Your job is to create a portfolio of companies based on the number of companies, and industry in the \<user-request\>. You also research companies, and summarize documents. Formulate a solution to a given \<user-request\> based on the instructions and tools provided."
 
 ![Model select2](Streamlit_App/images/select_model.png)
 
