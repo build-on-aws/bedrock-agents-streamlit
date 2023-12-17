@@ -122,7 +122,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ### Step 5: Setup Knowledge Base with Bedrock Agent
 
-- When integrating the KB with the agent, you will need to provide basic instructions on how to handle the knowledge base. For example, use the following: “Use this knowledge base when a user asks about data, such as economic trends, company financial statements, and the outcomes of the Federal Open Market Committee meetings.”
+- When integrating the KB with the agent, you will need to provide basic instructions on how to handle the knowledge base. For example, use the following: “Use this knowledge base when a user asks about data, such as economic trends, company financial statements, or the outcomes of the Federal Open Market Committee meetings.”
  
 ![Knowledge base add2](Streamlit_App/images/add_knowledge_base2.png)
 
