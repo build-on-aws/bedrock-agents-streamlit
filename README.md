@@ -2,7 +2,7 @@
 # Setup Agent with Amazon Bedrock and Streamlit
 
 ## Introduction
-This guide details the setup process for an Amazon Bedrock agent on AWS, which will include setting up S3 buckets, a knowledge base, an action group, and a Lambda function. The agent is designed for dynamically creating an investment company portfolio based on specific parameters, and providing a Q&A capability to domain data. We will use the Streamlit framework for the user interface.
+This guide details the setup process for Agents on Amazon Bedrock, which will also include setting up S3 buckets, a knowledge base, an action group, and a Lambda function. The agent is designed to dynamically create top profit company portfolios based on specific parameters, and providing Q&A capability to domain data. We will use the Streamlit framework for the user interface.
 
 ## Prerequisites
 - An active AWS Account.
