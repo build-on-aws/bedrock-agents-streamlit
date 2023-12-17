@@ -229,7 +229,7 @@ Review, then select the “Create Agent” button.
 
 ![Running App ](Streamlit_App/images/running_app.png)
 
-Optionally, you can review the trace events in the left toggle of the screen.
+Optionally, you can review the trace events in the left toggle of the screen. This data will include the rational tracing, invocation input tracing, and observation tracing.
 
 ![Trace events ](Streamlit_App/images/trace_events.png)
 
