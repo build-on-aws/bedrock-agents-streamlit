@@ -19,7 +19,8 @@ import sys
 
 
 #os.environ["AWS_PROFILE"] = "agent-demo"
-os.environ["AWS_REGION"] = "us-west-2"
+theRegion = "us-west-2"
+os.environ["AWS_REGION"] = theRegion
 region = os.environ.get("AWS_REGION")
 llm_response = ""
 
@@ -84,7 +85,7 @@ def askQuestion(question, url, endSession=False):
             'content-type': 'application/json', 
             'accept': 'application/json',
         },
-        region='us-west-2',
+        region=theRegion,
         body=json.dumps(myobj)
     )
     
@@ -166,7 +167,7 @@ def lambda_handler(event, context):
     except:
         endSession = False
     
-    url = f'https://bedrock-agent-runtime.us-west-2.amazonaws.com/agents/{agentId}/agentAliases/{agentAliasId}/sessions/{sessionId}/text'
+    url = f'https://bedrock-agent-runtime.{theRegion}.amazonaws.com/agents/{agentId}/agentAliases/{agentAliasId}/sessions/{sessionId}/text'
 
     
     try: 
