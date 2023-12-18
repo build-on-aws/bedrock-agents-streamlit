@@ -129,6 +129,19 @@ for chat in st.session_state['history']:
 
 
 # Example Prompts Section
+
+st.write("## Test Knowledge Base Prompts")
+st.markdown("""
+- give me a summary of development in financial market and open market operations in january 2023
+
+- what is the SEC participants view on current economic conditions and economic outlook for september 2023
+
+- can you provide any other important information I should know about inflation, or rising prices?
+
+- what can you tell me about the Staff Review of the Economic & financial Situation?
+
+""")
+
 st.write("## Test Action Group Prompts")
 st.markdown("""
 
@@ -144,19 +157,7 @@ st.markdown("""
 
 """)
 
-st.write("## Test KB Prompts")
-st.markdown("""
-- give me a summary of development in financial market and open market operations in january 2023
-
-- what is the SEC participants view on current economic conditions and economic outlook for september 2023
-
-- can you provide any other important information I should know about inflation, or rising prices?
-
-- what can you tell me about the Staff Review of the Economic & financial Situation?
-
-""")
-
-st.write("## Example KB, AG, history Prompt")
+st.write("## Test KB, AG, history Prompt")
 st.markdown("""
 - Send an email to {ENTER EMAIL} that includes the created company portfolio(s) and FOMC summary            
 """)
