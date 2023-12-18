@@ -179,7 +179,7 @@ Review, then select the “Create Agent” button.
     5. "Do company research on TechNova Inc."
 
 - Example prompt for KB & AG
-    1. "Send an email to {ENTER EMAIL} that includes the created company portfolios and FOMC summary"
+    1. "Send an email to {ENTER EMAIL} that includes the created company portfolios and FOMC summaries"
     `(The logic for this method is not implemented to send emails)`  
 
 
