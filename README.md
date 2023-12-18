@@ -2,7 +2,7 @@
 # Setup Agent with Amazon Bedrock and Streamlit
 
 ## Introduction
-This guide details the setup process for Agents on Amazon Bedrock, which will also include setting up S3 buckets, a knowledge base, an action group, and a Lambda function. The agent is designed to dynamically create top profit company portfolios based on specific parameters, and providing Q&A capability to domain data. We will use the Streamlit framework for the user interface.
+This guide details the setup process for an Amazon Bedrock agent on AWS, which will include setting up S3 buckets, a knowledge base, an action group, and a Lambda function. We will use the Streamlit framework for the user interface. The agent is designed for dynamically creating an investment company portfolio based on specific parameters, and providing a Q&A capability to FOMC reports. You will also be able to send emails based on researched data nd company portfolio.
 
 ## Prerequisites
 - An active AWS Account.
@@ -111,7 +111,7 @@ This guide details the setup process for Agents on Amazon Bedrock, which will al
 
 - Select the Anthropic: Claude V1.2 model. Now, we need to add instructions by creating a prompt that defines the rules of operation for the agent. In the prompt below, we provide specific direction on how the model should use tools to answer questions. Copy, then paste the details below into the agent instructions. 
 
-"You are an investment banker who creates portfolios of companies based on the number of companies, and industry in the `<user-request>`. You also research companies, and summarize documents. Formulate a solution to a given `<user-request>` based on the instructions and tools provided."
+"You are an investment banker who creates portfolios of companies based on the number of companies, and industry in the \<user-request>. You also research companies, and summarize documents. You send emails that include company portfolios created and FOMC summaries searched. Formulate a solution to a given \<user-request> based on the instructions and tools provided. Always return a response in a clean format."
 
 ![Model select2](Streamlit_App/images/select_model.png)
 
@@ -140,6 +140,7 @@ Review, then select the “Create Agent” button.
 
 ![Agent ARN2](Streamlit_App/images/agent_arn2.png)
 
+
 ## Step 7: Testing the Setup
 ### Testing the Knowledge Base
 - While in the Bedrock console, select “Knowledge base” under the Orchestration tab, then the KB you created. Scroll down to the Data source section, and make sure to select the “Sync” button.
@@ -164,18 +165,23 @@ Review, then select the “Create Agent” button.
 
 ![Agent test](Streamlit_App/images/agent_test.png)
 
-- Tests knowledge base:
+- Example prompts fot Knowledge Base:
     1. "Give me a summary of development in financial market and open market operations in january 2023"
     2. "What is the SEC participants view on current economic conditions and economic outlook for september 2023"
     3. "Can you provide any other important information I should know about inflation, or rising prices?"
     4. "What can you tell me about the Staff Review of the Economic & financial Situation?"
 
-- Test prompts for action groups:
+- Example prompts for Action Groups:
     1. "Create a portfolio with 3 companies in the real estate industry."
     2. "Create another portfolio of 3 companies, but in technology industry."
     3. "Provide more details on these companies."
     4. "Help me create a new investment portfolio of companies."
     5. "Do company research on TechNova Inc."
+
+- Example prompt for KB & AG
+    1. Send an email to {ENTER EMAIL} that includes the created company portfolios and FOMC summary
+    (The logic for this method is not implemented to send emails)  
+
 
 ## Step 8: Setting Up Cloud9 Environment (IDE)
 
