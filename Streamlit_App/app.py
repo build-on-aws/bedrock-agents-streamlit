@@ -138,7 +138,7 @@ st.markdown("""
 
 - please provide more details on these companies
 
-- Create another portfolio of 5 companies, but in technology industry
+- Create a portfolio of 5 companies, in technology industry
 
 - please help me create a new investment portfolio of companies
 
@@ -154,6 +154,11 @@ st.markdown("""
 
 - what can you tell me about the Staff Review of the Economic & financial Situation?
 
+""")
+
+st.write("## Example KB, AG, history Prompt")
+st.markdown("""
+- Send an email to {ENTER EMAIL} that includes the created company portfolio(s) and FOMC summary            
 """)
 
 ###Example Prompts
