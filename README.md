@@ -179,8 +179,8 @@ Review, then select the “Create Agent” button.
     5. "Do company research on TechNova Inc."
 
 - Example prompt for KB & AG
-    1. Send an email to {ENTER EMAIL} that includes the created company portfolios and FOMC summary
-    (The logic for this method is not implemented to send emails)  
+    1. "Send an email to {ENTER EMAIL} that includes the created company portfolios and FOMC summary"
+    `(The logic for this method is not implemented to send emails)`  
 
 
 ## Step 8: Setting Up Cloud9 Environment (IDE)
