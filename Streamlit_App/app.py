@@ -159,7 +159,7 @@ st.markdown("""
 
 st.write("## Test KB, AG, history Prompt")
 st.markdown("""
-- Send an email to {ENTER EMAIL} that includes the created company portfolio(s) and FOMC summary            
+- Send an email to test@example.com that includes the created company portfolios and FOMC summaries            
 """)
 
 ###Example Prompts
