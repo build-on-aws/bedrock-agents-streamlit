@@ -1,10 +1,8 @@
-
-
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "PortfolioCreator API",
-    "description": "API for creating a stock portfolio based on company research", 
+    "title": "PortfolioCreatorAssistant API",
+    "description": "API for creating a stock portfolio based on company research",
     "version": "1.0.0"
   },
   "paths": {
@@ -58,15 +56,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "portfolioName",
-            "in": "query",
-            "description": "Name of the portfolio",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -76,6 +65,54 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendEmail": {
+      "post": {
+        "description": "Send an email with FOMC search summary and created portfolio",
+        "parameters": [
+          {
+            "name": "emailAddress",
+            "in": "query",
+            "description": "Recipient's email address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "name": "fomcSummary",
+            "in": "query",
+            "description": "Summary of FOMC search results",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "portfolio",
+            "in": "query",
+            "description": "Details of the created stock portfolio",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Portfolio"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email sent successfully",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "description": "Confirmation message"
                 }
               }
             }
@@ -96,7 +133,7 @@
           },
           "ticker": {
             "type": "string",
-            "description": "Stock ticker symbol" 
+            "description": "Stock ticker symbol"
           },
           "revenue": {
             "type": "number",
@@ -117,7 +154,7 @@
             "items": {
               "$ref": "#/components/schemas/CompanyData"
             },
-            "description": "List of companies in the portfolio" 
+            "description": "List of companies in the portfolio"
           }
         }
       }
