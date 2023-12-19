@@ -145,7 +145,7 @@ st.markdown("""
 st.write("## Test Action Group Prompts")
 st.markdown("""
 
-- do a company research on TechNova Inc.
+- do a company research on TechStashNova Inc.
 
 - Create a portfolio with 3 companies in the real estate industry
 
