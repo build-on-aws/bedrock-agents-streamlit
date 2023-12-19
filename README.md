@@ -177,7 +177,7 @@ Review, then select the “Create Agent” button.
     2. "Create another portfolio of 3 companies, but in technology industry."
     3. "Provide more details on these companies."
     4. "Help me create a new investment portfolio of companies."
-    5. "Do company research on TechNova Inc."
+    5. "Do company research on TechStashNova Inc."
 
 - Example prompt for KB & AG
     1. "Send an email to test@example.com that includes the company portfolio and FOMC summary" 
