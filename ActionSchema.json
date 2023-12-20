@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "PortfolioCreatorAssistant API",
-    "description": "API for creating a stock portfolio based on company research",
+    "description": "API for creating a company portfolio, search company data, and send summarized emails",
     "version": "1.0.0"
   },
   "paths": {
@@ -36,7 +36,7 @@
     },
     "/createPortfolio": {
       "post": {
-        "description": "Create a stock portfolio by specifying number of companies and industry",
+        "description": "Create a company portfolio of top profit earners by specifying number of companies and industry",
         "parameters": [
           {
             "name": "numCompanies",
