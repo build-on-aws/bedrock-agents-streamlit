@@ -167,17 +167,17 @@ Review, then select the “Create Agent” button.
 ![Agent test](Streamlit_App/images/agent_test.png)
 
 - Example prompts fot Knowledge Base:
-    1. "Give me a summary of development in financial market and open market operations in january 2023"
-    2. "What is the SEC participants view on current economic conditions and economic outlook for september 2023"
-    3. "Can you provide any other important information I should know about inflation, or rising prices?"
-    4. "What can you tell me about the Staff Review of the Economic & financial Situation?"
+   1. "Give me a summary of financial market developments and open market operations in January 2023"
+   2. "Tell me the participants view on economic conditions and economic outlook"
+   3. "Provide any important information I should know about inflation, or rising prices"
+   4. "Tell me about the Staff Review of the Economic & financial Situation"
 
 - Example prompts for Action Groups:
-    1. "Create a portfolio with 3 companies in the real estate industry."
-    2. "Create another portfolio of 3 companies, but in technology industry."
-    3. "Provide more details on these companies."
-    4. "Help me create a new investment portfolio of companies."
-    5. "Do company research on TechStashNova Inc."
+   1. "Create a portfolio with 3 companies in the real estate industry"
+   2. "Create portfolio of 3 companies that are in the technology industry"
+   3. "Provide more details on these companies"
+   4. "Create a new investment portfolio of companies"
+   5. "Do company research on TechStashNova Inc."
 
 - Example prompt for KB & AG
     1. "Send an email to test@example.com that includes the company portfolio and FOMC summary" 
