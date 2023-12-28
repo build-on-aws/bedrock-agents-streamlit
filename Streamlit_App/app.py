@@ -132,28 +132,28 @@ for chat in reversed(st.session_state[‘history’]):
 
 st.write("## Test Knowledge Base Prompts")
 st.markdown("""
-- give me a summary of development in financial market and open market operations in january 2023
+- "Give me a summary of financial market developments and open market operations in January 2023"
 
-- what is the SEC participants view on current economic conditions and economic outlook for september 2023
-
-- can you provide any other important information I should know about inflation, or rising prices?
-
-- what can you tell me about the Staff Review of the Economic & financial Situation?
+- "Tell me the participants view on economic conditions and economic outlook"
+   
+- "Provide any important information I should know about inflation, or rising prices"
+   
+- "Tell me about the Staff Review of the Economic & financial Situation"
 
 """)
 
 st.write("## Test Action Group Prompts")
 st.markdown("""
 
-- do a company research on TechStashNova Inc.
+- "Create a portfolio with 3 companies in the real estate industry"
 
-- Create a portfolio with 3 companies in the real estate industry
+- "Create portfolio of 3 companies that are in the technology industry"
 
-- please provide more details on these companies
+- "Provide more details on these companies"
 
-- Create a portfolio of 5 companies, in technology industry
+- "Create a new investment portfolio of companies"
 
-- please help me create a new investment portfolio of companies
+- "Do company research on TechStashNova Inc."
 
 """)
 
