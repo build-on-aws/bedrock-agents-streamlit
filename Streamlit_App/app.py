@@ -99,7 +99,7 @@ if end_session_button:
 # Display conversation history
 st.write("## Conversation History")
 
-for chat in reversed(st.session_state[‘history’]):
+for chat in reversed(st.session_state['history']):
     
     # Creating columns for Question
     col1_q, col2_q = st.columns([2, 10])
