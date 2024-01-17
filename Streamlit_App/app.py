@@ -69,13 +69,24 @@ if submit_button and prompt:
     }
     response = agenthelper.lambda_handler(event, None)
     
-    # Parse the JSON string
-    response_data = json.loads(response['body'])
-    print("TRACE & RESPONSE DATA ->  ", json.loads(response['body']))
+    try:
+        # Parse the JSON string
+        if response and 'body' in response and response['body']:
+            response_data = json.loads(response['body'])
+            print("TRACE & RESPONSE DATA ->  ", response_data)
+        else:
+            print("Invalid or empty response received")
+    except json.JSONDecodeError as e:
+        print("JSON decoding error:", e)
+        response_data = None 
     
-    # Extract the response and trace data
-    all_data = format_response(response_data['response'])
-    the_response = response_data['trace_data']
+    try:
+        # Extract the response and trace data
+        all_data = format_response(response_data['response'])
+        the_response = response_data['trace_data']
+    except:
+        all_data = "..." 
+        the_response = "Apologies, but an error occurred. Please rerun the application" 
 
     # Use trace_data and formatted_response as needed
     st.sidebar.text_area("Trace Data", value=all_data, height=300)
