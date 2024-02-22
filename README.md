@@ -67,17 +67,17 @@ The provided schema is an OpenAPI specification for the "PortfolioCreator API," 
 ![Access granted](Streamlit_App/images/access_granted.png)
 
 
-- Now, we will create a knowledge base by selecting “Knowledge base” on the left, then selecting the orange button “Create Knowledge base”.  
+- Now, we will create a knowledge base by selecting **Knowledge base** on the left, then selecting the orange button **Create Knowledge base**.  
 
 ![create_kb_btn](Streamlit_App/images/create_kb_btn.png)
 
-- You can use the default name, or enter in your own. Then, select "Next" at the bottom right of the screen.
+- You can use the default name, or enter in your own. Then, select **Next** at the bottom right of the screen.
 
 ![KB details](Streamlit_App/images/kb_details.png)
 
 ![KB details 2](Streamlit_App/images/kb_details_next.png)
 
-- Sync S3 bucket "knowledgebase-bedrock-agent-alias" to this knowledge base.
+- Sync S3 bucket `knowledgebase-bedrock-agent-alias` to this knowledge base.
 
 ![KB setup](Streamlit_App/images/KB_setup.png)
 
@@ -85,7 +85,7 @@ The provided schema is an OpenAPI specification for the "PortfolioCreator API," 
  
 ![Vector Store Config](Streamlit_App/images/vector_store_config.png)
 
-- On the next screen, review your work, then select "Create Knowledge Base" 
+- On the next screen, review your work, then select **Create Knowledge Base**
 (Creating the knowledge base may take a few minutes. You can continue to the next step in the meantime.)
 
 ![Review and Create KB](Streamlit_App/images/review_create_kb.png)
@@ -93,7 +93,7 @@ The provided schema is an OpenAPI specification for the "PortfolioCreator API," 
 
 
 ### Step 3: Lambda Function Configuration
-- Create a Lambda function (Python 3.11) for the Bedrock agent's action group. We will call this Lambda function "PortfolioCreator-actions". 
+- Create a Lambda function (Python 3.12) for the Bedrock agent's action group. We will call this Lambda function `PortfolioCreator-actions`. 
 
 ![Create Function](Streamlit_App/images/create_function.png)
 
