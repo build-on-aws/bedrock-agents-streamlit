@@ -16,19 +16,34 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ### Step 1: Creating S3 Buckets
 - Please make sure that you are in the **us-west-2** region. If another region is required, you will need to update the region in the `InvokeAgent.py` file on line 22 of the code. 
-- **Domain Data Bucket**: Create an S3 bucket to store the domain data. For example, call the S3 bucket "knowledgebase-bedrock-agent-alias". We will use the default settings. 
+- **Domain Data Bucket**: Create an S3 bucket to store the domain data. For example, call the S3 bucket `knowledgebase-bedrock-agent-alias`. We will use the default settings. 
 
 ![Bucket create 1](Streamlit_App/images/bucket_pic_1.png)
 
 ![Bucket create 2](Streamlit_App/images/bucket_pic_2.png)
 
-- After creation, add the .pdf files located [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/s3Docs) to the s3 bucket.
-(These files are the Federal Open Market Committee documents describing monetary policy decisions made at the Federal Reserved board meetings. The documents include discussion of economic conditions, policy directives to the Federal Reserve Bank of New York for open market operations, and votes on target ranges for the federal funds rate. More information can be found [here](https://www.federalreserve.gov/newsevents/pressreleases/monetary20231011a.htm). Once uploaded, please select one of the documents to open and review the content.
+- Next, we will download the domain data from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/s3Docs). On your local computer, open up a cmd (command prompt) , and run the following curl commands to download the data:
+
+```bash
+  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230201.pdf --output ~/Documents/fomcminutes20230201.pdf
+
+  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230322.pdf --output ~/Documents/fomcminutes20230322.pdf
+  
+  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230614.pdf --output ~/Documents/fomcminutes20230614.pdf
+  
+  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230726.pdf --output ~/Documents/fomcminutes20230726.pdf
+  
+  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230920.pdf --output ~/Documents/fomcminutes20230920.pdf
+  
+  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20231101.pdf --output ~/Documents/fomcminutes20231101.pdf
+```
+  
+These files will download to your **Documents** folder. Upload these files to S3 bucket `knowledgebase-bedrock-agent-{alias}`.These files are the Federal Open Market Committee documents describing monetary policy decisions made at the Federal Reserved board meetings. The documents include discussion of economic conditions, policy directives to the Federal Reserve Bank of New York for open market operations, and votes on target ranges for the federal funds rate. More information can be found [here](https://www.federalreserve.gov/newsevents/pressreleases/monetary20231011a.htm). Once uploaded, please select one of the documents to open and review the content.
 
 ![bucket domain data](Streamlit_App/images/bucket_domain_data.png)
 
 
-- **Artifacts Bucket**: Create another S3 bucket to store artifacts. For example, call it "artifacts-bedrock-agent-creator-alias". You will need to download, then add the API schema file to this S3 bucket. This .json file can be found [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionSchema.json). 
+- **Artifacts Bucket**: Create another S3 bucket to store artifacts. For example, call it `artifacts-bedrock-agent-creator-alias`. You will need to download, then add the API schema file to this S3 bucket. This .json file can be found [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionSchema.json). 
 
 The provided schema is an OpenAPI specification for the "PortfolioCreator API," which outlines the structure and capabilities of a service designed for company portfolio creation, company financial research, and sending an email. This API Schema is a rich description of each action, so agents know when to use it, and exactly how to call it and use results. This schmea defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses.) Once uploaded, please select and open the .json document to review the content.
 
