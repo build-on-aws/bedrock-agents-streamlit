@@ -45,9 +45,9 @@ These files will download to your **Documents** folder. Upload these files to S3
 
 - **Artifacts Bucket**: Create another S3 bucket to store artifacts. For example, call it artifacts-bedrock-agent-creator-{alias}. Then, download the API schema file from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionSchema.json) by running the following curl command in the command prompt:
 
-  ```bash
-curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/ActionSchema.json --output ~/Downloads/ActionSchema.json
-  ```
+```bash
+  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/ActionSchema.json --output ~/Downloads/ActionSchema.json
+```
 
 Upload this file from the **Downloads** folder to S3 bucket `artifacts-bedrock-agent-creator-{alias}`. The provided schema is an OpenAPI specification for the "PortfolioCreator API," which outlines the structure and capabilities of a service designed for company portfolio creation, company financial research, and sending an email. This API Schema is a rich description of each action, so agents know when to use it, and exactly how to call it and use results. This schmea defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses. Once uploaded, please select and open the .json document to review the content.
 
