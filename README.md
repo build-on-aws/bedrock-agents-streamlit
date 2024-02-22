@@ -99,50 +99,174 @@ The provided schema is an OpenAPI specification for the "PortfolioCreator API," 
 
 ![Create Function2](Streamlit_App/images/create_function2.png)
 
-- Copy the provided code from the ["ActionLambda.py"](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionLambda.py) file into your Lambda function. After, select the deploy button in the tab section in the Lambda console. Review the code provided before moving to the next step. (Make sure that the IAM role associated with the Bedrock agent can invoke the Lambda function)
+- Copy the python code provided below, or from the file [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionLambda.py) into your Lambda function. 
+
+```python
+import json
+
+def lambda_handler(event, context):
+    print(event)
+  
+    # Mock data for demonstration purposes
+    company_data = [
+        #Technology Industry
+        {"companyId": 1, "companyName": "TechStashNova Inc.", "industrySector": "Technology", "revenue": 10000, "expenses": 3000, "profit": 7000, "employees": 10},
+        {"companyId": 2, "companyName": "QuantumPirateLeap Technologies", "industrySector": "Technology", "revenue": 20000, "expenses": 4000, "profit": 16000, "employees": 10},
+        {"companyId": 3, "companyName": "CyberCipherSecure IT", "industrySector": "Technology", "revenue": 30000, "expenses": 5000, "profit": 25000, "employees": 10},
+        {"companyId": 4, "companyName": "DigitalMyricalDreams Gaming", "industrySector": "Technology", "revenue": 40000, "expenses": 6000, "profit": 34000, "employees": 10},
+        {"companyId": 5, "companyName": "NanoMedNoLand Pharmaceuticals", "industrySector": "Technology", "revenue": 50000, "expenses": 7000, "profit": 43000, "employees": 10},
+        {"companyId": 6, "companyName": "RoboSuperBombTech Industries", "industrySector": "Technology", "revenue": 60000, "expenses": 8000, "profit": 52000, "employees": 12},
+        {"companyId": 7, "companyName": "FuturePastNet Solutions", "industrySector": "Technology",  "revenue": 60000, "expenses": 9000, "profit": 51000, "employees": 10},
+        {"companyId": 8, "companyName": "InnovativeCreativeAI Corp", "industrySector": "Technology", "revenue": 65000, "expenses": 10000, "profit": 55000, "employees": 15},
+        {"companyId": 9, "companyName": "EcoLeekoTech Energy", "industrySector": "Technology", "revenue": 70000, "expenses": 11000, "profit": 59000, "employees": 10},
+        {"companyId": 10, "companyName": "TechyWealthHealth Systems", "industrySector": "Technology", "revenue": 80000, "expenses": 12000, "profit": 68000, "employees": 10},
+    
+        #Real Estate Industry
+        {"companyId": 11, "companyName": "LuxuryToNiceLiving Real Estate", "industrySector": "Real Estate", "revenue": 90000, "expenses": 13000, "profit": 77000, "employees": 10},
+        {"companyId": 12, "companyName": "UrbanTurbanDevelopers Inc.", "industrySector": "Real Estate", "revenue": 100000, "expenses": 14000, "profit": 86000, "employees": 10},
+        {"companyId": 13, "companyName": "SkyLowHigh Towers", "industrySector": "Real Estate", "revenue": 110000, "expenses": 15000, "profit": 95000, "employees": 18},
+        {"companyId": 14, "companyName": "GreenBrownSpace Properties", "industrySector": "Real Estate", "revenue": 120000, "expenses": 16000, "profit": 104000, "employees": 10},
+        {"companyId": 15, "companyName": "ModernFutureHomes Ltd.", "industrySector": "Real Estate", "revenue": 130000, "expenses": 17000, "profit": 113000, "employees": 10},
+        {"companyId": 16, "companyName": "CityCountycape Estates", "industrySector": "Real Estate", "revenue": 140000, "expenses": 18000, "profit": 122000, "employees": 10},
+        {"companyId": 17, "companyName": "CoastalFocalRealty Group", "industrySector": "Real Estate", "revenue": 150000, "expenses": 19000, "profit": 131000, "employees": 10},
+        {"companyId": 18, "companyName": "InnovativeModernLiving Spaces", "industrySector": "Real Estate", "revenue": 160000, "expenses": 20000, "profit": 140000, "employees": 10},
+        {"companyId": 19, "companyName": "GlobalRegional Properties Alliance", "industrySector": "Real Estate", "revenue": 170000, "expenses": 21000, "profit": 149000, "employees": 11},
+        {"companyId": 20, "companyName": "NextGenPast Residences", "industrySector": "Real Estate", "revenue": 180000, "expenses": 22000, "profit": 158000, "employees": 260}
+    ]
+    
+  
+    def get_named_parameter(event, name):
+        return next(item for item in event['parameters'] if item['name'] == name)['value']
+    
+    def get_named_property(event, name):
+        return next(item for item in event['requestBody']['content']['application/json']['properties'] if item['name'] == name)['value']
+
+ 
+    def companyResearch(event):
+        companyName = get_named_parameter(event, 'name').lower()
+        print("NAME PRINTED: ", companyName)
+        
+        for company_info in company_data:
+            if company_info["companyName"].lower() == companyName:
+                return company_info
+
+        return None
+    
+    def createPortfolio(event, company_data):
+        numCompanies = int(get_named_parameter(event, 'numCompanies'))
+        industry = get_named_parameter(event, 'industry').lower()
+
+        industry_filtered_companies = [company for company in company_data
+                                       if company['industrySector'].lower() == industry]
+
+        sorted_companies = sorted(industry_filtered_companies, key=lambda x: x['profit'], reverse=True)
+
+        top_companies = sorted_companies[:numCompanies]
+        return top_companies
+
+ 
+    def sendEmail(event, company_data):
+        emailAddress = get_named_parameter(event, 'emailAddress')
+        fomcSummary = get_named_parameter(event, 'fomcSummary')
+    
+        # Retrieve the portfolio data as a string
+        portfolioDataString = get_named_parameter(event, 'portfolio')
+    
+
+        # Prepare the email content
+        email_subject = "Portfolio Creation Summary and FOMC Search Results"
+        #email_body = f"FOMC Search Summary:\n{fomcSummary}\n\nPortfolio Details:\n{json.dumps(portfolioData, indent=4)}"
+    
+        # Email sending code here (commented out for now)
+    
+        return "Email sent successfully to {}".format(emailAddress)   
+      
+      
+    result = ''
+    response_code = 200
+    action_group = event['actionGroup']
+    api_path = event['apiPath']
+    
+    print("api_path: ", api_path )
+    
+    if api_path == '/companyResearch':
+        result = companyResearch(event)
+    elif api_path == '/createPortfolio':
+        result = createPortfolio(event, company_data)
+    elif api_path == '/sendEmail':
+        result = sendEmail(event, company_data)
+    else:
+        response_code = 404
+        result = f"Unrecognized api path: {action_group}::{api_path}"
+        
+    response_body = {
+        'application/json': {
+            'body': result
+        }
+    }
+        
+    action_response = {
+        'actionGroup': event['actionGroup'],
+        'apiPath': event['apiPath'],
+        'httpMethod': event['httpMethod'],
+        'httpStatusCode': response_code,
+        'responseBody': response_body
+    }
+
+    api_response = {'messageVersion': '1.0', 'response': action_response}
+    return api_response
+
+```
+
+- Then, select **Deploy** in the tab section of the Lambda console. Review the code provided before moving to the next step. You will see that we are using mock data to represent various companies in the technology and real estate insdustry, along with functions that we will call later in this workshop. 
 
 ![Lambda deploy](Streamlit_App/images/lambda_deploy.png)
 
-- Next, apply a resource policy to the Lambda to grant Bedrock agent access. To do this, we will switch the top tab from “code” to “configuration” and the side tab to “Permissions”. Then, scroll to the “Resource-based policy statements” section and click the “Add permissions” button.
+- Next, apply a resource policy to the Lambda to grant Bedrock agent access. To do this, we will switch the top tab from **code** to **configuration** and the side tab to **Permissions**. Then, scroll to the **Resource-based policy statements** section and click the **Add permissions** button.
 
 ![Permissions config](Streamlit_App/images/permissions_config.png)
 
 ![Lambda resource policy create](Streamlit_App/images/lambda_resource_policy_create.png)
 
-- Here is an example of the resource policy. (At this part of the setup, we will not have a Bedrock agent Source ARN. So, enter in "arn:aws:bedrock:us-west-2:{accoundID}:agent/BedrockAgentID" for now. We will include the ARN once it’s generated in step 6 after creating the Bedrock Agent alias):
+- Here is an example of the resource policy. (At this part of the setup, we will not have a Bedrock agent Source ARN. So, enter in `arn:aws:bedrock:us-west-2:{accoundID}:agent/BedrockAgentID` for now. We will include the ARN once it’s generated in step 6 after creating the Bedrock Agent alias):
 
 ![Lambda resource policy](Streamlit_App/images/lambda_resource_policy.png)
 
 
 ### Step 4: Setup Bedrock Agent and Action Group 
-- Navigate to the Bedrock console, go to the toggle on the left, and under “Orchestration” select Agents, then select “Create Agent”.
+- Navigate to the Bedrock console, go to the toggle on the left, and under **Orchestration** select Agents, then select **Create Agent**.
 
 ![Orchestration2](Streamlit_App/images/orchestration2.png)
 
-- On the next screen, provide an agent name, like “PortfolioCreator”. Leave the other options as default, then select “Next”
+- On the next screen, provide an agent name, like “PortfolioCreator”. Leave the other options as default, then select **Next**
 
 ![Agent details](Streamlit_App/images/agent_details.png)
 
 ![Agent details 2](Streamlit_App/images/agent_details_2.png)
 
-- Select the Anthropic: Claude V1.2 model. Now, we need to add instructions by creating a prompt that defines the rules of operation for the agent. In the prompt below, we provide specific direction on how the model should use tools to answer questions. Copy, then paste the details below into the agent instructions. 
+- Select the **Anthropic: Claude V1.2 model**. Now, we need to add instructions by creating a prompt that defines the rules of operation for the agent. In the prompt below, we provide specific direction on how the model should use tools to answer questions. Copy, then paste the details below into the agent instructions. 
 
-"You are an investment banker who creates portfolios of companies based on the number of companies, and industry in the `<question>`. You also research companies, and summarize documents. You send emails that include the last company portfolio created and FOMC summary searched. Format the email like normal. Formulate a solution to a given <user-request> based on the instructions and tools provided."
+```text
+You are an investment banker who creates portfolios of companies based on the number of companies, and industry in the `<question>`. You also research companies, and summarize documents. You send emails that include the last company portfolio created and FOMC summary searched. Format the email like normal. Formulate a solution to a given <user-request> based on the instructions and tools provided.
+```
 
 ![Model select2](Streamlit_App/images/select_model.png)
 
-- When creating the agent, select Lambda function "PortfolioCreator-actions". Next, select the schema file ActionSchema.json from the s3 bucket "artifacts-bedrock-agent-creator-alias". Then, select "Next" 
+- When creating the agent, select Lambda function `PortfolioCreator-actions`. Next, select the schema file `ActionSchema.json` from the s3 bucket `artifacts-bedrock-agent-creator-alias`. Then, select **Next** 
 
 ![Add action group](Streamlit_App/images/action_group_add.png)
 
 
 ### Step 5: Setup Knowledge Base with Bedrock Agent
 
-- When integrating the KB with the agent, you will need to provide basic instructions on how to handle the knowledge base. For example, use the following: “Use this knowledge base when a user asks about data, such as economic trends, company financial statements, or the outcomes of the Federal Open Market Committee meetings.”
+- When integrating the KB with the agent, you will need to provide basic instructions on how to handle the knowledge base. For example, use the following:
+  ```text
+  Use this knowledge base when a user asks about data, such as economic trends, company financial statements, or the outcomes of the Federal Open Market Committee meetings.
+  ```
  
 ![Knowledge base add2](Streamlit_App/images/add_knowledge_base2.png)
 
-Review, then select the “Create Agent” button.
+Review, then select the **Create Agent** button.
 
 ![create_agent_button](Streamlit_App/images/create_agent_button.png)
 
@@ -152,18 +276,18 @@ Review, then select the “Create Agent” button.
  
 ![Create alias](Streamlit_App/images/create_alias.png)
 
-- Next, navigate to the "Agent Overview" settings for the agent created by selecting "Agents" under the Orchestration dropdown menu on the left of the screen, then select the agent. Copy the Agent ARN, then add this ARN to the resource policy of Lambda function “PortfolioCreator-actions” previously created in step 3. 
+- Next, navigate to the **Agent Overview** settings for the agent created by selecting **Agents** under the Orchestration dropdown menu on the left of the screen, then select the agent. Copy the Agent ARN, then add this ARN to the resource policy of Lambda function `PortfolioCreator-actions` previously created in step 3. 
 
 ![Agent ARN2](Streamlit_App/images/agent_arn2.png)
 
 
 ## Step 7: Testing the Setup
 ### Testing the Knowledge Base
-- While in the Bedrock console, select “Knowledge base” under the Orchestration tab, then the KB you created. Scroll down to the Data source section, and make sure to select the “Sync” button.
+- While in the Bedrock console, select **Knowledge base** under the Orchestration tab, then the KB you created. Scroll down to the Data source section, and make sure to select the **Sync** button.
 
 ![KB sync](Streamlit_App/images/kb_sync.png)
 
-- You will see a user interface on the right where you will need to select a model. Choose the Anthropic Claude V1.2 model, then select “Apply”.
+- You will see a user interface on the right where you will need to select a model. Choose the **Anthropic Claude V1.2 model**, then select **Apply**.
 
 ![Select model test](Streamlit_App/images/select_model_test.png)
 
@@ -172,53 +296,53 @@ Review, then select the “Create Agent” button.
 ![KB prompt](Streamlit_App/images/kb_prompt.png)
 
 - Test Prompts:
-  1. "Give me a summary of financial market developments and open market operations in January 2023."
-  2. "Can you provide information about inflation or rising prices?"
-  3. "What can you tell me about the Staff Review of the Economic & Financial Situation?"
+  1. Give me a summary of financial market developments and open market operations in January 2023.
+  2. Can you provide information about inflation or rising prices?
+  3. What can you tell me about the Staff Review of the Economic & Financial Situation?
 
 ### Testing the Bedrock Agent
-- While in the Bedrock console, select “Agents” under the Orchestration tab, then the agent you created. You should be able to enter prompts in the user interface provided to test your knowledge base and action groups from the agent.
+- While in the Bedrock console, select **Agents** under the Orchestration tab, then the agent you created. You should be able to enter prompts in the user interface provided to test your knowledge base and action groups from the agent.
 
 ![Agent test](Streamlit_App/images/agent_test.png)
 
 - Example prompts fot Knowledge Base:
-   1. "Give me a summary of financial market developments and open market operations in January 2023"
-   2. "Tell me the participants view on economic conditions and economic outlook"
-   3. "Provide any important information I should know about inflation, or rising prices"
-   4. "Tell me about the Staff Review of the Economic & financial Situation"
+   1. Give me a summary of financial market developments and open market operations in January 2023
+   2. Tell me the participants view on economic conditions and economic outlook
+   3. Provide any important information I should know about inflation, or rising prices
+   4. Tell me about the Staff Review of the Economic & financial Situation
 
 - Example prompts for Action Groups:
-   1. "Create a portfolio with 3 companies in the real estate industry"
-   2. "Create portfolio of 3 companies that are in the technology industry"
-   3. "Provide more details on these companies"
-   4. "Create a new investment portfolio of companies"
-   5. "Do company research on TechStashNova Inc."
+   1. Create a portfolio with 3 companies in the real estate industry
+   2. Create portfolio of 3 companies that are in the technology industry
+   3. Provide more details on these companies
+   4. Create a new investment portfolio of companies
+   5. Do company research on TechStashNova Inc.
 
 - Example prompt for KB & AG
-    1. "Send an email to test@example.com that includes the company portfolio and FOMC summary" 
+    1. Send an email to test@example.com that includes the company portfolio and FOMC summary
     `(The logic for this method is not implemented to send emails)`  
 
 
 ## Step 8: Setting Up Cloud9 Environment (IDE)
 
-1.	Navigate in the Cloud9 management console. Then, select “Create Environment”
+1.	Navigate in the Cloud9 management console. Then, select **Create Environment**
 
 ![create_environment](Streamlit_App/images/create_environment.png)
 
 2. Here, you will enter the following values in each field
-   - Name: Bedrock-Environment (Enter any name)
-   - Instance type: t3.small
-   - Platform: Ubuntu Server 22.04 LTS
-   - Timeout: 1 hour  
+   - **Name**: Bedrock-Environment (Enter any name)
+   - **Instance type**: t3.small
+   - **Platform**: Ubuntu Server 22.04 LTS
+   - **Timeout**: 1 hour  
 
 ![ce2](Streamlit_App/images/ce2.png)
 
-   - Once complete, select the "Create" button at the bottom of the screen. The environment will take a couple of minutes to spin up. If you get an error spinning up Cloud9 due to lack of resources, you can also choose t2.micro for the instance type and try again. (The Cloud9 environment has Python 3.10.12 version at the time of this publication)
+   - Once complete, select the **Create** button at the bottom of the screen. The environment will take a couple of minutes to spin up. If you get an error spinning up Cloud9 due to lack of resources, you can also choose t2.micro for the instance type and try again. (The Cloud9 environment has Python 3.10.12 version at the time of this publication)
 
 
 ![ce3](Streamlit_App/images/ce3.png)
 
-3. Navigate back to the Cloud9 Environment, then select "open" next to the Cloud9 you just created. Now, you are ready to setup the Streamlit app!
+3. Navigate back to the Cloud9 Environment, then select **open** next to the Cloud9 you just created. Now, you are ready to setup the Streamlit app!
 
 ![environment](Streamlit_App/images/environment.png)
 
