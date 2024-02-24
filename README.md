@@ -315,7 +315,7 @@ Review, then select the **Create Agent** button.
 
 ![Agent test](Streamlit_App/images/agent_test.png)
 
-- Example prompts fo **Knowledge base**:
+- Example prompts for **Knowledge base**:
   ```text
   Give me a summary of financial market developments and open market operations in January 2023
   ```
