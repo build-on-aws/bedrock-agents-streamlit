@@ -22,7 +22,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![Bucket create 2](Streamlit_App/images/bucket_pic_2.png)
 
-- Next, we will download the domain data from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/s3Docs). On your local computer, open up a cmd (command prompt) , and run the following curl commands to download the data:
+- Next, we will download the domain data from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/s3Docs). On your local computer, open up a cmd (command prompt) , and run the following curl commands to download the files:
 
 ```bash
   curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230201.pdf --output ~/Downloads/fomcminutes20230201.pdf
