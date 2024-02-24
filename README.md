@@ -242,7 +242,7 @@ def lambda_handler(event, context):
 
 ![Orchestration2](Streamlit_App/images/orchestration2.png)
 
-- On the next screen, provide an agent name, like “PortfolioCreator”. Leave the other options as default, then select **Next**
+- On the next screen, provide an agent name, like “PortfolioCreator”. Leave the other options as default, then select **Next**.
 
 ![Agent details](Streamlit_App/images/agent_details.png)
 
@@ -256,7 +256,7 @@ You are an investment banker who creates portfolios of companies based on the nu
 
 ![Model select2](Streamlit_App/images/select_model.png)
 
-- When creating the agent, select Lambda function `PortfolioCreator-actions`. Next, select the schema file `ActionSchema.json` from the s3 bucket `artifacts-bedrock-agent-creator-alias`. Then, select **Next** 
+- When creating the agent, select Lambda function `PortfolioCreator-actions`. Next, select the schema file `ActionSchema.json` from the s3 bucket `artifacts-bedrock-agent-creator-alias`. Then, select **Next**. 
 
 ![Add action group](Streamlit_App/images/action_group_add.png)
 
