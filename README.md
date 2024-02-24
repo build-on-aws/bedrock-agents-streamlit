@@ -300,9 +300,15 @@ Review, then select the **Create Agent** button.
 ![KB prompt](Streamlit_App/images/kb_prompt.png)
 
 - Test Prompts:
-  1. Give me a summary of financial market developments and open market operations in January 2023.
-  2. Can you provide information about inflation or rising prices?
-  3. What can you tell me about the Staff Review of the Economic & Financial Situation?
+  ```text
+  Give me a summary of financial market developments and open market operations in January 2023.
+  ```
+  ```text
+  Can you provide information about inflation or rising prices?
+  ```
+  ```text
+  What can you tell me about the Staff Review of the Economic & Financial Situation?
+  ```
 
 ### Testing the Bedrock Agent
 - While in the Bedrock console, select **Agents** under the Orchestration tab, then the agent you created. You should be able to enter prompts in the user interface provided to test your knowledge base and action groups from the agent.
@@ -310,21 +316,41 @@ Review, then select the **Create Agent** button.
 ![Agent test](Streamlit_App/images/agent_test.png)
 
 - Example prompts fot Knowledge Base:
-   1. Give me a summary of financial market developments and open market operations in January 2023
-   2. Tell me the participants view on economic conditions and economic outlook
-   3. Provide any important information I should know about inflation, or rising prices
-   4. Tell me about the Staff Review of the Economic & financial Situation
+  ```text
+  Give me a summary of financial market developments and open market operations in January 2023
+  ```
+  ```text
+  Tell me the participants view on economic conditions and economic outlook
+  ```
+  ```text
+  Provide any important information I should know about inflation, or rising prices
+  ```
+  ```text
+  Tell me about the Staff Review of the Economic & financial Situation
+  ```
 
 - Example prompts for Action Groups:
-   1. Create a portfolio with 3 companies in the real estate industry
-   2. Create portfolio of 3 companies that are in the technology industry
-   3. Provide more details on these companies
-   4. Create a new investment portfolio of companies
-   5. Do company research on TechStashNova Inc.
+```text
+  Create a portfolio with 3 companies in the real estate industry
+```
+```text
+  Create portfolio of 3 companies that are in the technology industry
+```
+```text
+  Provide more details on these companies
+```
+```text
+  Create a new investment portfolio of companies
+```
+```text
+  Do company research on TechStashNova Inc.
+```
 
 - Example prompt for KB & AG
-    1. Send an email to test@example.com that includes the company portfolio and FOMC summary
-    `(The logic for this method is not implemented to send emails)`  
+  ```text
+  Send an email to test@example.com that includes the company portfolio and FOMC summary
+  ```
+  `(The logic for this method is not implemented to send emails)`  
 
 
 ## Step 8: Setting Up Cloud9 Environment (IDE)
