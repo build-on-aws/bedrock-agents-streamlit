@@ -315,7 +315,7 @@ Review, then select the **Create Agent** button.
 
 ![Agent test](Streamlit_App/images/agent_test.png)
 
-- Example prompts fot Knowledge Base:
+- Example prompts fo **Knowledge base**:
   ```text
   Give me a summary of financial market developments and open market operations in January 2023
   ```
@@ -329,7 +329,7 @@ Review, then select the **Create Agent** button.
   Tell me about the Staff Review of the Economic & financial Situation
   ```
 
-- Example prompts for Action Groups:
+- Example prompts for **Action groups**:
 ```text
   Create a portfolio with 3 companies in the real estate industry
 ```
@@ -351,6 +351,7 @@ Review, then select the **Create Agent** button.
   Send an email to test@example.com that includes the company portfolio and FOMC summary
   ```
   `(The logic for this method is not implemented to send emails)`  
+
 
 
 ## Step 8: Setting Up Cloud9 Environment (IDE)
