@@ -401,10 +401,15 @@ Review, then select the **Create Agent** button.
 
 7. **Run the Streamlit App**:
    - Execute the command `streamlit run app.py --server.address=0.0.0.0 --server.port=8080`.
-   - Streamlit will start the app, and you can view it by selecting "Preview" within the Cloud9 IDE at the top, then "Preview Running Application"
+   - Streamlit will start the app, and you can view it by selecting **Preview** within the Cloud9 IDE at the top, then **Preview Running Application**.
+  
+     ![Preview button](Streamlit_App/images/preview_btn.png)
+     
+     
    - Once the app is running, please test some of the sample prompts provided. (On 1st try, if you receive an error, try again.)
 
 ![Running App ](Streamlit_App/images/running_app.png)
+
 
 Optionally, you can review the trace events in the left toggle of the screen. This data will include the rational tracing, invocation input tracing, and observation tracing.
 
