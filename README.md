@@ -85,7 +85,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
  
 ![Vector Store Config](/static/vector_store_config.gif)
 
-- On the next screen, review your work, then select **Create Knowledge Base**
+- On the next screen, review your work, then select **Create knowledge base**
 (Creating the knowledge base may take a few minutes. You can continue to the next step in the meantime.)
 
 ![Review and Create KB](Streamlit_App/images/review_create_kb.png)
