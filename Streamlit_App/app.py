@@ -140,49 +140,40 @@ for chat in reversed(st.session_state['history']):
 
 
 # Example Prompts Section
-
 st.write("## Test Knowledge Base Prompts")
-st.markdown("""
-- "Give me a summary of financial market developments and open market operations in January 2023"
 
-- "Tell me the participants view on economic conditions and economic outlook"
-   
-- "Provide any important information I should know about inflation, or rising prices"
-   
-- "Tell me about the Staff Review of the Economic & financial Situation"
+# Creating a list of prompts for the Knowledge Base section
+knowledge_base_prompts = [
+    {"Prompt": "Give me a summary of financial market developments and open market operations in January 2023"},
+    {"Prompt": "Tell me the participants view on economic conditions and economic outlook"},
+    {"Prompt": "Provide any important information I should know about inflation, or rising prices"},
+    {"Prompt": "Tell me about the Staff Review of the Economic & financial Situation"}
+]
 
-""")
+# Displaying the Knowledge Base prompts as a table
+st.table(knowledge_base_prompts)
 
+# Test Action Group Prompts
 st.write("## Test Action Group Prompts")
-st.markdown("""
 
-- "Create a portfolio with 3 companies in the real estate industry"
+# Creating a list of prompts for the Action Group section
+action_group_prompts = [
+    {"Prompt": "Create a portfolio with 3 companies in the real estate industry"},
+    {"Prompt": "Create portfolio of 3 companies that are in the technology industry"},
+    {"Prompt": "Create a new investment portfolio of companies"},
+    {"Prompt": "Do company research on TechStashNova Inc."}
+]
 
-- "Create portfolio of 3 companies that are in the technology industry"
+# Displaying the Action Group prompts as a table
+st.table(action_group_prompts)
 
-- "Provide more details on these companies"
+st.write("## Test KB, AG, History Prompt")
 
-- "Create a new investment portfolio of companies"
+# Creating a list of prompts for the specific task
+task_prompts = [
+    {"Task": "Send an email to test@example.com that includes the company portfolio and report summary", 
+     "Note": "The logic for this method is not implemented to send emails"}
+]
 
-- "Do company research on TechStashNova Inc."
-
-""")
-
-st.write("## Test KB, AG, history Prompt")
-st.markdown("""
-- Send an email to test@example.com that includes the company portfolio and FOMC summary `(The logic for this method is not implemented to send emails)`             
-""")
-
-###Example Prompts
-#Tests action groups:
-#1-	Do a company research on TechNova Inc.
-#2-	Create me a portfolio with top 3 company profit earners. The companies need to be in the real estate industry.
-#3-	please provide more details on these companies
-#4-	create me another portfolio of top 3 company profit earners. They need to be in the technology industry
-#5-	please help me create a new investment portfolio of companies
-
-###Tests knowledge base:
-#6-	give me a summary of development in financial market and open market operations in january 2023
-#7-	what is the SEC participants view on current economic conditions and economic outlook for september 2023
-#8-	can you provide any other important information I should know about inflation, or rising prices?
-#9-	What can you tell me about the Staff Review of the Economic & financial Situation?
+# Displaying the task prompt as a table
+st.table(task_prompts)
