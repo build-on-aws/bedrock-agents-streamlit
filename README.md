@@ -263,11 +263,11 @@ You are an investment banker who creates portfolios of companies based on the nu
 
 - Now, we need to provide the Bedrock agent an example of a formatted company portfolio, and a formatted email. On the Agent Overview screen, scroll down and select **Working draft**.
 
-![Working draft](/static/working_draft.png)
+![Working draft](Streamlit_App/images/working_draft.png)
 
 - Go down to **Advanced prompts** and select **Edit**.
 
-![advance_prompt_btn](/static/advance_prompt_btn.png)
+![advance_prompt_btn](Streamlit_App/images/advance_prompt_btn.png)
 
 
 
@@ -315,14 +315,14 @@ FOMC Summary Report:
 
 - The results should look similar to the following:
 
-![advance_prompt_setup](/static/advance_prompt_setup.gif)
+![advance_prompt_setup](Streamlit_App/images/advance_prompt_setup.gif)
 
 - When your done, scroll to the bottom and select **Save and exit**.
 
 
 - Now, within your *working draft*, check to confirm that the *Orchestration* in the **Advance prompt** section is Overridden
 
-![advance_prompt_overridden](/static/adv_prompt_overridden.png)
+![advance_prompt_overridden](Streamlit_App/images/adv_prompt_overridden.png)
 
 
 
