@@ -251,7 +251,7 @@ def lambda_handler(event, context):
 - Select the **Anthropic: Claude V1.2 model**. Now, we need to add instructions by creating a prompt that defines the rules of operation for the agent. In the prompt below, we provide specific direction on how the model should use tools to answer questions. Copy, then paste the details below into the agent instructions. 
 
 ```text
-You are an investment banker who creates portfolios of companies based on the number of companies, and industry in the `<question>`. You also research companies, and summarize documents. You send emails that include the last company portfolio created and FOMC summary searched. Format the email like normal. Formulate a solution to a given <user-request> based on the instructions and tools provided.
+You are an investment banker who creates portfolios of companies based on the number of companies, and industry in the <question>. An example of a portfolio looks like <portfolio_example>. You also research companies, and summarize documents. When requested, you format emails like <email_format>, then send these emails that include company portfolios and a FOMC search results summary. 
 ```
 
 ![Model select2](Streamlit_App/images/select_model.png)
@@ -259,6 +259,72 @@ You are an investment banker who creates portfolios of companies based on the nu
 - When creating the agent, select Lambda function `PortfolioCreator-actions`. Next, select the schema file `ActionSchema.json` from the s3 bucket `artifacts-bedrock-agent-creator-alias`. Then, select **Next**. 
 
 ![Add action group](Streamlit_App/images/action_group_add.png)
+
+
+- Now, we need to provide the Bedrock agent an example of a formatted company portfolio, and a formatted email. On the Agent Overview screen, scroll down and select **Working draft**.
+
+![Working draft](/static/working_draft.png)
+
+- Go down to **Advanced prompts** and select **Edit**.
+
+![advance_prompt_btn](/static/advance_prompt_btn.png)
+
+
+
+- Select the **Orchestration** tab. Toggle on the radio button  **Override orchestration template defaults**. Make sure  **Activate orchestration template** is enabled as well.
+
+- In the *Prompt template editor*, scroll down to line seven right below the closing tag `</auxiliary_instructions>`. Make two line spaces, then copy/paste in the following portfolio example and email format:
+
+```sql
+Here is an example of a company portfolio.
+
+<portfolio_example>
+Company Portfolio:
+  
+The generated real estate portfolio contains 3 companies:
+
+  1. NextGenPast Residences with revenue of $180,000, expenses of $22,000 and profit of $158,000 employing 260 people. 
+  
+  2. GlobalRegional Properties Alliance with revenue of $170,000, expenses of $21,000 and profit of $149,000 employing 11 people.
+  
+  3. InnovativeModernLiving Spaces with revenue of $160,000, expenses of $20,000 and profit of $140,000 employing 10 people.  
+</portfolio_example>
+
+Here is an example of a formatted email.
+
+<email_format>
+Company Portfolio(s):
+  
+The generated real estate portfolio contains 3 companies:
+
+  1. NextGenPast Residences with revenue of $180,000, expenses of $22,000 and profit of $158,000 employing 260 people. 
+  
+  2. GlobalRegional Properties Alliance with revenue of $170,000, expenses of $21,000 and profit of $149,000 employing 11 people.
+  
+  3. InnovativeModernLiving Spaces with revenue of $160,000, expenses of $20,000 and profit of $140,000 employing 10 people.
+    
+
+
+FOMC Summary Report:
+
+  Participants noted that recent indicators pointed to modest growth in spending and production. Nonetheless, job gains had been robust in recent months, and the unemployment rate remained low. Inflation had eased somewhat but remained elevated.
+   
+  Participants recognized that Russia’s war against Ukraine was causing tremendous human and economic hardship and was contributing to elevated global uncertainty. Against this background, participants continued to be highly attentive to inflation risks.
+</email_format>
+```
+
+- The results should look similar to the following:
+
+![advance_prompt_setup](/static/advance_prompt_setup.gif)
+
+- When your done, scroll to the bottom and select **Save and exit**.
+
+
+- Now, within your *working draft*, check to confirm that the *Orchestration* in the **Advance prompt** section is Overridden
+
+![advance_prompt_overridden](/static/adv_prompt_overridden.png)
+
+
 
 
 ### Step 5: Setup Knowledge Base with Bedrock Agent
