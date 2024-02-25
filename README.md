@@ -68,7 +68,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 ![Access granted](Streamlit_App/images/access_granted.png)
 
 
-- Now, we will create a knowledge base by selecting **Knowledge base** on the left, then selecting the orange button **Create Knowledge base**.  
+- Now, we will create a knowledge base by selecting **Knowledge base** on the left, then selecting the orange button **Create knowledge base**.  
 
 ![create_kb_btn](Streamlit_App/images/create_kb_btn.png)
 
