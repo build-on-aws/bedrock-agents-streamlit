@@ -74,9 +74,8 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 - You can use the default name, or enter in your own. Then, select **Next** at the bottom right of the screen.
 
-![KB details](Streamlit_App/images/kb_details.png)
+![KB details](Streamlit_App/images/kb_details.gif)
 
-![KB details 2](Streamlit_App/images/kb_details_next.png)
 
 - Sync S3 bucket `knowledgebase-bedrock-agent-alias` to this knowledge base.
 
