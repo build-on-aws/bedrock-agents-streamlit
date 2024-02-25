@@ -56,17 +56,14 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ### Step 2: Knowledge Base Setup in Bedrock Agent
 
-- Before we setup the knowledge base, we will need to grant access to the models that will be needed for our agent in Bedrock. Navigate to the Amazon Bedrock console, then on the left of the screen, scroll down and select **Model access**. On the right, select the orange **Manage model access** button.
+- Before we setup the knowledge base, we will need to grant access to the models that will be needed for our Bedrock agent. Navigate to the Amazon Bedrock console, then on the left of the screen, scroll down and select **Model access**. On the right, select the orange **Manage model access** button.
 
 ![Model access](Streamlit_App/images/model_access.png)
 
-- Select the checkbox next to the **Models** column. This will auto select all of the models. After, scroll down to the bottom right and select **Request model access**. 
+- Select the checkbox next to the base models for the **Anthropic** column. Also, verify that **Titan Embeddings G1 - Text** column is checked, if not by default. This will provide you access to the required models. After, scroll down to the bottom right and select **Request model access**.
 
-![Request model access](Streamlit_App/images/request_model_access.png)
 
-![Request model access btn](Streamlit_App/images/request_model_access_btn.png)
-
-- After, verify that the Access status of the Models is green stating **Access granted**.
+- After, verify that the Access status of the Models are green with **Access granted**.
 
 ![Access granted](Streamlit_App/images/access_granted.png)
 
