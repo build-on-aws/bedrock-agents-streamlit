@@ -38,7 +38,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
   curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20231101.pdf --output ~/Downloads/fomcminutes20231101.pdf
 ```
   
-These files will download to your **Downloads** folder. Upload these files to S3 bucket `knowledgebase-bedrock-agent-{alias}`.These files are the Federal Open Market Committee documents describing monetary policy decisions made at the Federal Reserved board meetings. The documents include discussion of economic conditions, policy directives to the Federal Reserve Bank of New York for open market operations, and votes on target ranges for the federal funds rate. More information can be found [here](https://www.federalreserve.gov/newsevents/pressreleases/monetary20231011a.htm). Once uploaded, please select one of the documents to open and review the content.
+- These files will download to your **Downloads** folder. Upload these files to S3 bucket `knowledgebase-bedrock-agent-{alias}`.These files are the Federal Open Market Committee documents describing monetary policy decisions made at the Federal Reserved board meetings. The documents include discussion of economic conditions, policy directives to the Federal Reserve Bank of New York for open market operations, and votes on target ranges for the federal funds rate. More information can be found [here](https://www.federalreserve.gov/newsevents/pressreleases/monetary20231011a.htm). Once uploaded, please select one of the documents to open and review the content.
 
 ![bucket domain data](Streamlit_App/images/bucket_domain_data.png)
 
@@ -49,7 +49,7 @@ These files will download to your **Downloads** folder. Upload these files to S3
   curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/ActionSchema.json --output ~/Downloads/ActionSchema.json
 ```
 
-Upload this file from the **Downloads** folder to S3 bucket `artifacts-bedrock-agent-creator-{alias}`. The provided schema is an OpenAPI specification for the "PortfolioCreator API," which outlines the structure and capabilities of a service designed for company portfolio creation, company financial research, and sending an email. This API Schema is a rich description of each action, so agents know when to use it, and exactly how to call it and use results. This schmea defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses. Once uploaded, please select and open the .json document to review the content.
+- Upload this file from the **Downloads** folder to S3 bucket `artifacts-bedrock-agent-creator-{alias}`. The provided schema is an OpenAPI specification for the "PortfolioCreator API," which outlines the structure and capabilities of a service designed for company portfolio creation, company financial research, and sending an email. This API Schema is a rich description of each action, so agents know when to use it, and exactly how to call it and use results. This schmea defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses. Once uploaded, please select and open the .json document to review the content.
 
 ![Loaded Artifact](Streamlit_App/images/loaded_artifact.png)
  
