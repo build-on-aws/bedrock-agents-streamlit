@@ -85,9 +85,9 @@ Upload this file from the **Downloads** folder to S3 bucket `artifacts-bedrock-a
 
 ![KB setup](Streamlit_App/images/KB_setup.png)
 
-- Select the default option OpenSearch Serverless as the vector store.
+- For the embedding model, choose **Titan Embeddings G1 - Text v1.2**. Leave the other options as default, and scroll down to select **Next**.
  
-![Vector Store Config](Streamlit_App/images/vector_store_config.png)
+![Vector Store Config](/static/vector_store_config.gif)
 
 - On the next screen, review your work, then select **Create Knowledge Base**
 (Creating the knowledge base may take a few minutes. You can continue to the next step in the meantime.)
