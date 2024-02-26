@@ -145,7 +145,7 @@ st.write("## Test Knowledge Base Prompts")
 # Creating a list of prompts for the Knowledge Base section
 knowledge_base_prompts = [
     {"Prompt": "Give me a summary of financial market developments and open market operations in January 2023"},
-    {"Prompt": "Tell me the participants view on economic conditions and economic outlook"},
+    {"Prompt": "Tell me the participants view on economic conditions"},
     {"Prompt": "Provide any important information I should know about consumer inflation, or rising prices"},
     {"Prompt": "Tell me about the Staff Review of the Economic & financial Situation"}
 ]
