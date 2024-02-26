@@ -146,7 +146,7 @@ st.write("## Test Knowledge Base Prompts")
 knowledge_base_prompts = [
     {"Prompt": "Give me a summary of financial market developments and open market operations in January 2023"},
     {"Prompt": "Tell me the participants view on economic conditions and economic outlook"},
-    {"Prompt": "Provide any important information I should know about inflation, or rising prices"},
+    {"Prompt": "Provide any important information I should know about consumer inflation, or rising prices"},
     {"Prompt": "Tell me about the Staff Review of the Economic & financial Situation"}
 ]
 
@@ -158,8 +158,8 @@ st.write("## Test Action Group Prompts")
 
 # Creating a list of prompts for the Action Group section
 action_group_prompts = [
-    {"Prompt": "Create a portfolio with 3 companies in the real estate industry with details"},
-    {"Prompt": "Create portfolio of 3 companies that are in the technology industry with details"},
+    {"Prompt": "Create a portfolio with 3 companies in the real estate industry"},
+    {"Prompt": "Create a portfolio of 4 companies that are in the technology industry"},
     {"Prompt": "Create a new investment portfolio of companies"},
     {"Prompt": "Do company research on TechStashNova Inc."}
 ]
@@ -171,7 +171,7 @@ st.write("## Test KB, AG, History Prompt")
 
 # Creating a list of prompts for the specific task
 task_prompts = [
-    {"Task": "Send an email to test@example.com that includes the company portfolio and report summary", 
+    {"Task": "Send an email to test@example.com that includes the company portfolio and summary report", 
      "Note": "The logic for this method is not implemented to send emails"}
 ]
 
