@@ -138,9 +138,6 @@ def lambda_handler(event, context):
     def get_named_parameter(event, name):
         return next(item for item in event['parameters'] if item['name'] == name)['value']
     
-    def get_named_property(event, name):
-        return next(item for item in event['requestBody']['content']['application/json']['properties'] if item['name'] == name)['value']
-
  
     def companyResearch(event):
         companyName = get_named_parameter(event, 'name').lower()
@@ -149,7 +146,6 @@ def lambda_handler(event, context):
         for company_info in company_data:
             if company_info["companyName"].lower() == companyName:
                 return company_info
-
         return None
     
     def createPortfolio(event, company_data):
