@@ -272,36 +272,35 @@ You are an investment banker who creates portfolios of companies based on the nu
 - In the *Prompt template editor*, scroll down to line seven right below the closing tag `</auxiliary_instructions>`. Make two line spaces, then copy/paste in the following portfolio example and email format:
 
 ```sql
-Here is an example of a company portfolio.
+Here is an example of a company portfolio.  
 
 <portfolio_example>
-Company Portfolio:
-  
-The generated real estate portfolio contains 3 companies:
+
+Here is a portfolio of the top 3 real estate companies:
 
   1. NextGenPast Residences with revenue of $180,000, expenses of $22,000 and profit of $158,000 employing 260 people. 
   
   2. GlobalRegional Properties Alliance with revenue of $170,000, expenses of $21,000 and profit of $149,000 employing 11 people.
   
   3. InnovativeModernLiving Spaces with revenue of $160,000, expenses of $20,000 and profit of $140,000 employing 10 people.  
+  
 </portfolio_example>
+
 
 Here is an example of a formatted email.
 
 <email_format>
-Company Portfolio(s):
-  
-The generated real estate portfolio contains 3 companies:
+
+Company Portfolio:
 
   1. NextGenPast Residences with revenue of $180,000, expenses of $22,000 and profit of $158,000 employing 260 people. 
   
   2. GlobalRegional Properties Alliance with revenue of $170,000, expenses of $21,000 and profit of $149,000 employing 11 people.
   
-  3. InnovativeModernLiving Spaces with revenue of $160,000, expenses of $20,000 and profit of $140,000 employing 10 people.
-    
+  3. InnovativeModernLiving Spaces with revenue of $160,000, expenses of $20,000 and profit of $140,000 employing 10 people.  
 
 
-FOMC Summary Report:
+Searched Results Report:
 
   Participants noted that recent indicators pointed to modest growth in spending and production. Nonetheless, job gains had been robust in recent months, and the unemployment rate remained low. Inflation had eased somewhat but remained elevated.
    
