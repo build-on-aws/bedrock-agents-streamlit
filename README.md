@@ -394,9 +394,6 @@ Review, then select the **Create Agent** button.
   Create portfolio of 3 companies that are in the technology industry
 ```
 ```text
-  Provide more details on these companies
-```
-```text
   Create a new investment portfolio of companies
 ```
 ```text
