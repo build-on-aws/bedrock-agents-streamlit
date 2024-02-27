@@ -445,7 +445,10 @@ unzip bedrock-agents-streamlit-main.zip
 ```
      
 4. **Navigate to Streamlit_App Folder**:
-   - Change to the directory containing the Streamlit app. Use the command `cd ~/environment/bedrock-agents-streamlit-main/Streamlit_App`
+   - Change to the directory containing the Streamlit app. Use this command
+     ``` bash
+     cd ~/environment/bedrock-agents-streamlit-main/Streamlit_App
+     ```
      
 5. **Update Configuration**:
    - Open the `InvokeAgent.py` file.
