@@ -432,10 +432,17 @@ Searched Results Report:
 ## Step 9: Setting Up and Running the Streamlit App
 1. **Obtain the Streamlit App ZIP File**: Download the zip file of the project [here](https://github.com/build-on-aws/bedrock-agents-streamlit/archive/refs/heads/main.zip).
 
+
+
 2. **Upload to Cloud9**:
    - In your Cloud9 environment, upload the ZIP file.
 
 ![Upload file to Cloud9](Streamlit_App/images/upload_file_cloud9.png)
+
+   - Before going to the next step, make sure that the project finished uploading.
+     
+![Load wait](Streamlit_App/images/load_wait.png)
+
 
 3. **Unzip the File**:
    - Use the following command  to extract the contents:
