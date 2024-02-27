@@ -253,6 +253,19 @@ You are an investment banker who creates portfolios of companies based on the nu
 ![Add action group](Streamlit_App/images/action_group_add.png)
 
 
+### Step 5: Setup Knowledge Base with Bedrock Agent
+
+- When integrating the KB with the agent, you will need to provide basic instructions on how to handle the knowledge base. For example, use the following:
+  ```text
+  Use this knowledge base when a user asks about data, such as economic trends, company financial statements, or the outcomes of the Federal Open Market Committee meetings.
+  ```
+ 
+![Knowledge base add2](Streamlit_App/images/add_knowledge_base2.png)
+
+Review, then select the **Create Agent** button.
+
+![create_agent_button](Streamlit_App/images/create_agent_button.png)
+
 - Now, we need to provide the Bedrock agent an example of a formatted company portfolio, and a formatted email. On the Agent Overview screen, scroll down and select **Working draft**.
 
 ![Working draft](Streamlit_App/images/working_draft.png)
@@ -314,22 +327,6 @@ Searched Results Report:
 - Now, within your *working draft*, check to confirm that the *Orchestration* in the **Advance prompt** section is Overridden
 
 ![advance_prompt_overridden](Streamlit_App/images/adv_prompt_overridden.png)
-
-
-
-
-### Step 5: Setup Knowledge Base with Bedrock Agent
-
-- When integrating the KB with the agent, you will need to provide basic instructions on how to handle the knowledge base. For example, use the following:
-  ```text
-  Use this knowledge base when a user asks about data, such as economic trends, company financial statements, or the outcomes of the Federal Open Market Committee meetings.
-  ```
- 
-![Knowledge base add2](Streamlit_App/images/add_knowledge_base2.png)
-
-Review, then select the **Create Agent** button.
-
-![create_agent_button](Streamlit_App/images/create_agent_button.png)
 
 
 ### Step 6: Create an alias
