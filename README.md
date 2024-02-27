@@ -464,7 +464,10 @@ pip install streamlit boto3 pandas
 ```
 
 7. **Run the Streamlit App**:
-   - Execute the command `streamlit run app.py --server.address=0.0.0.0 --server.port=8080`.
+   - Execute the command:
+     ```bash
+     streamlit run app.py --server.address=0.0.0.0 --server.port=8080
+     ```
    - Streamlit will start the app, and you can view it by selecting **Preview** within the Cloud9 IDE at the top, then **Preview Running Application**.
   
      ![Preview button](Streamlit_App/images/preview_btn.png)
