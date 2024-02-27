@@ -438,9 +438,15 @@ Searched Results Report:
 ![Upload file to Cloud9](Streamlit_App/images/upload_file_cloud9.png)
 
 3. **Unzip the File**:
-   - Use the command `unzip bedrock-agents-streamlit-main.zip` to extract the contents.
+   - Use the following command  to extract the contents:
+   - 
+  ```bash
+unzip bedrock-agents-streamlit-main.zip
+```
+     
 4. **Navigate to Streamlit_App Folder**:
    - Change to the directory containing the Streamlit app. Use the command `cd ~/environment/bedrock-agents-streamlit-main/Streamlit_App`
+     
 5. **Update Configuration**:
    - Open the `InvokeAgent.py` file.
    - Update the `agentId` and `agentAliasId` variables with the appropriate values, then save it.
