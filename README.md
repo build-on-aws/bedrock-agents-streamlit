@@ -448,7 +448,7 @@ Searched Results Report:
 ![Update Agent ID and alias](Streamlit_App/images/update_agentId_and_alias.png)
 
 6. **Install Streamlit** (if not already installed):
-   - Run `pip install streamlit`. Additionally, make sure boto3, and pandas dependencies are installed by running `pip install boto3` and `pip install pandas`.
+   - Run ```bash pip install streamlit boto3 pandas``` to install all of the dependencies needed.
 
 7. **Run the Streamlit App**:
    - Execute the command `streamlit run app.py --server.address=0.0.0.0 --server.port=8080`.
