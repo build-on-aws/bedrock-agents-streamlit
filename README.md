@@ -452,6 +452,7 @@ Searched Results Report:
 
 ```bash
 pip install streamlit boto3 pandas
+```
 
 7. **Run the Streamlit App**:
    - Execute the command `streamlit run app.py --server.address=0.0.0.0 --server.port=8080`.
