@@ -439,10 +439,10 @@ Searched Results Report:
 
 3. **Unzip the File**:
    - Use the following command  to extract the contents:
-   - 
-  ```bash
-unzip bedrock-agents-streamlit-main.zip
-```
+  
+     ```bash
+     unzip bedrock-agents-streamlit-main.zip
+     ```
      
 4. **Navigate to Streamlit_App Folder**:
    - Change to the directory containing the Streamlit app. Use this command
@@ -459,9 +459,9 @@ unzip bedrock-agents-streamlit-main.zip
 6. **Install Streamlit** (if not already installed):
    - Run the following command to install all of the dependencies needed:
 
-```bash
-pip install streamlit boto3 pandas
-```
+     ```bash
+     pip install streamlit boto3 pandas
+     ```
 
 7. **Run the Streamlit App**:
    - Execute the command:
