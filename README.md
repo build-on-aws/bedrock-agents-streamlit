@@ -485,7 +485,7 @@ Searched Results Report:
 ![Running App ](Streamlit_App/images/running_app.png)
 
 
-Optionally, you can review the trace events in the left toggle of the screen. This data will include the rational tracing, invocation input tracing, and observation tracing.
+   - Optionally, you can review the [trace events](https://docs.aws.amazon.com/bedrock/latest/userguide/trace-events.html) in the left toggle of the screen. This data will include the **Preprocessing, Orchestration**, and **PostProcessing** traces.
 
 ![Trace events ](Streamlit_App/images/trace_events.png)
 
