@@ -22,34 +22,58 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![Bucket create 2](Streamlit_App/images/bucket_pic_2.png)
 
-- Next, we will download the domain data from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/s3Docs). On your local computer, open up a cmd (command prompt) , and run the following curl commands to download the files:
+- Next, we will download the domain data from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/s3Docs). On your computer, open terminal or command prompt, and run the following `curl` commands to download the data:
+  
+* For **Mac**
+  ```linux
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230201.pdf --output ~/Documents/fomcminutes20230201.pdf
 
-```bash
-  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230201.pdf --output ~/Downloads/fomcminutes20230201.pdf
-
-  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230322.pdf --output ~/Downloads/fomcminutes20230322.pdf
-  
-  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230614.pdf --output ~/Downloads/fomcminutes20230614.pdf
-  
-  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230726.pdf --output ~/Downloads/fomcminutes20230726.pdf
-  
-  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230920.pdf --output ~/Downloads/fomcminutes20230920.pdf
-  
-  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20231101.pdf --output ~/Downloads/fomcminutes20231101.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230322.pdf --output ~/Documents/fomcminutes20230322.pdf
+    
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230614.pdf --output ~/Documents/fomcminutes20230614.pdf
+    
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230726.pdf --output ~/Documents/fomcminutes20230726.pdf
+    
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230920.pdf --output ~/Documents/fomcminutes20230920.pdf
+    
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20231101.pdf --output ~/Documents/fomcminutes20231101.pdf
+  ```
+ 
+* For **Windows**
+```windows
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230201.pdf --output %USERPROFILE%\Documents\fomcminutes20230201.pdf
+    
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230322.pdf --output %USERPROFILE%\Documents\fomcminutes20230322.pdf
+    
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230614.pdf --output %USERPROFILE%\Documents\fomcminutes20230614.pdf
+    
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230726.pdf --output %USERPROFILE%\Documents\fomcminutes20230726.pdf
+    
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230920.pdf --output %USERPROFILE%\Documents\fomcminutes20230920.pdf
+    
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20231101.pdf --output %USERPROFILE%\Documents\fomcminutes20231101.pdf
 ```
-  
-- These files will download to your **Downloads** folder. Upload these files to S3 bucket `knowledgebase-bedrock-agent-{alias}`.These files are the Federal Open Market Committee documents describing monetary policy decisions made at the Federal Reserved board meetings. The documents include discussion of economic conditions, policy directives to the Federal Reserve Bank of New York for open market operations, and votes on target ranges for the federal funds rate. More information can be found [here](https://www.federalreserve.gov/newsevents/pressreleases/monetary20231011a.htm). Once uploaded, please select one of the documents to open and review the content.
+
+- Also, you have the option to download the .pdf files from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/s3Docs). These files will download to your **Documents** folder. Upload these files to S3 bucket `knowledgebase-bedrock-agent-{alias}`. These files are the Federal Open Market Committee documents describing monetary policy decisions made at the Federal Reserved board meetings. The documents include discussions of economic conditions, policy directives to the Federal Reserve Bank of New York for open market operations, and votes on the federal funds rate. More information can be found [here](https://www.federalreserve.gov/newsevents/pressreleases/monetary20231011a.htm). Once uploaded, please select one of the documents to open and review the content.
 
 ![bucket domain data](Streamlit_App/images/bucket_domain_data.png)
 
 
-- **Artifacts Bucket**: Create another S3 bucket to store artifacts. For example, call it `artifacts-bedrock-agent-creator-{alias}`. Then, download the API schema file from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionSchema.json) by running the following `curl` command in the command prompt:
+- **Artifacts Bucket**: Create another S3 bucket to store artifacts. For example, call it `artifacts-bedrock-agent-creator-{alias}`. Then, download the API schema file from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionSchema.json) by running the following `curl` command in the terminal or command prompt:
 
-```bash
-  curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/ActionSchema.json --output ~/Downloads/ActionSchema.json
-```
 
-- Upload this file from the **Downloads** folder to S3 bucket `artifacts-bedrock-agent-creator-{alias}`. The provided schema is an OpenAPI specification for the "PortfolioCreator API," which outlines the structure and capabilities of a service designed for company portfolio creation, company financial research, and sending an email. This API Schema is a rich description of each action, so agents know when to use it, and exactly how to call it and use results. This schmea defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses. Once uploaded, please select and open the .json document to review the content.
+* For **Mac**
+    ```linux
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/ActionSchema.json --output ~/Documents/ActionSchema.json
+    ```
+
+* For **Windows**
+    ```windows
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/ActionSchema.json --output %USERPROFILE%\Documents\ActionSchema.json
+    ```
+
+- You can also download this .json file from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionSchema.json). Upload this file from the **Documents** folder to S3 bucket `artifacts-bedrock-agent-creator-{alias}`. The provided API schema is an OpenAPI specification for the "PortfolioCreator API," which outlines the structure and capabilities of a service designed for company portfolio creation, company financial research, and sending an email. This API Schema is a rich description of each action, so agents know when to use it, and how to call it and use results. This schema defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses. Once uploaded, please select and open the .json document to review the content.
+
 
 ![Loaded Artifact](Streamlit_App/images/loaded_artifact.png)
  
