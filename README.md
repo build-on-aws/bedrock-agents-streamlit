@@ -316,11 +316,9 @@ Here is a portfolio of the top 3 real estate companies:
   2. GlobalRegional Properties Alliance with revenue of $170,000, expenses of $21,000 and profit of $149,000 employing 11 people.
   
   3. InnovativeModernLiving Spaces with revenue of $160,000, expenses of $20,000 and profit of $140,000 employing 10 people.  
-  
 </portfolio_example>
 
-
-Here is an example of a formatted email.
+Here is an example of n email formatted. Double check that the FOMC report is a summary of the knowledge base responses.
 
 <email_format>
 
@@ -333,7 +331,7 @@ Company Portfolio:
   3. InnovativeModernLiving Spaces with revenue of $160,000, expenses of $20,000 and profit of $140,000 employing 10 people.  
 
 
-Searched Results Report:
+FOMC Report:
 
   Participants noted that recent indicators pointed to modest growth in spending and production. Nonetheless, job gains had been robust in recent months, and the unemployment rate remained low. Inflation had eased somewhat but remained elevated.
    
