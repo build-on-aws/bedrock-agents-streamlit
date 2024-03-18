@@ -32,14 +32,11 @@ end_session_button = st.button("End Session")
 # Sidebar for user input
 st.sidebar.title("Trace Data")
 
-
 def filter_trace_data(trace_data, query):
     if query:
         # Filter lines that contain the query
         return "\n".join([line for line in trace_data.split('\n') if query.lower() in line.lower()])
     return trace_data
-    
-    
 
 # Session State Management
 if 'history' not in st.session_state:
@@ -59,12 +56,10 @@ def format_response(response_body):
         # If response is not JSON, return as is
         return response_body
 
-
-
 # Handling user input and responses
 if submit_button and prompt:
     event = {
-        "sessionId": "MYSESSION",
+        "sessionId": "MYSESSION114",
         "question": prompt
     }
     response = agenthelper.lambda_handler(event, None)
@@ -89,55 +84,52 @@ if submit_button and prompt:
         the_response = "Apologies, but an error occurred. Please rerun the application" 
 
     # Use trace_data and formatted_response as needed
-    st.sidebar.text_area("Trace Data", value=all_data, height=300)
+    st.sidebar.text_area("", value=all_data, height=300)
     st.session_state['history'].append({"question": prompt, "answer": the_response})
     st.session_state['trace_data'] = the_response
-
-    
-    
 
 if end_session_button:
     st.session_state['history'].append({"question": "Session Ended", "answer": "Thank you for using AnyCompany Support Agent!"})
     event = {
-        "sessionId": "MYSESSION",
+        "sessionId": "MYSESSION114",
         "question": "placeholder to end session",
         "endSession": True
     }
     agenthelper.lambda_handler(event, None)
     st.session_state['history'].clear()
 
-
 # Display conversation history
 st.write("## Conversation History")
 
-for chat in reversed(st.session_state['history']):
-    
+# Load images outside the loop to optimize performance
+human_image = Image.open('images/human_face.png')
+robot_image = Image.open('images/robot_face.jpg')
+circular_human_image = crop_to_circle(human_image)
+circular_robot_image = crop_to_circle(robot_image)
+
+for index, chat in enumerate(reversed(st.session_state['history'])):
     # Creating columns for Question
     col1_q, col2_q = st.columns([2, 10])
     with col1_q:
-        human_image = Image.open('images/human_face.png')
-        circular_human_image = crop_to_circle(human_image)
         st.image(circular_human_image, width=125)
     with col2_q:
-        st.text_area("Q:", value=chat["question"], height=50, key=str(chat)+"q", disabled=True)
+        # Generate a unique key for each question text area
+        st.text_area("Q:", value=chat["question"], height=50, key=f"question_{index}", disabled=True)
 
     # Creating columns for Answer
     col1_a, col2_a = st.columns([2, 10])
     if isinstance(chat["answer"], pd.DataFrame):
         with col1_a:
-            robot_image = Image.open('images/robot_face.jpg')
-            circular_robot_image = crop_to_circle(robot_image)
             st.image(circular_robot_image, width=100)
         with col2_a:
-            st.dataframe(chat["answer"])
+            # Generate a unique key for each answer dataframe
+            st.dataframe(chat["answer"], key=f"answer_df_{index}")
     else:
         with col1_a:
-            robot_image = Image.open('images/robot_face.jpg')
-            circular_robot_image = crop_to_circle(robot_image)
             st.image(circular_robot_image, width=150)
         with col2_a:
-            st.text_area("A:", value=chat["answer"], height=100, key=str(chat)+"a")
-
+            # Generate a unique key for each answer text area
+            st.text_area("A:", value=chat["answer"], height=100, key=f"answer_{index}")
 
 # Example Prompts Section
 st.write("## Test Knowledge Base Prompts")
@@ -145,7 +137,7 @@ st.write("## Test Knowledge Base Prompts")
 # Creating a list of prompts for the Knowledge Base section
 knowledge_base_prompts = [
     {"Prompt": "Give me a summary of financial market developments and open market operations in January 2023"},
-    {"Prompt": "Tell me the participants view on economic conditions"},
+    {"Prompt": "Tell me the participants view on economic conditions and economic outlook"},
     {"Prompt": "Provide any important information I should know about consumer inflation, or rising prices"},
     {"Prompt": "Tell me about the Staff Review of the Economic & financial Situation"}
 ]
