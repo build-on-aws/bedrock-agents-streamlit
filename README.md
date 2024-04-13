@@ -59,24 +59,6 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 ![bucket domain data](Streamlit_App/images/bucket_domain_data.png)
 
 
-- **Artifacts Bucket**: Create another S3 bucket to store artifacts. For example, call it `artifacts-bedrock-agent-creator-{alias}`. Then, download the API schema file from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionSchema.json) by running the following `curl` command in the terminal or command prompt:
-
-
-* For **Mac**
-    ```linux
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/ActionSchema.json --output ~/Documents/ActionSchema.json
-    ```
-
-* For **Windows**
-    ```windows
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/ActionSchema.json --output %USERPROFILE%\Documents\ActionSchema.json
-    ```
-
-- You can also download this .json file from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionSchema.json). Upload this file from the **Documents** folder to S3 bucket `artifacts-bedrock-agent-creator-{alias}`. The provided API schema is an OpenAPI specification for the "PortfolioCreator API," which outlines the structure and capabilities of a service designed for company portfolio creation, company financial research, and sending an email. This API Schema is a rich description of each action, so agents know when to use it, and how to call it and use results. This schema defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses. Once uploaded, please select and open the .json document to review the content.
-
-
-![Loaded Artifact](Streamlit_App/images/loaded_artifact.png)
- 
 
 ### Step 2: Knowledge Base Setup in Bedrock Agent
 
@@ -254,27 +236,239 @@ def lambda_handler(event, context):
 
 
 ### Step 4: Setup Bedrock Agent and Action Group 
-- Navigate to the Bedrock console, go to the toggle on the left, and under **Orchestration** select Agents, then select **Create Agent**.
 
-![Orchestration2](Streamlit_App/images/orchestration2.png)
+- Navigate to the Bedrock console. Go to the toggle on the left, and under ***Orchestration*** select `Agents`. Provide an agent name, like ***PortfolioCreator*** then create the agent.
 
-- On the next screen, provide an agent name, like “PortfolioCreator”. Leave the other options as default, then select **Next**.
+- The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude Instant V1**. Next, provide the following instruction for the agent:
 
-![Agent details](Streamlit_App/images/agent_details.png)
-
-![Agent details 2](Streamlit_App/images/agent_details_2.png)
-
-- Select the **Anthropic: Claude V1.2 model**. Now, we need to add instructions by creating a prompt that defines the rules of operation for the agent. In the prompt below, we provide specific direction on how the model should use tools to answer questions. Copy, then paste the details below into the agent instructions. 
-
-```text
+```instruction
 You are an investment analyst who creates portfolios of companies based on the number of companies, and industry in the {question}. An example of a portfolio looks like this template {portfolio_example}. You also research companies, and summarize documents. When requested, you format emails like this template {email_format}, then use the provided tools to send an email that has the company portfolio created, and summary of the FOMC report searched. 
 ```
 
-![Model select2](Streamlit_App/images/select_model.png)
+- Next, we will add an action group. Scroll down to `Action groups` then select ***Add***.
 
-- When creating the agent, select Lambda function `PortfolioCreator-actions`. Next, select the schema file `ActionSchema.json` from the s3 bucket `artifacts-bedrock-agent-creator-alias`. Then, select **Next**. 
+- Call the action group `PortfolioCreator-actions`. For the Lambda function, we select `PortfolioCreator-actions`.
 
-![Add action group](Streamlit_App/images/action_group_add.png)
+- For the API Schema, we will choose `Define with in-line OpenAPI schema editor`. Copy & paste the schema from below into the **In-line OpenAPI schema** editor, then select ***Add***:
+
+`(This API schema is needed so that the bedrock agent knows the format structure and parameters required for the action group to interact with the Lambda function.)`
+
+```schema
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "PortfolioCreatorAssistant API",
+    "description": "API for creating a company portfolio, search company data, and send summarized emails",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/companyResearch": {
+      "post": {
+        "description": "Get financial data for a company by name",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name of the company to research",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with company data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/createPortfolio": {
+      "post": {
+        "description": "Create a company portfolio of top profit earners by specifying number of companies and industry",
+        "parameters": [
+          {
+            "name": "numCompanies",
+            "in": "query",
+            "description": "Number of companies to include in the portfolio",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "industry",
+            "in": "query",
+            "description": "Industry sector for the portfolio companies",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with generated portfolio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendEmail": {
+      "post": {
+        "description": "Send an email with FOMC search summary and created portfolio",
+        "parameters": [
+          {
+            "name": "emailAddress",
+            "in": "query",
+            "description": "Recipient's email address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "name": "fomcSummary",
+            "in": "query",
+            "description": "Summary of FOMC search results",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "portfolio",
+            "in": "query",
+            "description": "Details of the created stock portfolio",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Portfolio"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email sent successfully",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "description": "Confirmation message"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CompanyData": {
+        "type": "object",
+        "description": "Financial data for a single company",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Company name"
+          },
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol"
+          },
+          "revenue": {
+            "type": "number",
+            "description": "Annual revenue"
+          },
+          "profit": {
+            "type": "number",
+            "description": "Annual profit"
+          }
+        }
+      },
+      "Portfolio": {
+        "type": "object",
+        "description": "Stock portfolio with specified number of companies",
+        "properties": {
+          "companies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyData"
+            },
+            "description": "List of companies in the portfolio"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+- This API schema defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses.
+
+
+- In the `Advanced prompts` box under `Pre-processing template`, enable the `Override pre-processing template defaults` option. Also, make sure that `Activate pre-processing template` is disabled. This is so that we will bypass the possibility of deny responses. We are choosing this option for simplicity. Ideally, you would modify these prompts to allow only what is required. 
+
+- In the ***Prompt template editor***, scroll down to line seven right below the closing tag `</auxiliary_instructions>`. Make two line spaces, then copy/paste in the following portfolio example and email format:
+
+```sql
+Here is an example of a company portfolio.  
+
+<portfolio_example>
+
+Here is a portfolio of the top 3 real estate companies:
+
+  1. NextGenPast Residences with revenue of $180,000, expenses of $22,000 and profit of $158,000 employing 260 people. 
+  
+  2. GlobalRegional Properties Alliance with revenue of $170,000, expenses of $21,000 and profit of $149,000 employing 11 people.
+  
+  3. InnovativeModernLiving Spaces with revenue of $160,000, expenses of $20,000 and profit of $140,000 employing 10 people.
+
+</portfolio_example>
+
+Here is an example of a formatted email. Double check that the FOMC report is a summary of the knowledge base responses.
+
+<email_format>
+
+Company Portfolio:
+
+  1. NextGenPast Residences with revenue of $180,000, expenses of $22,000 and profit of $158,000 employing 260 people. 
+  
+  2. GlobalRegional Properties Alliance with revenue of $170,000, expenses of $21,000 and profit of $149,000 employing 11 people.
+  
+  3. InnovativeModernLiving Spaces with revenue of $160,000, expenses of $20,000 and profit of $140,000 employing 10 people.  
+
+
+FOMC Report:
+
+  Participants noted that recent indicators pointed to modest growth in spending and production. Nonetheless, job gains had been robust in recent months, and the unemployment rate remained low. Inflation had eased somewhat but remained elevated.
+   
+  Participants recognized that Russia’s war against Ukraine was causing tremendous human and economic hardship and was contributing to elevated global uncertainty. Against this background, participants continued to be highly attentive to inflation risks.
+</email_format>
+```
+
+
+- The results should look similar to the following:
+![advance_prompt_setup](Streamlit_App/images/advance_prompt_setup.gif)
+
+- This prompt helps provide the agent an example when formatting the response of a presigned url after an image is generated in the S3 bucket. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting. 
+
+- Scroll to the bottom and select the `Save and exit` button.
 
 
 ### Step 5: Setup Knowledge Base with Bedrock Agent
