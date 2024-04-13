@@ -540,7 +540,7 @@ FOMC Report:
 
 
 ### Step 6: Create an alias
-- Create an alias (new version), and choose a name of your liking. Make sure to copy and save your Agent ID and Agent Alias ID. You will need these in step 8.
+- Create an alias (new version), and choose a name of your liking. After it's done, make sure to copy your **Alias ID** and **Agent ID**. You will need this in module 6.
  
 ![Create alias](Streamlit_App/images/create_alias.png)
 
