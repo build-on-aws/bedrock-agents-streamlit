@@ -473,25 +473,19 @@ FOMC Report:
 
 ### Step 5: Setup Knowledge Base with Bedrock Agent
 
-- When integrating the KB with the agent, you will need to provide basic instructions on how to handle the knowledge base. For example, use the following:
+- While on the Bedrock agent console, scroll down to ***Knowledge base*** and select Add. When integrating the KB with the agent, you will need to provide basic instructions on how to handle the knowledge base. For example, use the following:
   ```text
   Use this knowledge base when a user asks about data, such as economic trends, company financial statements, or the outcomes of the Federal Open Market Committee meetings.
   ```
  
 ![Knowledge base add2](Streamlit_App/images/add_knowledge_base2.png)
 
-Review, then select the **Create Agent** button.
+Review your input, then select ***Add***.
 
-![create_agent_button](Streamlit_App/images/create_agent_button.png)
 
-- Now, we need to provide the Bedrock agent an example of a formatted company portfolio, and a formatted email. On the Agent Overview screen, scroll down and select **Working draft**.
-
-![Working draft](Streamlit_App/images/working_draft.png)
-
-- Go down to **Advanced prompts** and select **Edit**.
+- Now, we need to provide the Bedrock agent an example of a formatted company portfolio, and a formatted email. Scroll down to **Advanced prompts** and select **Edit**.
 
 ![advance_prompt_btn](Streamlit_App/images/advance_prompt_btn.png)
-
 
 
 - Select the **Orchestration** tab. Toggle on the radio button  **Override orchestration template defaults**. Make sure  **Activate orchestration template** is enabled as well.
@@ -540,20 +534,16 @@ FOMC Report:
 
 - When your done, scroll to the bottom and select **Save and exit**.
 
-
-- Now, within your *working draft*, check to confirm that the *Orchestration* in the **Advance prompt** section is Overridden
+- Now, check to confirm that the ***Orchestration*** in the ***Advance prompt*** section is Overridden.
 
 ![advance_prompt_overridden](Streamlit_App/images/adv_prompt_overridden.png)
 
 
 ### Step 6: Create an alias
--Create an alias (new version), and choose a name of your liking. Make sure to copy and save your Agent ID and Agent Alias ID. You will need these in step 9.
+-Create an alias (new version), and choose a name of your liking. Make sure to copy and save your Agent ID and Agent Alias ID. You will need these in step 8.
  
 ![Create alias](Streamlit_App/images/create_alias.png)
 
-- Next, navigate to the **Agent Overview** settings for the agent created by selecting **Agents** under the Orchestration dropdown menu on the left of the screen, then select the agent. Copy the Agent ARN, then add this ARN to the resource policy of Lambda function `PortfolioCreator-actions` previously created in step 3. 
-
-![Agent ARN2](Streamlit_App/images/agent_arn2.png)
 
 
 ## Step 7: Testing the Setup
