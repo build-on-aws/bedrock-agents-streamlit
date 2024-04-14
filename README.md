@@ -468,11 +468,16 @@ FOMC Report:
 
 
 - The results should look similar to the following:
+  
 ![advance_prompt_setup](Streamlit_App/images/advance_prompt_setup.gif)
 
 - This prompt helps provide the agent an example when formatting the response for an investment company portfolio, and email. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting. 
 
-- Scroll to the bottom and select the `Save and exit` button.
+- Scroll to the bottom and select the ***Save and exit*** button.
+
+- Now, check to confirm that the ***Orchestration*** in the ***Advance prompt*** section is Overridden.
+
+![advance_prompt_overridden](Streamlit_App/images/adv_prompt_overridden.png)
 
 
 ### Step 5: Setup Knowledge Base with Bedrock Agent
@@ -488,61 +493,6 @@ FOMC Report:
 
 Review your input, then select ***Add***.
 
-
-- Now, we need to provide the Bedrock agent an example of a formatted company portfolio, and a formatted email. Scroll down to **Advanced prompts** and select **Edit**.
-
-![advance_prompt_btn](Streamlit_App/images/advance_prompt_btn.png)
-
-
-- Select the **Orchestration** tab. Toggle on the radio button  **Override orchestration template defaults**. Make sure  **Activate orchestration template** is enabled as well.
-
-- In the *Prompt template editor*, scroll down to line seven right below the closing tag `</auxiliary_instructions>`. Make two line spaces, then copy/paste in the following portfolio example and email format:
-
-```sql
-Here is an example of a company portfolio.  
-
-<portfolio_example>
-
-Here is a portfolio of the top 3 real estate companies:
-
-  1. NextGenPast Residences with revenue of $180,000, expenses of $22,000 and profit of $158,000 employing 260 people. 
-  
-  2. GlobalRegional Properties Alliance with revenue of $170,000, expenses of $21,000 and profit of $149,000 employing 11 people.
-  
-  3. InnovativeModernLiving Spaces with revenue of $160,000, expenses of $20,000 and profit of $140,000 employing 10 people.
-
-</portfolio_example>
-
-Here is an example of a formatted email. Double check that the FOMC report is a summary of the knowledge base responses.
-
-<email_format>
-
-Company Portfolio:
-
-  1. NextGenPast Residences with revenue of $180,000, expenses of $22,000 and profit of $158,000 employing 260 people. 
-  
-  2. GlobalRegional Properties Alliance with revenue of $170,000, expenses of $21,000 and profit of $149,000 employing 11 people.
-  
-  3. InnovativeModernLiving Spaces with revenue of $160,000, expenses of $20,000 and profit of $140,000 employing 10 people.  
-
-
-FOMC Report:
-
-  Participants noted that recent indicators pointed to modest growth in spending and production. Nonetheless, job gains had been robust in recent months, and the unemployment rate remained low. Inflation had eased somewhat but remained elevated.
-   
-  Participants recognized that Russia’s war against Ukraine was causing tremendous human and economic hardship and was contributing to elevated global uncertainty. Against this background, participants continued to be highly attentive to inflation risks.
-</email_format>
-```
-
-- The results should look similar to the following:
-
-![advance_prompt_setup](Streamlit_App/images/advance_prompt_setup.gif)
-
-- When your done, scroll to the bottom and select **Save and exit**.
-
-- Now, check to confirm that the ***Orchestration*** in the ***Advance prompt*** section is Overridden.
-
-![advance_prompt_overridden](Streamlit_App/images/adv_prompt_overridden.png)
 
 
 ### Step 6: Create an alias
