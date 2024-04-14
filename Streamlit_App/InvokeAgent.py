@@ -10,7 +10,6 @@ import io
 import sys
 
 #For this to run on a local machine in VScode, you need to set the AWS_PROFILE environment variable to the name of the profile/credentials you want to use. 
-#You also need to input your model ID near the bottom of this file.
 
 #check for credentials
 #echo $AWS_ACCESS_KEY_ID
@@ -19,6 +18,7 @@ import sys
 
 agentId = "xx" #INPUT YOUR AGENT ID HERE
 agentAliasId = "xx" # Hits draft alias, set to a specific alias id for a deployed version
+
 theRegion = "us-west-2"
 os.environ["AWS_REGION"] = theRegion
 region = os.environ.get("AWS_REGION")
