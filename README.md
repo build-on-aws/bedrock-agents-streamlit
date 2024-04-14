@@ -478,9 +478,11 @@ FOMC Report:
 ### Step 5: Setup Knowledge Base with Bedrock Agent
 
 - While on the Bedrock agent console, scroll down to ***Knowledge base*** and select Add. When integrating the KB with the agent, you will need to provide basic instructions on how to handle the knowledge base. For example, use the following:
+  
   ```text
   Use this knowledge base when a user asks about data, such as economic trends, company financial statements, or the outcomes of the Federal Open Market Committee meetings.
   ```
+  
  
 ![Knowledge base add2](Streamlit_App/images/add_knowledge_base2.png)
 
