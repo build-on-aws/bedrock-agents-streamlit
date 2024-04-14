@@ -421,8 +421,12 @@ You are an investment analyst who creates portfolios of companies based on the n
 
 - This API schema defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses.
 
+- Now, we need to provide the Bedrock agent an example of a formatted company portfolio, and a formatted email. Scroll down to **Advanced prompts** and select **Edit**.
 
-- In the `Advanced prompts` box under `Pre-processing template`, enable the `Override pre-processing template defaults` option. Also, make sure that `Activate pre-processing template` is disabled. This is so that we will bypass the possibility of deny responses. We are choosing this option for simplicity. Ideally, you would modify these prompts to allow only what is required. 
+![advance_prompt_btn](Streamlit_App/images/advance_prompt_btn.png)
+
+
+- Select the **Orchestration** tab. Toggle on the radio button  **Override orchestration template defaults**. Make sure  **Activate orchestration template** is enabled as well.
 
 - In the ***Prompt template editor***, scroll down to line seven right below the closing tag `</auxiliary_instructions>`. Make two line spaces, then copy/paste in the following portfolio example and email format:
 
