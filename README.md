@@ -421,8 +421,8 @@ You are an investment analyst who creates portfolios of companies based on the n
 
 - This API schema defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses.
 
-- Now, we need to provide the Bedrock agent an example of a formatted company portfolio, and a formatted email. Scroll down to **Advanced prompts** and select **Edit**.
-
+- Now, we need to provide the Bedrock agent a prompt that are examples of a formatted response for an investment company portfolio, and email. Scroll down to **Advanced prompts** and select **Edit**. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting.
+  
 ![advance_prompt_btn](Streamlit_App/images/advance_prompt_btn.png)
 
 
@@ -430,6 +430,8 @@ You are an investment analyst who creates portfolios of companies based on the n
 
 - In the ***Prompt template editor***, scroll down to line seven right below the closing tag `</auxiliary_instructions>`. Make two line spaces, then copy/paste in the following portfolio example and email format:
 
+
+  
 ```sql
 Here is an example of a company portfolio.  
 
@@ -471,7 +473,7 @@ FOMC Report:
   
 ![advance_prompt_setup](Streamlit_App/images/advance_prompt_setup.gif)
 
-- This prompt helps provide the agent an example when formatting the response for an investment company portfolio, and email. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting. 
+
 
 - Scroll to the bottom and select the ***Save and exit*** button.
 
