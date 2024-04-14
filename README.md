@@ -466,7 +466,7 @@ FOMC Report:
 - The results should look similar to the following:
 ![advance_prompt_setup](Streamlit_App/images/advance_prompt_setup.gif)
 
-- This prompt helps provide the agent an example when formatting the response of a presigned url after an image is generated in the S3 bucket. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting. 
+- This prompt helps provide the agent an example when formatting the response for a company search, or email. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting. 
 
 - Scroll to the bottom and select the `Save and exit` button.
 
