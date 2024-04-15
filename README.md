@@ -428,7 +428,7 @@ You are an investment analyst who creates portfolios of companies based on the n
 
 - Select the **Orchestration** tab. Toggle on the radio button  **Override orchestration template defaults**. Make sure  **Activate orchestration template** is enabled as well.
 
-- In the ***Prompt template editor***, scroll down to line seven right below the closing tag `</auxiliary_instructions>`. Make two line spaces, then copy/paste in the following portfolio example and email format:
+- In the ***Prompt template editor***, scroll down to line 19-20, below the closing tag `</tools>`. Make two line spaces, then copy/paste in the following portfolio example and email format:
 
 
   
