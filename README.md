@@ -493,7 +493,7 @@ FOMC Report:
  
 ![Knowledge base add2](Streamlit_App/images/add_knowledge_base2.png)
 
-Review your input, then select ***Add***.
+- Review your input, then select ***Add***.
 
 
 
