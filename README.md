@@ -495,9 +495,13 @@ FOMC Report:
 
 - Review your input, then select ***Add***.
 
+- Scroll to the top and select ***Prepare*** so that the changes made are updated. Then select ***Save and exit***.
 
 
 ### Step 6: Create an alias
+
+- 
+
 - Create an alias (new version), and choose a name of your liking. After it's done, make sure to copy your **Alias ID** and **Agent ID**. You will need this in step 8.
  
 ![Create alias](Streamlit_App/images/create_alias.png)
