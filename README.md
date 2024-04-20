@@ -247,9 +247,9 @@ You are an investment analyst who creates portfolios of companies based on the n
 
 - Next, we will add an action group. Scroll down to `Action groups` then select ***Add***.
 
-- Call the action group `PortfolioCreator-actions`. For the Lambda function, we select `PortfolioCreator-actions`.
+- Name the action group `PortfolioCreator-actions`. For the `Action group type`, select ***Define with API schemas***. Next, select an existing function `PortfolioCreator-actions` for the action group invocation.
 
-- For the API Schema, we will choose `Define with in-line OpenAPI schema editor`. Copy & paste the schema from below into the **In-line OpenAPI schema** editor, then select ***Add***:
+- For the `Action group schema`, we will select `Define via in-line schema editor`. Copy & paste the schema from below into the **In-line OpenAPI schema** editor in json, then select ***Add***:
 
 `(This API schema is needed so that the bedrock agent knows the format structure and parameters required for the action group to interact with the Lambda function.)`
 
