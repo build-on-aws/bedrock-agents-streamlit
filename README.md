@@ -230,9 +230,18 @@ def lambda_handler(event, context):
 
 ![Lambda resource policy create](Streamlit_App/images/lambda_resource_policy_create.png)
 
-- Here is an example of the resource policy. (At this part of the setup, we will not have a Bedrock agent Source ARN. So, enter in `arn:aws:bedrock:us-west-2:{accoundID}:agent/BedrockAgentID` for now. We will include the ARN once it’s generated in step 6 after creating the Bedrock Agent alias):
+
+- Please use the following settings to configure the resource based policy:
+
+* ***Service*** - `Other`
+* ***Statement ID*** - `allow-bedrock-service`
+* ***Principal*** - `bedrock.amazonaws.com`
+* ***Source ARN*** - `arn:aws:bedrock:us-west-2:{account-id}:agent/*` - (Please note, AWS recommends least privilage so only an allowed agent can invoke this Lambda function. A * at the end of the ARN grants any agent in the account access to invoke this Lambda. Ideally, we would not use this in a production environment.)
+* ***Action*** - `lambda:InvokeFunction`
 
 ![Lambda resource policy](Streamlit_App/images/lambda_resource_policy.png)
+
+- Once your configurations look similar to the above screenshot, select ***Save*** at the bottom.
 
 
 ### Step 4: Setup Bedrock Agent and Action Group 
@@ -278,6 +287,9 @@ Objective: Assist in investment analysis by generating company portfolios, provi
 ```
 
 - After, scroll to the top and **Save**
+
+- The instructions for the Generative AI Investment Analyst Tool outlines a comprehensive framework designed to assist in investment analysis. This tool is tasked with creating tailored portfolios of companies based on specific industry criteria, conducting thorough research on these companies, and summarizing relevant financial documents. Additionally, the tool formats and sends professional emails containing the portfolios and document summaries. The process involves continuous adaptation to user feedback and maintaining a contextual understanding of ongoing requests to ensure accurate and efficient responses.
+
 
 - Next, we will add an action group. Scroll down to `Action groups` then select ***Add***.
 
@@ -456,7 +468,7 @@ Objective: Assist in investment analysis by generating company portfolios, provi
 
 - Now, we need to provide the Bedrock agent a prompt that are examples of a formatted response for an investment company portfolio, and email. In the creation of an agent, it's initially configured with four foundational prompt templates for pre-processing, orchestration, knowledge base response generation, and post-processing (the latter being disabled by default), which guide how it interacts with the foundation model across various steps of its runtime process. These templates are crucial for processing user inputs, orchestrating the flow between the foundation model, action groups, and knowledge bases, as well as formatting the responses sent to users. By customizing these templates and incorporating advanced prompts or few-shot examples, you can significantly improve the agent's precision and performance in handling specific tasks. More information on advanced prompting for an agent can be found [here](https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html).
 
-- Scroll down to **Advanced prompts** and select **Edit**. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting.
+- Select ***Edit in Agent Builder*** from the top. Then, scroll down to **Advanced prompts** and select **Edit**. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting.
   
 ![advance_prompt_btn](Streamlit_App/images/advance_prompt_btn.png)
 
