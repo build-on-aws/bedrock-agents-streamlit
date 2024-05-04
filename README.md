@@ -477,7 +477,7 @@ Objective: Assist in investment analysis by generating company portfolios, provi
 
 - In the ***Prompt template editor***, scroll down to line 22-23, then copy/paste in the following portfolio example and email format:
 
-![advance_prompt_setup](Streamlit_App/images/advance_prompt_setup.png)
+![advance_prompt_setup](Streamlit_App/images/advance_prompt_setup.gif)
   
 ```sql
 Here is an example of a company portfolio.  
