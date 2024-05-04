@@ -476,8 +476,6 @@ Objective: Assist in investment analysis by generating company portfolios, provi
 - Select the **Orchestration** tab. Toggle on the radio button  **Override orchestration template defaults**. Make sure  **Activate orchestration template** is enabled as well.
 
 - In the ***Prompt template editor***, scroll down to line 22-23, then copy/paste in the following portfolio example and email format:
-
-![advance_prompt_setup](Streamlit_App/images/advance_prompt_setup.gif)
   
 ```sql
 Here is an example of a company portfolio.  
@@ -514,7 +512,6 @@ FOMC Report:
   Participants recognized that Russia’s war against Ukraine was causing tremendous human and economic hardship and was contributing to elevated global uncertainty. Against this background, participants continued to be highly attentive to inflation risks.
 </email_format>
 ```
-
 
 - The results should look similar to the following:
   
