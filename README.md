@@ -15,7 +15,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 ## Configuration and Setup
 
 ### Step 1: Creating S3 Buckets
-- Please make sure that you are in the **us-west-2** region. If another region is required, you will need to update the region in the `InvokeAgent.py` file on line 22 of the code. 
+- Please make sure that you are in the **us-west-2** region. If another region is required, you will need to update the region in the `InvokeAgent.py` file on line 24 of the code. 
 - **Domain Data Bucket**: Create an S3 bucket to store the domain data. For example, call the S3 bucket `knowledgebase-bedrock-agent-alias`. We will use the default settings. 
 
 ![Bucket create 1](Streamlit_App/images/bucket_pic_1.png)
@@ -66,7 +66,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![Model access](Streamlit_App/images/model_access.png)
 
-- Select the checkbox for the base model columns **Amazon: Titan Embeddings G1 - Text** and **Anthropic: Claude Instant**. This will provide you access to the required models. After, scroll down to the bottom right and select **Request model access**.
+- Select the checkbox for the base model columns **Amazon: Titan Embeddings G1 - Text** and **Anthropic: Claude 3 Haiku**. This will provide you access to the required models. After, scroll down to the bottom right and select **Request model access**.
 
 
 - After, verify that the Access status of the Models are green with **Access granted**.
@@ -237,21 +237,54 @@ def lambda_handler(event, context):
 
 ### Step 4: Setup Bedrock Agent and Action Group 
 
-- Navigate to the Bedrock console. Go to the toggle on the left, and under ***Orchestration*** select `Agents`. Provide an agent name, like ***PortfolioCreator*** then create the agent.
+- Navigate to the Bedrock console. Go to the toggle on the left, and under ***Orchestration*** select ***Agents***. Provide an agent name, like ***PortfolioCreator*** then create the agent.
 
-- The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude Instant V1**. Next, provide the following instruction for the agent:
+- The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude Instant 3 Haiku**. Next, provide the following instruction for the agent:
 
 ```instruction
-You are an investment analyst who creates portfolios of companies based on the number of companies, and industry in the {question}. An example of a portfolio looks like this template {portfolio_example}. You also research companies, and summarize documents. When requested, you format emails like this template {email_format}, then use the provided tools to send an email that has the company portfolio created, and summary of the FOMC report searched. 
+Instructions for the Generative AI Investment Analyst Tool
+
+Role: You are an investment analyst responsible for creating portfolios, researching companies, summarizing documents, and formatting emails.
+
+Objective: Assist in investment analysis by generating company portfolios, providing research summaries, and facilitating communication through formatted emails.
+
+1. Portfolio Creation:
+
+    Understand the Query: Analyze the user's question to extract key information such as the desired number of companies and industry.
+    Generate Portfolio: Based on the criteria from the question, create a portfolio of companies. Use the template provided to format the portfolio.
+
+2. Company Research and Document Summarization:
+
+    Research Companies: For each company in the portfolio, conduct detailed research to gather relevant financial and operational data.
+    Summarize Documents: When a document, like the FOMC report, is mentioned, retrieve the document and provide a concise summary.
+
+3. Email Communication:
+
+    Format Email: Using the email template provided, format an email that includes the newly created company portfolio and any summaries of important documents.
+    Send Email: Utilize the provided tools to send the email to the designated recipient, ensuring that all information is well-organized and presented professionally.
+
+4. Continuous Interaction and Adjustment:
+
+    Feedback Incorporation: Adjust portfolios and summaries based on feedback from users or additional information that may become relevant.
+    Session Context Maintenance: Keep track of ongoing requests and information to provide coherent and context-aware responses.
+
+ Example Workflow:
+
+    User Request: Create a portfolio of 10 tech companies and summarize the latest FOMC report.
+    Procedure:
+        Create Portfolio: Generate a portfolio of 10 tech companies using the specified template.
+        Research and Summarize: Research these companies for recent developments and summarize the latest FOMC report.
+        Format and Send Email: Compile the portfolio and the FOMC summary into an email formatted according to the provided template, then send it to the user.   
 ```
+
+- After, scroll to the top and **Save**
 
 - Next, we will add an action group. Scroll down to `Action groups` then select ***Add***.
 
-- Name the action group `PortfolioCreator-actions`. For the `Action group type`, select ***Define with API schemas***. Next, select an existing function `PortfolioCreator-actions` for the action group invocation.
+- Call the action group `PortfolioCreator-actions`. We will keep `Action group type` set to ***Define with API schemas***. `Action group invocations` should be set to ***select an existing Lambda function***. For the Lambda function, select `PortfolioCreator-actions`.
 
-- For the `Action group schema`, we will select `Define via in-line schema editor`. Copy & paste the schema from below into the **In-line OpenAPI schema** editor in json, then select ***Add***:
-
-`(This API schema is needed so that the bedrock agent knows the format structure and parameters required for the action group to interact with the Lambda function.)`
+- For the `Action group Schema`, we will choose ***Define with in-line OpenAPI schema editor***. Replace the default schema in the **In-line OpenAPI schema** editor with the schema provided below. You can also retrieve the schema from the repo [here](https://github.com/build-on-aws/bedrock-agent-txt2sql/blob/main/schema/athena-schema.json). After, select ***Add***.
+`(This API schema is needed so that the bedrock agent knows the format structure and parameters needed for the action group to interact with the Lambda function.)`
 
 ```schema
 {
@@ -430,7 +463,7 @@ You are an investment analyst who creates portfolios of companies based on the n
 
 - Select the **Orchestration** tab. Toggle on the radio button  **Override orchestration template defaults**. Make sure  **Activate orchestration template** is enabled as well.
 
-- In the ***Prompt template editor***, scroll down to line seven right below the closing tag `</auxiliary_instructions>`. Make two line spaces, then copy/paste in the following portfolio example and email format:
+- In the ***Prompt template editor***, scroll down to line 22-23, then copy/paste in the following portfolio example and email format:
 
 
   
