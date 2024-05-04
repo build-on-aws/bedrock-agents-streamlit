@@ -556,7 +556,7 @@ FOMC Report:
 
 ![KB sync](Streamlit_App/images/kb_sync.png)
 
-- You will see a user interface on the right where you will need to select a model. Choose the **Anthropic Claude V1.2 model**, then select **Apply**.
+- You will see a user interface on the right where you will need to select a model. Choose the **Anthropic Claude 3 Haiku model**, then select **Apply**.
 
 ![Select model test](Streamlit_App/images/select_model_test.png)
 
