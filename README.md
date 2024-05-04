@@ -15,7 +15,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 ## Configuration and Setup
 
 ### Step 1: Creating S3 Buckets
-- Please make sure that you are in the **us-west-2** region. If another region is required, you will need to update the region in the `InvokeAgent.py` file on line 22 of the code. 
+- Please make sure that you are in the **us-west-2** region. If another region is required, you will need to update the region in the `InvokeAgent.py` file on line 24 of the code. 
 - **Domain Data Bucket**: Create an S3 bucket to store the domain data. For example, call the S3 bucket `knowledgebase-bedrock-agent-alias`. We will use the default settings. 
 
 ![Bucket create 1](Streamlit_App/images/bucket_pic_1.png)
@@ -66,7 +66,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![Model access](Streamlit_App/images/model_access.png)
 
-- Select the checkbox for the base model columns **Amazon: Titan Embeddings G1 - Text** and **Anthropic: Claude Instant**. This will provide you access to the required models. After, scroll down to the bottom right and select **Request model access**.
+- Select the checkbox for the base model columns **Amazon: Titan Embeddings G1 - Text** and **Anthropic: Claude 3 Haiku**. This will provide you access to the required models. After, scroll down to the bottom right and select **Request model access**.
 
 
 - After, verify that the Access status of the Models are green with **Access granted**.
@@ -230,28 +230,73 @@ def lambda_handler(event, context):
 
 ![Lambda resource policy create](Streamlit_App/images/lambda_resource_policy_create.png)
 
-- Here is an example of the resource policy. (At this part of the setup, we will not have a Bedrock agent Source ARN. So, enter in `arn:aws:bedrock:us-west-2:{accoundID}:agent/BedrockAgentID` for now. We will include the ARN once it’s generated in step 6 after creating the Bedrock Agent alias):
+
+- Please use the following settings to configure the resource based policy:
+
+* ***Service*** - `Other`
+* ***Statement ID*** - `allow-bedrock-agent`
+* ***Principal*** - `bedrock.amazonaws.com`
+* ***Source ARN*** - `arn:aws:bedrock:us-west-2:{account-id}:agent/*` - (Please note, AWS recommends least privilage so only an allowed agent can invoke this Lambda function. A * at the end of the ARN grants any agent in the account access to invoke this Lambda. Ideally, we would not use this in a production environment.)
+* ***Action*** - `lambda:InvokeFunction`
 
 ![Lambda resource policy](Streamlit_App/images/lambda_resource_policy.png)
+
+- Once your configurations look similar to the above screenshot, select ***Save*** at the bottom.
 
 
 ### Step 4: Setup Bedrock Agent and Action Group 
 
-- Navigate to the Bedrock console. Go to the toggle on the left, and under ***Orchestration*** select `Agents`. Provide an agent name, like ***PortfolioCreator*** then create the agent.
+- Navigate to the Bedrock console. Go to the toggle on the left, and under ***Orchestration*** select ***Agents***. Provide an agent name, like ***PortfolioCreator*** then create the agent.
 
-- The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude Instant V1**. Next, provide the following instruction for the agent:
+- The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude Instant 3 Haiku**. Next, provide the following instruction for the agent:
 
 ```instruction
-You are an investment analyst who creates portfolios of companies based on the number of companies, and industry in the {question}. An example of a portfolio looks like this template {portfolio_example}. You also research companies, and summarize documents. When requested, you format emails like this template {email_format}, then use the provided tools to send an email that has the company portfolio created, and summary of the FOMC report searched. 
+Instructions for the Generative AI Investment Analyst Tool
+
+Role: You are an investment analyst responsible for creating portfolios, researching companies, summarizing documents, and formatting emails.
+
+Objective: Assist in investment analysis by generating company portfolios, providing research summaries, and facilitating communication through formatted emails.
+
+1. Portfolio Creation:
+
+    Understand the Query: Analyze the user's question to extract key information such as the desired number of companies and industry.
+    Generate Portfolio: Based on the criteria from the question, create a portfolio of companies. Use the template provided to format the portfolio.
+
+2. Company Research and Document Summarization:
+
+    Research Companies: For each company in the portfolio, conduct detailed research to gather relevant financial and operational data.
+    Summarize Documents: When a document, like the FOMC report, is mentioned, retrieve the document and provide a concise summary.
+
+3. Email Communication:
+
+    Format Email: Using the email template provided, format an email that includes the newly created company portfolio and any summaries of important documents.
+    Send Email: Utilize the provided tools to send the email to the designated recipient, ensuring that all information is well-organized and presented professionally.
+
+4. Continuous Interaction and Adjustment:
+
+    Feedback Incorporation: Adjust portfolios and summaries based on feedback from users or additional information that may become relevant.
+    Session Context Maintenance: Keep track of ongoing requests and information to provide coherent and context-aware responses.
+
+ Example Workflow:
+
+    User Request: Create a portfolio of 10 tech companies and summarize the latest FOMC report.
+    Procedure:
+        Create Portfolio: Generate a portfolio of 10 tech companies using the specified template.
+        Research and Summarize: Research these companies for recent developments and summarize the latest FOMC report.
+        Format and Send Email: Compile the portfolio and the FOMC summary into an email formatted according to the provided template, then send it to the user.   
 ```
+
+- After, scroll to the top and **Save**
+
+- The instructions for the Generative AI Investment Analyst Tool outlines a comprehensive framework designed to assist in investment analysis. This tool is tasked with creating tailored portfolios of companies based on specific industry criteria, conducting thorough research on these companies, and summarizing relevant financial documents. Additionally, the tool formats and sends professional emails containing the portfolios and document summaries. The process involves continuous adaptation to user feedback and maintaining a contextual understanding of ongoing requests to ensure accurate and efficient responses.
+
 
 - Next, we will add an action group. Scroll down to `Action groups` then select ***Add***.
 
-- Name the action group `PortfolioCreator-actions`. For the `Action group type`, select ***Define with API schemas***. Next, select an existing function `PortfolioCreator-actions` for the action group invocation.
+- Call the action group `PortfolioCreator-actions`. We will keep `Action group type` set to ***Define with API schemas***. `Action group invocations` should be set to ***select an existing Lambda function***. For the Lambda function, select `PortfolioCreator-actions`.
 
-- For the `Action group schema`, we will select `Define via in-line schema editor`. Copy & paste the schema from below into the **In-line OpenAPI schema** editor in json, then select ***Add***:
-
-`(This API schema is needed so that the bedrock agent knows the format structure and parameters required for the action group to interact with the Lambda function.)`
+- For the `Action group Schema`, we will choose ***Define with in-line OpenAPI schema editor***. Replace the default schema in the **In-line OpenAPI schema** editor with the schema provided below. You can also retrieve the schema from the repo [here](https://github.com/build-on-aws/bedrock-agent-txt2sql/blob/main/schema/athena-schema.json). After, select ***Add***.
+`(This API schema is needed so that the bedrock agent knows the format structure and parameters needed for the action group to interact with the Lambda function.)`
 
 ```schema
 {
@@ -423,16 +468,14 @@ You are an investment analyst who creates portfolios of companies based on the n
 
 - Now, we need to provide the Bedrock agent a prompt that are examples of a formatted response for an investment company portfolio, and email. In the creation of an agent, it's initially configured with four foundational prompt templates for pre-processing, orchestration, knowledge base response generation, and post-processing (the latter being disabled by default), which guide how it interacts with the foundation model across various steps of its runtime process. These templates are crucial for processing user inputs, orchestrating the flow between the foundation model, action groups, and knowledge bases, as well as formatting the responses sent to users. By customizing these templates and incorporating advanced prompts or few-shot examples, you can significantly improve the agent's precision and performance in handling specific tasks. More information on advanced prompting for an agent can be found [here](https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html).
 
-- Scroll down to **Advanced prompts** and select **Edit**. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting.
+- Select ***Edit in Agent Builder*** from the top. Then, scroll down to **Advanced prompts** and select **Edit**. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting.
   
 ![advance_prompt_btn](Streamlit_App/images/advance_prompt_btn.png)
 
 
 - Select the **Orchestration** tab. Toggle on the radio button  **Override orchestration template defaults**. Make sure  **Activate orchestration template** is enabled as well.
 
-- In the ***Prompt template editor***, scroll down to line seven right below the closing tag `</auxiliary_instructions>`. Make two line spaces, then copy/paste in the following portfolio example and email format:
-
-
+- In the ***Prompt template editor***, scroll down to line 22-23, then copy/paste in the following portfolio example and email format:
   
 ```sql
 Here is an example of a company portfolio.  
@@ -469,7 +512,6 @@ FOMC Report:
   Participants recognized that Russia’s war against Ukraine was causing tremendous human and economic hardship and was contributing to elevated global uncertainty. Against this background, participants continued to be highly attentive to inflation risks.
 </email_format>
 ```
-
 
 - The results should look similar to the following:
   
