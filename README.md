@@ -234,7 +234,7 @@ def lambda_handler(event, context):
 - Please use the following settings to configure the resource based policy:
 
 * ***Service*** - `Other`
-* ***Statement ID*** - `allow-bedrock-service`
+* ***Statement ID*** - `allow-bedrock-agent`
 * ***Principal*** - `bedrock.amazonaws.com`
 * ***Source ARN*** - `arn:aws:bedrock:us-west-2:{account-id}:agent/*` - (Please note, AWS recommends least privilage so only an allowed agent can invoke this Lambda function. A * at the end of the ARN grants any agent in the account access to invoke this Lambda. Ideally, we would not use this in a production environment.)
 * ***Action*** - `lambda:InvokeFunction`
