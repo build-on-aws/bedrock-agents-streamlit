@@ -557,10 +557,10 @@ FOMC Report:
   Give me a summary of financial market developments and open market operations in January 2023.
   ```
   ```text
-  Can you provide information about inflation or rising prices?
+  Provide any important information I should know about consumer inflation, or rising prices.
   ```
   ```text
-  What can you tell me about the Staff Review of the Economic & Financial Situation?
+  Tell me about the Staff Review of the Economic & financial Situation.
   ```
 
 ### Testing the Bedrock Agent
@@ -570,16 +570,16 @@ FOMC Report:
 
 - Example prompts for **Knowledge base**:
   ```text
-  Give me a summary of financial market developments and open market operations in January 2023
+  Give me a summary of financial market developments and open market operations in January 2023.
   ```
   ```text
-  Tell me the participants view on economic conditions and economic outlook
+  Tell me the participants view on economic conditions and economic outlook.
   ```
   ```text
-  Provide any important information I should know about inflation, or rising prices
+  Provide any important information I should know about inflation, or rising prices.
   ```
   ```text
-  Tell me about the Staff Review of the Economic & financial Situation
+  Tell me about the Staff Review of the Economic & financial Situation.
   ```
 
 - Example prompts for **Action groups**:
@@ -593,12 +593,12 @@ FOMC Report:
   Create a new investment portfolio of companies
 ```
 ```text
-  Do company research on TechStashNova Inc.
+  Return me information on the company on TechStashNova Inc.
 ```
 
 - Example prompt for KB & AG
   ```text
-  Send an email to test@example.com that includes the company portfolio and FOMC summary
+ Send an email to test@example.com that includes the summary and portfolio report.
   ```
   `(The logic for this method is not implemented to send emails)`  
 
