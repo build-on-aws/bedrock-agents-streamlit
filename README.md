@@ -233,11 +233,11 @@ def lambda_handler(event, context):
 
 - Please use the following settings to configure the resource based policy:
 
-  * ***Service*** - `Other`
-  * ***Statement ID*** - `allow-bedrock-agent`
-  * ***Principal*** - `bedrock.amazonaws.com`
-  * ***Source ARN*** - `arn:aws:bedrock:us-west-2:{account-id}:agent/*` - (Please note, AWS recommends least privilage so only an allowed agent can invoke this Lambda function. A * at the end of the ARN grants any agent in the account access to invoke this Lambda. Ideally, we would not use this in a production environment.)
-  * ***Action*** - `lambda:InvokeFunction`
+* ***Service*** - `Other`
+* ***Statement ID*** - `allow-bedrock-agent`
+* ***Principal*** - `bedrock.amazonaws.com`
+* ***Source ARN*** - `arn:aws:bedrock:us-west-2:{account-id}:agent/*` - (Please note, AWS recommends least privilage so only an allowed agent can invoke this Lambda function. A * at the end of the ARN grants any agent in the account access to invoke this Lambda. Ideally, we would not use this in a production environment.)
+* ***Action*** - `lambda:InvokeFunction`
 
 ![Lambda resource policy](Streamlit_App/images/lambda_resource_policy.png)
 
@@ -248,7 +248,7 @@ def lambda_handler(event, context):
 
 - Navigate to the Bedrock console. Go to the toggle on the left, and under ***Orchestration*** select ***Agents***. Provide an agent name, like ***PortfolioCreator*** then create the agent.
 
-- The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude 3 Haiku**. Next, provide the following instruction for the agent:
+- The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude Instant 3 Haiku**. Next, provide the following instruction for the agent:
 
 ```instruction
 Instructions for the Generative AI Investment Analyst Tool
@@ -259,8 +259,8 @@ Objective: Assist in investment analysis by generating company portfolios, provi
 
 1. Portfolio Creation:
 
-    Understand the Query: Analyze the user's question to extract key information such as the desired number of companies and industry.
-    Generate Portfolio: Based on the criteria from the question, create a portfolio of companies. Use the template provided to format the portfolio.
+    Understand the Query: Analyze the user's request to extract key information such as the desired number of companies and industry.
+    Generate Portfolio: Based on the criteria from the request, create a portfolio of companies. Use the template provided to format the portfolio.
 
 2. Company Research and Document Summarization:
 
@@ -270,20 +270,8 @@ Objective: Assist in investment analysis by generating company portfolios, provi
 3. Email Communication:
 
     Format Email: Using the email template provided, format an email that includes the newly created company portfolio and any summaries of important documents.
-    Send Email: Utilize the provided tools to send the email to the designated recipient, ensuring that all information is well-organized and presented professionally.
-
-4. Continuous Interaction and Adjustment:
-
-    Feedback Incorporation: Adjust portfolios and summaries based on feedback from users or additional information that may become relevant.
-    Session Context Maintenance: Keep track of ongoing requests and information to provide coherent and context-aware responses.
-
- Example Workflow:
-
-    User Request: Create a portfolio of 10 tech companies and summarize the latest FOMC report.
-    Procedure:
-        Create Portfolio: Generate a portfolio of 10 tech companies using the specified template.
-        Research and Summarize: Research these companies for recent developments and summarize the latest FOMC report.
-        Format and Send Email: Compile the portfolio and the FOMC summary into an email formatted according to the provided template, then send it to the user.   
+    Send Email: Utilize the provided tools to send an email upon request, That includes a summary of provided responses and and portfolios created.
+ 
 ```
 
 - After, scroll to the top and **Save**
@@ -466,7 +454,7 @@ Objective: Assist in investment analysis by generating company portfolios, provi
 
 - This API schema defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses.
 
-- Now, we need to provide the Bedrock agent a prompt that are examples of a formatted response for an investment company portfolio, and email. In the creation of an agent, it's initially configured with four foundational prompt templates for pre-processing, orchestration, knowledge base response generation, and post-processing (the latter being disabled by default), which guide how it interacts with the foundation model across various steps of its runtime process. These templates are crucial for processing user inputs, orchestrating the flow between the foundation model, action groups, and knowledge bases, as well as formatting the responses sent to users. By customizing these templates and incorporating advanced prompts or few-shot examples, you can significantly improve the agent's precision and performance in handling specific tasks. More information on advanced prompting for an agent can be found [here](https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html).
+- Now, we need to provide the Bedrock agent a prompt that are examples of a formatted response for an investment company portfolio, and email. In the creation of an agent, it's initially configured with four foundational prompt templates for ***pre-processing, orchestration, KB response generation***, and ***post-processing***. These advanced prompts control the request and response behavior between the agent and model. These templates are crucial for processing user inputs, orchestrating the flow between the foundation model, action groups, and knowledge bases, as well as formatting the responses sent to users. By customizing these templates and incorporating advanced prompts or few-shot examples, you can significantly improve the agent's precision and performance in handling specific tasks. More information on advanced prompting for an agent can be found [here](https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html).
 
 - Select ***Edit in Agent Builder*** from the top. Then, scroll down to **Advanced prompts** and select **Edit**. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting.
   
@@ -556,7 +544,7 @@ FOMC Report:
 
 ![KB sync](Streamlit_App/images/kb_sync.png)
 
-- You will see a user interface on the right where you will need to select a model. Choose the **Anthropic Claude 3 Haiku model**, then select **Apply**.
+- You will see a user interface on the right where you will need to select a model. Choose the **Anthropic Claude V1.2 model**, then select **Apply**.
 
 ![Select model test](Streamlit_App/images/select_model_test.png)
 
@@ -569,10 +557,10 @@ FOMC Report:
   Give me a summary of financial market developments and open market operations in January 2023.
   ```
   ```text
-  Can you provide information about inflation or rising prices?
+  Provide any important information I should know about consumer inflation, or rising prices.
   ```
   ```text
-  What can you tell me about the Staff Review of the Economic & Financial Situation?
+  Tell me about the Staff Review of the Economic & financial Situation.
   ```
 
 ### Testing the Bedrock Agent
@@ -582,16 +570,16 @@ FOMC Report:
 
 - Example prompts for **Knowledge base**:
   ```text
-  Give me a summary of financial market developments and open market operations in January 2023
+  Give me a summary of financial market developments and open market operations in January 2023.
   ```
   ```text
-  Tell me the participants view on economic conditions and economic outlook
+  Tell me the participants view on economic conditions and economic outlook.
   ```
   ```text
-  Provide any important information I should know about inflation, or rising prices
+  Provide any important information I should know about inflation, or rising prices.
   ```
   ```text
-  Tell me about the Staff Review of the Economic & financial Situation
+  Tell me about the Staff Review of the Economic & financial Situation.
   ```
 
 - Example prompts for **Action groups**:
@@ -605,12 +593,12 @@ FOMC Report:
   Create a new investment portfolio of companies
 ```
 ```text
-  Do company research on TechStashNova Inc.
+  Return me information on the company on TechStashNova Inc.
 ```
 
 - Example prompt for KB & AG
   ```text
-  Send an email to test@example.com that includes the company portfolio and FOMC summary
+ Send an email to test@example.com that includes the summary and portfolio report.
   ```
   `(The logic for this method is not implemented to send emails)`  
 
