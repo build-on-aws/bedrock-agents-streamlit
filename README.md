@@ -597,10 +597,10 @@ FOMC Report:
 ```
 
 - Example prompt for KB & AG
-  ```text
+```text
  Send an email to test@example.com that includes the summary and portfolio report.
-  ```
-  `(The logic for this method is not implemented to send emails)`  
+```
+**(The logic for this method is not implemented to send emails)**
 
 
 
