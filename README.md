@@ -248,7 +248,7 @@ def lambda_handler(event, context):
 
 - Navigate to the Bedrock console. Go to the toggle on the left, and under ***Orchestration*** select ***Agents***. Provide an agent name, like ***PortfolioCreator*** then create the agent.
 
-- The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude Instant 3 Haiku**. Next, provide the following instruction for the agent:
+- The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude 3 Haiku**. Next, provide the following instruction for the agent:
 
 ```instruction
 Instructions for the Generative AI Investment Analyst Tool
