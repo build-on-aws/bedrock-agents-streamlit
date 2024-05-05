@@ -32,12 +32,6 @@ end_session_button = st.button("End Session")
 # Sidebar for user input
 st.sidebar.title("Trace Data")
 
-def filter_trace_data(trace_data, query):
-    if query:
-        # Filter lines that contain the query
-        return "\n".join([line for line in trace_data.split('\n') if query.lower() in line.lower()])
-    return trace_data
-
 # Session State Management
 if 'history' not in st.session_state:
     st.session_state['history'] = []
@@ -59,7 +53,7 @@ def format_response(response_body):
 # Handling user input and responses
 if submit_button and prompt:
     event = {
-        "sessionId": "MYSESSION",
+        "sessionId": "MYSESSION115",
         "question": prompt
     }
     response = agenthelper.lambda_handler(event, None)
@@ -87,11 +81,12 @@ if submit_button and prompt:
     st.sidebar.text_area("", value=all_data, height=300)
     st.session_state['history'].append({"question": prompt, "answer": the_response})
     st.session_state['trace_data'] = the_response
+  
 
 if end_session_button:
     st.session_state['history'].append({"question": "Session Ended", "answer": "Thank you for using AnyCompany Support Agent!"})
     event = {
-        "sessionId": "MYSESSION",
+        "sessionId": "MYSESSION115",
         "question": "placeholder to end session",
         "endSession": True
     }
@@ -153,7 +148,7 @@ action_group_prompts = [
     {"Prompt": "Create a portfolio with 3 companies in the real estate industry"},
     {"Prompt": "Create a portfolio of 4 companies that are in the technology industry"},
     {"Prompt": "Create a new investment portfolio of companies"},
-    {"Prompt": "Do company research on TechStashNova Inc."}
+    {"Prompt": "Return me information on the company on TechStashNova Inc."}
 ]
 
 # Displaying the Action Group prompts as a table
@@ -163,7 +158,7 @@ st.write("## Test KB, AG, History Prompt")
 
 # Creating a list of prompts for the specific task
 task_prompts = [
-    {"Task": "Send an email to test@example.com that includes the company portfolio and summary report", 
+    {"Task": "Send an email to test@example.com that includes the summary and portfolio report.", 
      "Note": "The logic for this method is not implemented to send emails"}
 ]
 
