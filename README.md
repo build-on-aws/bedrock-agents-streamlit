@@ -584,13 +584,13 @@ FOMC Report:
 
 - Example prompts for **Action groups**:
 ```text
-  Create a portfolio with 3 companies in the real estate industry
+  Create a portfolio with 3 companies in the real estate industry.
 ```
 ```text
-  Create portfolio of 3 companies that are in the technology industry
+  Create portfolio of 3 companies that are in the technology industry.
 ```
 ```text
-  Create a new investment portfolio of companies
+  Create a new investment portfolio of companies.
 ```
 ```text
   Return me information on the company on TechStashNova Inc.
