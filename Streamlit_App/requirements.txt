@@ -1,5 +1,0 @@
-streamlit
-pandas
-Pillow
-boto3
-
