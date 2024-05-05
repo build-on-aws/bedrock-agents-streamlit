@@ -10,7 +10,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ## Diagram
 
-![Diagram](Streamlit_App/images/diagram.png)
+![Diagram](streamlit_app/images/diagram.png)
 
 ## Configuration and Setup
 
@@ -18,45 +18,45 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 - Please make sure that you are in the **us-west-2** region. If another region is required, you will need to update the region in the `InvokeAgent.py` file on line 24 of the code. 
 - **Domain Data Bucket**: Create an S3 bucket to store the domain data. For example, call the S3 bucket `knowledgebase-bedrock-agent-alias`. We will use the default settings. 
 
-![Bucket create 1](Streamlit_App/images/bucket_pic_1.png)
+![Bucket create 1](streamlit_app/images/bucket_pic_1.png)
 
-![Bucket create 2](Streamlit_App/images/bucket_pic_2.png)
+![Bucket create 2](streamlit_app/images/bucket_pic_2.png)
 
-- Next, we will download the domain data from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/s3Docs). On your computer, open terminal or command prompt, and run the following `curl` commands to download the data:
+- Next, we will download the domain data from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/S3Docs). On your computer, open terminal or command prompt, and run the following `curl` commands to download the data:
   
 * For **Mac**
   ```linux
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230201.pdf --output ~/Documents/fomcminutes20230201.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230201.pdf --output ~/Documents/fomcminutes20230201.pdf
 
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230322.pdf --output ~/Documents/fomcminutes20230322.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230322.pdf --output ~/Documents/fomcminutes20230322.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230614.pdf --output ~/Documents/fomcminutes20230614.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230614.pdf --output ~/Documents/fomcminutes20230614.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230726.pdf --output ~/Documents/fomcminutes20230726.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230726.pdf --output ~/Documents/fomcminutes20230726.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230920.pdf --output ~/Documents/fomcminutes20230920.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230920.pdf --output ~/Documents/fomcminutes20230920.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20231101.pdf --output ~/Documents/fomcminutes20231101.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20231101.pdf --output ~/Documents/fomcminutes20231101.pdf
   ```
  
 * For **Windows**
 ```windows
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230201.pdf --output %USERPROFILE%\Documents\fomcminutes20230201.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230201.pdf --output %USERPROFILE%\Documents\fomcminutes20230201.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230322.pdf --output %USERPROFILE%\Documents\fomcminutes20230322.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230322.pdf --output %USERPROFILE%\Documents\fomcminutes20230322.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230614.pdf --output %USERPROFILE%\Documents\fomcminutes20230614.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230614.pdf --output %USERPROFILE%\Documents\fomcminutes20230614.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230726.pdf --output %USERPROFILE%\Documents\fomcminutes20230726.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230726.pdf --output %USERPROFILE%\Documents\fomcminutes20230726.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20230920.pdf --output %USERPROFILE%\Documents\fomcminutes20230920.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230920.pdf --output %USERPROFILE%\Documents\fomcminutes20230920.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/s3Docs/fomcminutes20231101.pdf --output %USERPROFILE%\Documents\fomcminutes20231101.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20231101.pdf --output %USERPROFILE%\Documents\fomcminutes20231101.pdf
 ```
 
-- Also, you have the option to download the .pdf files from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/s3Docs). These files will download to your **Documents** folder. Upload these files to S3 bucket `knowledgebase-bedrock-agent-{alias}`. These files are the Federal Open Market Committee documents describing monetary policy decisions made at the Federal Reserved board meetings. The documents include discussions of economic conditions, policy directives to the Federal Reserve Bank of New York for open market operations, and votes on the federal funds rate. More information can be found [here](https://www.federalreserve.gov/newsevents/pressreleases/monetary20231011a.htm). Once uploaded, please select one of the documents to open and review the content.
+- Also, you have the option to download the .pdf files from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/S3Docs). These files will download to your **Documents** folder. Upload these files to S3 bucket `knowledgebase-bedrock-agent-{alias}`. These files are the Federal Open Market Committee documents describing monetary policy decisions made at the Federal Reserved board meetings. The documents include discussions of economic conditions, policy directives to the Federal Reserve Bank of New York for open market operations, and votes on the federal funds rate. More information can be found [here](https://www.federalreserve.gov/newsevents/pressreleases/monetary20231011a.htm). Once uploaded, please select one of the documents to open and review the content.
 
-![bucket domain data](Streamlit_App/images/bucket_domain_data.png)
+![bucket domain data](streamlit_app/images/bucket_domain_data.png)
 
 
 
@@ -64,28 +64,28 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 - Before we setup the knowledge base, we will need to grant access to the models that will be needed for our Bedrock agent. Navigate to the Amazon Bedrock console, then on the left of the screen, scroll down and select **Model access**. On the right, select the orange **Manage model access** button.
 
-![Model access](Streamlit_App/images/model_access.png)
+![Model access](streamlit_app/images/model_access.png)
 
 - Select the checkbox for the base model columns **Amazon: Titan Embeddings G1 - Text** and **Anthropic: Claude 3 Haiku**. This will provide you access to the required models. After, scroll down to the bottom right and select **Request model access**.
 
 
 - After, verify that the Access status of the Models are green with **Access granted**.
 
-![Access granted](Streamlit_App/images/access_granted.png)
+![Access granted](streamlit_app/images/access_granted.png)
 
 
 - Now, we will create a knowledge base by selecting **Knowledge base** on the left, then selecting the orange button **Create knowledge base**.  
 
-![create_kb_btn](Streamlit_App/images/create_kb_btn.png)
+![create_kb_btn](streamlit_app/images/create_kb_btn.png)
 
 - You can use the default name, or enter in your own. Then, select **Next** at the bottom right of the screen.
 
-![KB details](Streamlit_App/images/kb_details.gif)
+![KB details](streamlit_app/images/kb_details.gif)
 
 
 - Sync S3 bucket `knowledgebase-bedrock-agent-alias` to this knowledge base.
 
-![KB setup](Streamlit_App/images/KB_setup.png)
+![KB setup](streamlit_app/images/KB_setup.png)
 
 - For the embedding model, choose **Titan Embeddings G1 - Text v1.2**. Leave the other options as default, and scroll down to select **Next**.
  
@@ -94,16 +94,16 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 - On the next screen, review your work, then select **Create knowledge base**
 (Creating the knowledge base may take a few minutes. Please wait for it to finish before going to the next step.)
 
-![Review and Create KB](Streamlit_App/images/review_create_kb.png)
+![Review and Create KB](streamlit_app/images/review_create_kb.png)
 
 
 
 ### Step 3: Lambda Function Configuration
 - Create a Lambda function (Python 3.12) for the Bedrock agent's action group. We will call this Lambda function `PortfolioCreator-actions`. 
 
-![Create Function](Streamlit_App/images/create_function.png)
+![Create Function](streamlit_app/images/create_function.png)
 
-![Create Function2](Streamlit_App/images/create_function2.png)
+![Create Function2](streamlit_app/images/create_function2.png)
 
 - Copy the python code provided below, or from the file [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ActionLambda.py) into your Lambda function. 
 
@@ -222,13 +222,13 @@ def lambda_handler(event, context):
 
 - Then, select **Deploy** in the tab section of the Lambda console. Review the code provided before moving to the next step. You will see that we are using mock data to represent various companies in the technology and real estate insdustry, along with functions that we will call later in this workshop. 
 
-![Lambda deploy](Streamlit_App/images/lambda_deploy.png)
+![Lambda deploy](streamlit_app/images/lambda_deploy.png)
 
 - Next, apply a resource policy to the Lambda to grant Bedrock agent access. To do this, we will switch the top tab from **code** to **configuration** and the side tab to **Permissions**. Then, scroll to the **Resource-based policy statements** section and click the **Add permissions** button.
 
-![Permissions config](Streamlit_App/images/permissions_config.png)
+![Permissions config](streamlit_app/images/permissions_config.png)
 
-![Lambda resource policy create](Streamlit_App/images/lambda_resource_policy_create.png)
+![Lambda resource policy create](streamlit_app/images/lambda_resource_policy_create.png)
 
 
 - Please use the following settings to configure the resource based policy:
@@ -239,7 +239,7 @@ def lambda_handler(event, context):
 * ***Source ARN*** - `arn:aws:bedrock:us-west-2:{account-id}:agent/*` - (Please note, AWS recommends least privilage so only an allowed agent can invoke this Lambda function. A * at the end of the ARN grants any agent in the account access to invoke this Lambda. Ideally, we would not use this in a production environment.)
 * ***Action*** - `lambda:InvokeFunction`
 
-![Lambda resource policy](Streamlit_App/images/lambda_resource_policy.png)
+![Lambda resource policy](streamlit_app/images/lambda_resource_policy.png)
 
 - Once your configurations look similar to the above screenshot, select ***Save*** at the bottom.
 
@@ -454,11 +454,11 @@ Objective: Assist in investment analysis by generating company portfolios, provi
 
 - This API schema defines three primary endpoints, `/companyResearch`, `/createPortfolio`, and `/sendEmail` detailing how to interact with the API, the required parameters, and the expected responses.
 
-- Now, we need to provide the Bedrock agent a prompt that are examples of a formatted response for an investment company portfolio, and email. In the creation of an agent, it's initially configured with four foundational prompt templates for ***pre-processing, orchestration, KB response generation***, and ***post-processing***. These advanced prompts control the request and response behavior between the agent and model. These templates are crucial for processing user inputs, orchestrating the flow between the foundation model, action groups, and knowledge bases, as well as formatting the responses sent to users. By customizing these templates and incorporating advanced prompts or few-shot examples, you can significantly improve the agent's precision and performance in handling specific tasks. More information on advanced prompting for an agent can be found [here](https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html).
+- Now, we need to provide the Bedrock agent a prompt that are examples of a formatted response for an investment company portfolio, and email. In the creation of an agent, it's initially configured with four foundational prompt templates for pre-processing, orchestration, knowledge base response generation, and post-processing (the latter being disabled by default), which guide how it interacts with the foundation model across various steps of its runtime process. These templates are crucial for processing user inputs, orchestrating the flow between the foundation model, action groups, and knowledge bases, as well as formatting the responses sent to users. By customizing these templates and incorporating advanced prompts or few-shot examples, you can significantly improve the agent's precision and performance in handling specific tasks. More information on advanced prompting for an agent can be found [here](https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html).
 
 - Select ***Edit in Agent Builder*** from the top. Then, scroll down to **Advanced prompts** and select **Edit**. Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting.
   
-![advance_prompt_btn](Streamlit_App/images/advance_prompt_btn.png)
+![advance_prompt_btn](streamlit_app/images/advance_prompt_btn.png)
 
 
 - Select the **Orchestration** tab. Toggle on the radio button  **Override orchestration template defaults**. Make sure  **Activate orchestration template** is enabled as well.
@@ -503,7 +503,7 @@ FOMC Report:
 
 - The results should look similar to the following:
   
-![advance_prompt_setup](Streamlit_App/images/advance_prompt_setup.gif)
+![advance_prompt_setup](streamlit_app/images/advance_prompt_setup.gif)
 
 
 
@@ -511,7 +511,7 @@ FOMC Report:
 
 - Now, check to confirm that the ***Orchestration*** in the ***Advance prompt*** section is Overridden.
 
-![advance_prompt_overridden](Streamlit_App/images/adv_prompt_overridden.png)
+![advance_prompt_overridden](streamlit_app/images/adv_prompt_overridden.png)
 
 
 ### Step 5: Setup Knowledge Base with Bedrock Agent
@@ -523,7 +523,7 @@ FOMC Report:
   ```
   
  
-![Knowledge base add2](Streamlit_App/images/add_knowledge_base2.png)
+![Knowledge base add2](streamlit_app/images/add_knowledge_base2.png)
 
 - Review your input, then select ***Add***.
 
@@ -534,7 +534,7 @@ FOMC Report:
 
 - Create an alias (new version), and choose a name of your liking. After it's done, make sure to copy your **Alias ID** and **Agent ID**. You will need this in step 8.
  
-![Create alias](Streamlit_App/images/create_alias.png)
+![Create alias](streamlit_app/images/create_alias.png)
 
 
 
@@ -542,65 +542,65 @@ FOMC Report:
 ### Testing the Knowledge Base
 - While in the Bedrock console, select **Knowledge base** under the Orchestration tab, then the KB you created. Scroll down to the Data source section, and make sure to select the **Sync** button.
 
-![KB sync](Streamlit_App/images/kb_sync.png)
+![KB sync](streamlit_app/images/kb_sync.png)
 
-- You will see a user interface on the right where you will need to select a model. Choose the **Anthropic Claude V1.2 model**, then select **Apply**.
+- You will see a user interface on the right where you will need to select a model. Choose the **Anthropic Claude 3 Haiku model**, then select **Apply**.
 
-![Select model test](Streamlit_App/images/select_model_test.png)
+![Select model test](streamlit_app/images/select_model_test.png)
 
 - You should now have the ability to enter prompts in the user interface provided.
 
-![KB prompt](Streamlit_App/images/kb_prompt.png)
+![KB prompt](streamlit_app/images/kb_prompt.png)
 
 - Test Prompts:
   ```text
   Give me a summary of financial market developments and open market operations in January 2023.
   ```
   ```text
-  Provide any important information I should know about consumer inflation, or rising prices.
+  Can you provide information about inflation or rising prices?
   ```
   ```text
-  Tell me about the Staff Review of the Economic & financial Situation.
+  What can you tell me about the Staff Review of the Economic & Financial Situation?
   ```
 
 ### Testing the Bedrock Agent
 - While in the Bedrock console, select **Agents** under the Orchestration tab, then the agent you created. You should be able to enter prompts in the user interface provided to test your knowledge base and action groups from the agent.
 
-![Agent test](Streamlit_App/images/agent_test.png)
+![Agent test](streamlit_app/images/agent_test.png)
 
 - Example prompts for **Knowledge base**:
   ```text
-  Give me a summary of financial market developments and open market operations in January 2023.
+  Give me a summary of financial market developments and open market operations in January 2023
   ```
   ```text
-  Tell me the participants view on economic conditions and economic outlook.
+  Tell me the participants view on economic conditions and economic outlook
   ```
   ```text
-  Provide any important information I should know about inflation, or rising prices.
+  Provide any important information I should know about inflation, or rising prices
   ```
   ```text
-  Tell me about the Staff Review of the Economic & financial Situation.
+  Tell me about the Staff Review of the Economic & financial Situation
   ```
 
 - Example prompts for **Action groups**:
 ```text
-  Create a portfolio with 3 companies in the real estate industry.
+  Create a portfolio with 3 companies in the real estate industry
 ```
 ```text
-  Create portfolio of 3 companies that are in the technology industry.
+  Create portfolio of 3 companies that are in the technology industry
 ```
 ```text
-  Create a new investment portfolio of companies.
+  Create a new investment portfolio of companies
 ```
 ```text
-  Return me information on the company on TechStashNova Inc.
+  Do company research on TechStashNova Inc.
 ```
 
 - Example prompt for KB & AG
-```text
- Send an email to test@example.com that includes the summary and portfolio report.
-```
-**(The logic for this method is not implemented to send emails)**
+  ```text
+  Send an email to test@example.com that includes the company portfolio and FOMC summary
+  ```
+  `(The logic for this method is not implemented to send emails)`  
 
 
 
@@ -608,7 +608,7 @@ FOMC Report:
 
 1.	Navigate in the Cloud9 management console. Then, select **Create Environment**
 
-![create_environment](Streamlit_App/images/create_environment.png)
+![create_environment](streamlit_app/images/create_environment.png)
 
 2. Here, you will enter the following values in each field
    - **Name**: Bedrock-Environment (Enter any name)
@@ -616,16 +616,16 @@ FOMC Report:
    - **Platform**: Ubuntu Server 22.04 LTS
    - **Timeout**: 1 hour  
 
-![ce2](Streamlit_App/images/ce2.png)
+![ce2](streamlit_app/images/ce2.png)
 
    - Once complete, select the **Create** button at the bottom of the screen. The environment will take a couple of minutes to spin up. If you get an error spinning up Cloud9 due to lack of resources, you can also choose t2.micro for the instance type and try again. (The Cloud9 environment has Python 3.10.12 version at the time of this publication)
 
 
-![ce3](Streamlit_App/images/ce3.png)
+![ce3](streamlit_app/images/ce3.png)
 
 3. Navigate back to the Cloud9 Environment, then select **open** next to the Cloud9 you just created. Now, you are ready to setup the Streamlit app!
 
-![environment](Streamlit_App/images/environment.png)
+![environment](streamlit_app/images/environment.png)
 
 
 ## Step 9: Setting Up and Running the Streamlit App
@@ -636,11 +636,11 @@ FOMC Report:
 2. **Upload to Cloud9**:
    - In your Cloud9 environment, upload the ZIP file.
 
-![Upload file to Cloud9](Streamlit_App/images/upload_file_cloud9.png)
+![Upload file to Cloud9](streamlit_app/images/upload_file_cloud9.png)
 
    - Before going to the next step, make sure that the project finished uploading.
      
-![Load wait](Streamlit_App/images/load_wait.png)
+![Load wait](streamlit_app/images/load_wait.png)
 
 
 3. **Unzip the File**:
@@ -650,17 +650,17 @@ FOMC Report:
      unzip bedrock-agents-streamlit-main.zip
      ```
      
-4. **Navigate to Streamlit_App Folder**:
+4. **Navigate to streamlit_app Folder**:
    - Change to the directory containing the Streamlit app. Use this command
      ``` bash
-     cd ~/environment/bedrock-agents-streamlit-main/Streamlit_App
+     cd ~/environment/bedrock-agents-streamlit-main/streamlit_app
      ```
      
 5. **Update Configuration**:
    - Open the `InvokeAgent.py` file.
    - Update the `agentId` and `agentAliasId` variables with the appropriate values, then save it.
 
-![Update Agent ID and alias](Streamlit_App/images/update_agentId_and_alias.png)
+![Update Agent ID and alias](streamlit_app/images/update_agentId_and_alias.png)
 
 6. **Install Streamlit** (if not already installed):
    - Run the following command to install all of the dependencies needed:
@@ -676,17 +676,17 @@ FOMC Report:
      ```
    - Streamlit will start the app, and you can view it by selecting **Preview** within the Cloud9 IDE at the top, then **Preview Running Application**.
   
-     ![Preview button](Streamlit_App/images/preview_btn.png)
+     ![Preview button](streamlit_app/images/preview_btn.png)
      
      
    - Once the app is running, please test some of the sample prompts provided. (On 1st try, if you receive an error, try again.)
 
-![Running App ](Streamlit_App/images/running_app.png)
+![Running App ](streamlit_app/images/running_app.png)
 
 
    - Optionally, you can review the [trace events](https://docs.aws.amazon.com/bedrock/latest/userguide/trace-events.html) in the left toggle of the screen. This data will include the **Preprocessing, Orchestration**, and **PostProcessing** traces.
 
-![Trace events ](Streamlit_App/images/trace_events.png)
+![Trace events ](streamlit_app/images/trace_events.png)
 
 
 ## Cleanup
