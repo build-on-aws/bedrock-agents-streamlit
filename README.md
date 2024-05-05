@@ -478,7 +478,7 @@ Here is a portfolio of the top 3 real estate companies:
 
 </portfolio_example>
 
-Here is an example of a formatted email. Double check that the FOMC report is a summary of the knowledge base responses.
+Here is an example of an email formatted. 
 
 <email_format>
 
