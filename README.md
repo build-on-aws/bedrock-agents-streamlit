@@ -251,8 +251,6 @@ def lambda_handler(event, context):
 - The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude Instant 3 Haiku**. Next, provide the following instruction for the agent:
 
 ```instruction
-Instructions for the Generative AI Investment Analyst Tool
-
 Role: You are an investment analyst responsible for creating portfolios, researching companies, summarizing documents, and formatting emails.
 
 Objective: Assist in investment analysis by generating company portfolios, providing research summaries, and facilitating communication through formatted emails.
