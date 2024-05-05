@@ -17,8 +17,8 @@ from lxml.html.clean import Cleaner
 #echo $AWS_SECRET_ACCESS_KEY
 #echo $AWS_SESSION_TOKEN
 
-agentId = "RMJKAON6WK" #INPUT YOUR AGENT ID HERE
-agentAliasId = "UNEKCCZQG6" # Hits draft alias, set to a specific alias id for a deployed version
+agentId = "xxx" #INPUT YOUR AGENT ID HERE
+agentAliasId = "xxx" # Hits draft alias, set to a specific alias id for a deployed version
 theRegion = "us-west-2"
 
 os.environ["AWS_REGION"] = theRegion
