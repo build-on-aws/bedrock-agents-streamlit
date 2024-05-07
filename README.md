@@ -22,39 +22,39 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![Bucket create 2](streamlit_app/images/bucket_pic_2.png)
 
-- Next, we will download the domain data from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/S3Docs). On your computer, open terminal or command prompt, and run the following `curl` commands to download the data:
+- Next, we will download the domain data from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/S3docs). On your computer, open terminal or command prompt, and run the following `curl` commands to download the data:
   
 * For **Mac**
   ```linux
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230201.pdf --output ~/Documents/fomcminutes20230201.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20230201.pdf --output ~/Documents/fomcminutes20230201.pdf
 
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230322.pdf --output ~/Documents/fomcminutes20230322.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20230322.pdf --output ~/Documents/fomcminutes20230322.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230614.pdf --output ~/Documents/fomcminutes20230614.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20230614.pdf --output ~/Documents/fomcminutes20230614.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230726.pdf --output ~/Documents/fomcminutes20230726.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20230726.pdf --output ~/Documents/fomcminutes20230726.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230920.pdf --output ~/Documents/fomcminutes20230920.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20230920.pdf --output ~/Documents/fomcminutes20230920.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20231101.pdf --output ~/Documents/fomcminutes20231101.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20231101.pdf --output ~/Documents/fomcminutes20231101.pdf
   ```
  
 * For **Windows**
 ```windows
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230201.pdf --output %USERPROFILE%\Documents\fomcminutes20230201.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20230201.pdf --output %USERPROFILE%\Documents\fomcminutes20230201.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230322.pdf --output %USERPROFILE%\Documents\fomcminutes20230322.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20230322.pdf --output %USERPROFILE%\Documents\fomcminutes20230322.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230614.pdf --output %USERPROFILE%\Documents\fomcminutes20230614.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20230614.pdf --output %USERPROFILE%\Documents\fomcminutes20230614.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230726.pdf --output %USERPROFILE%\Documents\fomcminutes20230726.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20230726.pdf --output %USERPROFILE%\Documents\fomcminutes20230726.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20230920.pdf --output %USERPROFILE%\Documents\fomcminutes20230920.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20230920.pdf --output %USERPROFILE%\Documents\fomcminutes20230920.pdf
     
-    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3Docs/fomcminutes20231101.pdf --output %USERPROFILE%\Documents\fomcminutes20231101.pdf
+    curl https://raw.githubusercontent.com/build-on-aws/bedrock-agents-streamlit/main/S3docs/fomcminutes20231101.pdf --output %USERPROFILE%\Documents\fomcminutes20231101.pdf
 ```
 
-- Also, you have the option to download the .pdf files from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/S3Docs). These files will download to your **Documents** folder. Upload these files to S3 bucket `knowledgebase-bedrock-agent-{alias}`. These files are the Federal Open Market Committee documents describing monetary policy decisions made at the Federal Reserved board meetings. The documents include discussions of economic conditions, policy directives to the Federal Reserve Bank of New York for open market operations, and votes on the federal funds rate. More information can be found [here](https://www.federalreserve.gov/newsevents/pressreleases/monetary20231011a.htm). Once uploaded, please select one of the documents to open and review the content.
+- Also, you have the option to download the .pdf files from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/tree/main/S3docs). These files will download to your **Documents** folder. Upload these files to S3 bucket `knowledgebase-bedrock-agent-{alias}`. These files are the Federal Open Market Committee documents describing monetary policy decisions made at the Federal Reserved board meetings. The documents include discussions of economic conditions, policy directives to the Federal Reserve Bank of New York for open market operations, and votes on the federal funds rate. More information can be found [here](https://www.federalreserve.gov/newsevents/pressreleases/monetary20231011a.htm). Once uploaded, please select one of the documents to open and review the content.
 
 ![bucket domain data](streamlit_app/images/bucket_domain_data.png)
 
