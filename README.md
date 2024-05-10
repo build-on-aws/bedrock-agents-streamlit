@@ -233,7 +233,7 @@ def lambda_handler(event, context):
 ![Lambda resource policy create](streamlit_app/images/lambda_resource_policy_create.png)
 
 
-- Please use the following settings to configure the resource based policy:
+- Select ***AWS service***, then use the following settings to configure the resource based policy:
 
 * ***Service*** - `Other`
 * ***Statement ID*** - `allow-bedrock-agent`
