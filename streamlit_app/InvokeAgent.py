@@ -8,7 +8,6 @@ from requests import request
 import base64
 import io
 import sys
-from lxml.html.clean import Cleaner
 
 #For this to run on a local machine in VScode, you need to set the AWS_PROFILE environment variable to the name of the profile/credentials you want to use. 
 
@@ -171,32 +170,6 @@ def lambda_handler(event, context):
     
     try: 
         response, trace_data = askQuestion(question, url, endSession)
-
-
-
-        #def sanitize(dirty_html):
-            # cleaner = Cleaner(page_structure=True,
-            #             meta=True,
-            #             embedded=True,
-            #             links=True,
-            #             style=True,
-            #             processing_instructions=True,
-            #             inline_style=True,
-            #             scripts=True,
-            #             javascript=True,
-            #             comments=True,
-            #             frames=True,
-            #             forms=True,
-            #             annoying_tags=True,
-            #             remove_unknown_tags=True,
-            #             safe_attrs_only=True,
-            #             safe_attrs=frozenset(['src','color', 'href', 'title', 'class', 'name', 'id']),
-            #             remove_tags=('span', 'font', 'div')
-            #             )
-
-            # return cleaner.clean_html(dirty_html)      
-        #response = sanitize(response)
-
         
         return {
             "status_code": 200,
