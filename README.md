@@ -16,7 +16,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ### Step 1: Creating S3 Buckets
 - Please make sure that you are in the **us-west-2** region. If another region is required, you will need to update the region variable `theRegion` in the `InvokeAgent.py` file code. 
-- **Domain Data Bucket**: Create an S3 bucket to store the domain data. For example, call the S3 bucket `knowledgebase-bedrock-agent-alias`. We will use the default settings. 
+- **Domain Data Bucket**: Create an S3 bucket to store the domain data. For example, call the S3 bucket `knowledgebase-bedrock-agent-{alias}`. We will use the default settings. 
 
 ![Bucket create 1](streamlit_app/images/bucket_pic_1.png)
 
@@ -83,7 +83,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 ![KB details](streamlit_app/images/kb_details.gif)
 
 
-- Sync S3 bucket `knowledgebase-bedrock-agent-alias` to this knowledge base.
+- Sync S3 bucket `knowledgebase-bedrock-agent-{alias}` to this knowledge base.
 
 ![KB setup](streamlit_app/images/KB_setup.png)
 
@@ -694,7 +694,7 @@ FOMC Report:
 After completing the setup and testing of the Bedrock Agent and Streamlit app, follow these steps to clean up your AWS environment and avoid unnecessary charges:
 1. Delete S3 Buckets:
 - Navigate to the S3 console.
-- Select the buckets "knowledgebase-bedrock-agent-alias" and "artifacts-bedrock-agent-creator-alias". Make sure that both of these buckets are empty by deleting the files. 
+- Select the buckets "knowledgebase-bedrock-agent-{alias}" and "artifacts-bedrock-agent-creator-{alias}". Make sure that both of these buckets are empty by deleting the files. 
 - Choose 'Delete' and confirm by entering the bucket name.
 
 2.	Remove Lambda Function:
