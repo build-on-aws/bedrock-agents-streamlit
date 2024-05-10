@@ -96,7 +96,9 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![Review and Create KB](streamlit_app/images/review_create_kb.png)
 
+- When the knowledge base is complete, you will see a green message at the top similar to the following:
 
+![kb complete](streamlit_app/images/kb_complete.png)
 
 ### Step 3: Lambda Function Configuration
 - Create a Lambda function (Python 3.12) for the Bedrock agent's action group. We will call this Lambda function `PortfolioCreator-actions`. 
