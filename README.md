@@ -456,7 +456,7 @@ Objective: Assist in investment analysis by generating company portfolios, provi
 
 - Now, we need to provide the Bedrock agent a prompt that are examples of a formatted response for an investment company portfolio, and email. In the creation of an agent, it's initially configured with four foundational prompt templates for pre-processing, orchestration, knowledge base response generation, and post-processing (the latter being disabled by default), which guide how it interacts with the foundation model across various steps of its runtime process. These templates are crucial for processing user inputs, orchestrating the flow between the foundation model, action groups, and knowledge bases, as well as formatting the responses sent to users. By customizing these templates and incorporating advanced prompts or few-shot examples, you can significantly improve the agent's precision and performance in handling specific tasks. More information on advanced prompting for an agent can be found [here](https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html). Additionally, there is an option to use a [custom parser Lambda function](https://docs.aws.amazon.com/bedrock/latest/userguide/lambda-parser.html) for more granular formatting.
 
-- Select ***Edit in Agent Builder*** from the top. Then, scroll down to **Advanced prompts** and select **Edit**. 
+- Next, scroll down to **Advanced prompts** and select **Edit**.
   
 ![advance_prompt_btn](streamlit_app/images/advance_prompt_btn.png)
 
