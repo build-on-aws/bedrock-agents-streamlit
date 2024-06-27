@@ -420,9 +420,9 @@ Objective: Assist in investment analysis by generating company portfolios, provi
             "type": "string",
             "description": "Company name"
           },
-          "ticker": {
+          "expenses": {
             "type": "string",
-            "description": "Stock ticker symbol"
+            "description": "Annual expenses"
           },
           "revenue": {
             "type": "number",
