@@ -16,8 +16,8 @@ import sys
 #echo $AWS_SECRET_ACCESS_KEY
 #echo $AWS_SESSION_TOKEN
 
-agentId = "xxx" #INPUT YOUR AGENT ID HERE
-agentAliasId = "xxx" # Hits draft alias, set to a specific alias id for a deployed version
+agentId = "<YOUR AGENT ID>" #INPUT YOUR AGENT ID HERE
+agentAliasId = "<YOUR ALIAS ID>" #INPUT YOUR ALIAS ID HERE
 theRegion = "us-west-2"
 
 os.environ["AWS_REGION"] = theRegion
