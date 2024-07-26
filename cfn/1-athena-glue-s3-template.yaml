@@ -1,0 +1,277 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  AWS CloudFormation template to create Athena resources with AWS Glue, S3 buckets, and data copy from specified URLs
+
+Parameters:
+  AthenaDatabaseName:
+    Type: String
+    Default: 'athena_db'
+  S3BucketName:
+    Type: String
+    Default: 'sl-data-store-{ENTER ALIAS}'
+    Description: Name of the S3 bucket to create and store data
+  AthenaOutputBucketName:
+    Type: String
+    Default: 'sl-athena-output-{ENTER ALIAS}'
+    Description: Name of the S3 bucket to store Athena query results
+
+Resources:
+  LoggingBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub 'logging-bucket-${AWS::AccountId}-${AWS::Region}'
+
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Ref S3BucketName
+      LoggingConfiguration:
+        DestinationBucketName: !Ref LoggingBucket
+        LogFilePrefix: 'logs/'
+
+  AthenaOutputBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Ref AthenaOutputBucketName
+      LoggingConfiguration:
+        DestinationBucketName: !Ref LoggingBucket
+        LogFilePrefix: 'logs/'
+
+  GlueDatabase:
+    Type: 'AWS::Glue::Database'
+    Properties:
+      CatalogId: !Ref 'AWS::AccountId'
+      DatabaseInput:
+        Name: !Ref AthenaDatabaseName
+  
+  LambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: 'LambdaS3AccessPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 's3:PutObject'
+                  - 's3:GetObject'
+                  - 's3:ListBucket'
+                Resource: 
+                  - !Sub "arn:aws:s3:::${S3BucketName}/*"
+                  - !Sub "arn:aws:s3:::${S3BucketName}"
+                  - !Sub "arn:aws:s3:::${AthenaOutputBucketName}/*"
+                  - !Sub "arn:aws:s3:::${AthenaOutputBucketName}"
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/*:*"
+  
+  CopyDataLambda:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.12
+      MemorySize: 1024
+      Timeout: 120
+      Code:
+        ZipFile: |
+          import boto3
+          import urllib3
+          import os
+          import logging
+          import cfnresponse
+          import time
+
+          logger = logging.getLogger()
+          logger.setLevel(logging.INFO)
+
+          def handler(event, context):
+              try:
+                  s3 = boto3.client('s3')
+                  bucket = os.environ.get('S3BucketName')
+                  
+                  urls = {
+                      "customers/mock-data-customers.csv": "https://github.com/build-on-aws/bedrock-agent-txt2sql/raw/main/S3data/mock-data-customers.csv",
+                      "procedures/mock-data-procedures.csv": "https://github.com/build-on-aws/bedrock-agent-txt2sql/raw/main/S3data/mock-data-procedures.csv"
+                  }
+                  
+                  http = urllib3.PoolManager()
+                  
+                  for key, url in urls.items():
+                      response = http.request('GET', url)
+                      if response.status == 200:
+                          s3.put_object(Bucket=bucket, Key=key, Body=response.data)
+                          logger.info(f"Successfully uploaded {key} to {bucket}")
+                      else:
+                          logger.error(f"Failed to download {url}, status code: {response.status}")
+                          cfnresponse.send(event, context, cfnresponse.FAILED, {'Status': 'Failed'})
+                          return
+                  time.sleep(2)
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {'Status': 'Success'})
+              except Exception as e:
+                  logger.error(f"Error: {str(e)}")
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {'Status': 'Failed', 'Error': str(e)})
+                  return {"status": "failed", "error": str(e)}
+      Environment:
+        Variables:
+          S3BucketName: !Ref S3BucketName
+
+  CopyDataCustomResource:
+    Type: 'Custom::CopyData'
+    Properties:
+      ServiceToken: !GetAtt CopyDataLambda.Arn
+      S3BucketName: !Ref S3BucketName
+  
+  GlueCrawlerCustomers:
+    Type: 'AWS::Glue::Crawler'
+    DependsOn: CopyDataCustomResource
+    Properties:
+      DatabaseName: !Ref AthenaDatabaseName
+      Name: !Sub "${AthenaDatabaseName}-crawler-customers"
+      Role: !GetAtt GlueServiceRole.Arn
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://${S3BucketName}/customers/"
+      TablePrefix: 'customers_'
+  
+  GlueCrawlerProcedures:
+    Type: 'AWS::Glue::Crawler'
+    DependsOn: CopyDataCustomResource
+    Properties:
+      DatabaseName: !Ref AthenaDatabaseName
+      Name: !Sub "${AthenaDatabaseName}-crawler-procedures"
+      Role: !GetAtt GlueServiceRole.Arn
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://${S3BucketName}/procedures/"
+      TablePrefix: 'procedures_'
+  
+  GlueServiceRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: glue.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: 'GlueServicePolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 's3:GetObject'
+                  - 's3:PutObject'
+                  - 's3:ListBucket'
+                Resource: 
+                  - !Sub "arn:aws:s3:::${S3BucketName}/*"
+                  - !Sub "arn:aws:s3:::${S3BucketName}"
+                  - !Sub "arn:aws:s3:::${AthenaOutputBucketName}/*"
+                  - !Sub "arn:aws:s3:::${AthenaOutputBucketName}"
+              - Effect: Allow
+                Action:
+                  - 'glue:CreateCrawler'
+                  - 'glue:StartCrawler'
+                  - 'glue:GetCrawler'
+                  - 'glue:DeleteCrawler'
+                Resource: !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:crawler/*"
+
+  
+  GlueTableCustomers:
+    Type: 'AWS::Glue::Table'
+    DependsOn: GlueCrawlerCustomers
+    Properties: 
+      CatalogId: !Ref 'AWS::AccountId'
+      DatabaseName: !Ref AthenaDatabaseName
+      TableInput: 
+        Name: 'customers'
+        Description: 'Customers table'
+        StorageDescriptor: 
+          Columns: 
+            - Name: 'Cust_Id'
+              Type: 'int'
+            - Name: 'Customer'
+              Type: 'string'
+            - Name: 'Balance'
+              Type: 'int'
+            - Name: 'Past_Due'
+              Type: 'int'
+            - Name: 'Vip'
+              Type: 'string'
+          Location: !Sub "s3://${S3BucketName}/customers/"
+          InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
+          OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+          SerdeInfo: 
+            SerializationLibrary: 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+            Parameters: 
+              'field.delim': ','
+          Parameters: 
+            'classification': 'csv'
+        TableType: 'EXTERNAL_TABLE'
+        Parameters: 
+          'EXTERNAL': 'TRUE'
+  
+  GlueTableProcedures:
+    Type: 'AWS::Glue::Table'
+    DependsOn: GlueCrawlerProcedures
+    Properties: 
+      CatalogId: !Ref 'AWS::AccountId'
+      DatabaseName: !Ref AthenaDatabaseName
+      TableInput: 
+        Name: 'procedures'
+        Description: 'Procedures table'
+        StorageDescriptor: 
+          Columns: 
+            - Name: 'Procedure_Id'
+              Type: 'string'
+            - Name: 'Procedure'
+              Type: 'string'
+            - Name: 'Category'
+              Type: 'string'
+            - Name: 'Price'
+              Type: 'int'
+            - Name: 'Duration'
+              Type: 'int'
+            - Name: 'Insurance'
+              Type: 'string'
+            - Name: 'Customer_Id'
+              Type: 'int'
+          Location: !Sub "s3://${S3BucketName}/procedures/"
+          InputFormat: 'org.apache.hadoop.mapred.TextInputFormat'
+          OutputFormat: 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+          SerdeInfo: 
+            SerializationLibrary: 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+            Parameters: 
+              'field.delim': ','
+          Parameters: 
+            'classification': 'csv'
+        TableType: 'EXTERNAL_TABLE'
+        Parameters: 
+          'EXTERNAL': 'TRUE'
+  
+Outputs:
+  AthenaDatabaseName:
+    Description: 'Name of the Athena database created'
+    Value: !Ref AthenaDatabaseName
+
+  S3BucketName:
+    Description: 'Name of the S3 bucket created'
+    Value: !Ref S3BucketName
+
+  AthenaOutputBucketName:
+    Description: 'Name of the S3 bucket for Athena query results'
+    Value: !Ref AthenaOutputBucketName
