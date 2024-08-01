@@ -97,8 +97,8 @@ if end_session_button:
 st.write("## Conversation History")
 
 # Load images outside the loop to optimize performance
-human_image = Image.open('images/human_face.png')
-robot_image = Image.open('images/robot_face.jpg')
+human_image = Image.open('human_face.png')
+robot_image = Image.open('robot_face.jpg')
 circular_human_image = crop_to_circle(human_image)
 circular_robot_image = crop_to_circle(robot_image)
 
