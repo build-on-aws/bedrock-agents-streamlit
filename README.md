@@ -628,57 +628,65 @@ FOMC Report:
 ![environment](images/environment.png)
 
 
-## Step 9: Setting Up and Running the Streamlit App
-1. **Obtain the Streamlit App ZIP File**: Download the zip file of the project [here](https://github.com/build-on-aws/bedrock-agents-streamlit/archive/refs/heads/main.zip).
+## Step 9: Setting Up and Running the Streamlit App on EC2
+1. **Obtain CF temaplte to launch the streamlit app**: Download the cloudformation template from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ec2-streamlit-template.yaml).
 
 
 
-2. **Upload to Cloud9**:
-   - In your Cloud9 environment, upload the ZIP file.
+2. **Deploy template via Cloudformation**:
+   - In your mangement console, search, then go to the CloudFormation service.
+   - Create a stack with new resources (standard)
 
-![Upload file to Cloud9](images/upload_file_cloud9.png)
+   ![Create stack](images/create_stack.png)
 
-   - Before going to the next step, make sure that the project finished uploading.
-     
-![Load wait](images/load_wait.png)
+   - Prepare template: Choose existing template -> Specify template: Upload a template file -> upload the template donaloaded from the previous step. 
+
+  ![Create stack config](images/create_stack_config.png)
+
+   - Next, Provide a stack name like ***ec2-streamlit***. Keep the instance type on the default of t3.small, then go to Next.
+
+   ![Stack details](images/stack_details.png)
+
+   - On the ***Configure stack options*** screen, leave every setting as default, then go to Next. 
+
+   - Scroll down to the capabilities section, and acknowledge the warning message before submitting. 
+
+   - Once the stack is complete, go to the next step.
+
+![Stack complete](images/stack_complete.png)
 
 
-3. **Unzip the File**:
-   - Use the following command  to extract the contents:
+3. **Edit the app to update agent IDs**:
+   - Navigate to the EC2 instance management console. Under instances, you should see `EC2-Streamlit-App`. Select the checkbox next to it, then connect to it via `EC2 Instance Connect`
+
+   ![ec2 connect clip](images/ec2_connect_clip.gif)
+
+   - Next, use the following command  to edit the InvokeAgent.py file:
+     ```bash
+     sudo vi app/streamlit_app/InvokeAgent.py
+     ```
+
+   - Press "i" to go into edit mode.
+
+   - Update the ***AGENT ID*** and ***Agent ALIAS ID*** values. 
+   
+   ![file_edit](images/file_edit.png)
+   
+   - After, hit `Esc`, then save the file changes with the following command:
+     ```bash
+     :wq!
+     ```   
+
+   - Start the streamlit app:
+     ```bash
+    streamlit run app/streamlit_app/app.py
+     ```
   
-     ```bash
-     unzip bedrock-agents-streamlit-main.zip
-     ```
-     
-4. **Navigate to streamlit_app Folder**:
-   - Change to the directory containing the Streamlit app. Use this command
-     ``` bash
-     cd ~/environment/bedrock-agents-streamlit-main/streamlit_app
-     ```
-     
-5. **Update Configuration**:
-   - Open the `InvokeAgent.py` file.
-   - Update the `agentId` and `agentAliasId` variables with the appropriate values, then save it.
+   - You should see an external URL. Copy & paste the URL into a web browser to start the streamlit application.
 
-![Update Agent ID and alias](images/update_agentId_and_alias.png)
+![External IP](images/external_ip.png)
 
-6. **Install Streamlit** (if not already installed):
-   - Run the following command to install all of the dependencies needed:
 
-     ```bash
-     pip install streamlit boto3 pandas
-     ```
-
-7. **Run the Streamlit App**:
-   - Execute the command:
-     ```bash
-     streamlit run app.py --server.address=0.0.0.0 --server.port=8080
-     ```
-   - Streamlit will start the app, and you can view it by selecting **Preview** within the Cloud9 IDE at the top, then **Preview Running Application**.
-  
-     ![Preview button](images/preview_btn.png)
-     
-     
    - Once the app is running, please test some of the sample prompts provided. (On 1st try, if you receive an error, try again.)
 
 ![Running App ](images/running_app.png)
