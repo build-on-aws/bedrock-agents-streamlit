@@ -603,34 +603,8 @@ FOMC Report:
   `(The logic for this method is not implemented to send emails)`  
 
 
-
-## Step 8: Setting Up Cloud9 Environment (IDE)
-
-1.	Navigate in the Cloud9 management console. Then, select **Create Environment**
-
-![create_environment](images/create_environment.png)
-
-2. Here, you will enter the following values in each field
-   - **Name**: Bedrock-Environment (Enter any name)
-   - **Instance type**: t3.small
-   - **Platform**: Ubuntu Server 22.04 LTS
-   - **Timeout**: 1 hour  
-
-![ce2](images/ce2.png)
-
-   - Once complete, select the **Create** button at the bottom of the screen. The environment will take a couple of minutes to spin up. If you get an error spinning up Cloud9 due to lack of resources, you can also choose t2.micro for the instance type and try again. (The Cloud9 environment has Python 3.10.12 version at the time of this publication)
-
-
-![ce3](images/ce3.png)
-
-3. Navigate back to the Cloud9 Environment, then select **open** next to the Cloud9 you just created. Now, you are ready to setup the Streamlit app!
-
-![environment](images/environment.png)
-
-
-## Step 9: Setting Up and Running the Streamlit App on EC2
-1. **Obtain CF temaplte to launch the streamlit app**: Download the cloudformation template from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ec2-streamlit-template.yaml).
-
+## Step 8: Setup and Run Streamlit App on EC2
+1. **Obtain CF temaplte to launch the streamlit app**: Download the Cloudformation template from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ec2-streamlit-template.yaml). This template will be used to deploy an EC2 instance that has the Streamlit code to run the UI.
 
 
 2. **Deploy template via Cloudformation**:
@@ -657,18 +631,16 @@ FOMC Report:
 
 
 3. **Edit the app to update agent IDs**:
-   - Navigate to the EC2 instance management console. Under instances, you should see `EC2-Streamlit-App`. Select the checkbox next to it, then connect to it via `EC2 Instance Connect`
+   - Navigate to the EC2 instance management console. Under instances, you should see `EC2-Streamlit-App`. Select the checkbox next to it, then connect to it via `EC2 Instance Connect`.
 
-   ![ec2 connect clip](images/ec2_connect_clip.gif)
+   ![ec2 connect clip](images/ec2_connect.gif)
 
    - Next, use the following command  to edit the InvokeAgent.py file:
      ```bash
      sudo vi app/streamlit_app/InvokeAgent.py
      ```
 
-   - Press "i" to go into edit mode.
-
-   - Update the ***AGENT ID*** and ***Agent ALIAS ID*** values. 
+   - Press ***i*** to go into edit mode. Then, update the ***AGENT ID*** and ***Agent ALIAS ID*** values. 
    
    ![file_edit](images/file_edit.png)
    
@@ -677,9 +649,9 @@ FOMC Report:
      :wq!
      ```   
 
-   - Start the streamlit app:
+   - Now, start the streamlit app:
      ```bash
-    streamlit run app/streamlit_app/app.py
+     streamlit run app/streamlit_app/app.py
      ```
   
    - You should see an external URL. Copy & paste the URL into a web browser to start the streamlit application.
