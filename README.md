@@ -603,7 +603,7 @@ FOMC Report:
   `(The logic for this method is not implemented to send emails)`  
 
 
-## Step 8: Setup and Run Streamlit App on EC2
+## Step 8: Setup and Run Streamlit App on EC2 (Optional)
 1. **Obtain CF temaplte to launch the streamlit app**: Download the Cloudformation template from [here](https://github.com/build-on-aws/bedrock-agents-streamlit/blob/main/ec2-streamlit-template.yaml). This template will be used to deploy an EC2 instance that has the Streamlit code to run the UI.
 
 
