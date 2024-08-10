@@ -53,7 +53,7 @@ def format_response(response_body):
 # Handling user input and responses
 if submit_button and prompt:
     event = {
-        "sessionId": "MYSESSION115",
+        "sessionId": "MYSESSION",
         "question": prompt
     }
     response = agenthelper.lambda_handler(event, None)
@@ -86,7 +86,7 @@ if submit_button and prompt:
 if end_session_button:
     st.session_state['history'].append({"question": "Session Ended", "answer": "Thank you for using AnyCompany Support Agent!"})
     event = {
-        "sessionId": "MYSESSION115",
+        "sessionId": "MYSESSION",
         "question": "placeholder to end session",
         "endSession": True
     }
