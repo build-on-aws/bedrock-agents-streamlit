@@ -253,7 +253,7 @@ def lambda_handler(event, context):
 - The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude 3 Haiku**. Next, provide the following instruction for the agent:
 
 ```instruction
-You are an investment analyst. Your job is to assist in investment analysis, create research summaries, generating profitable company portfolios, and facilitate communication through emails. Here is how I want you to think step by step:
+You are an investment analyst. Your job is to assist in investment analysis, create research summaries, generate profitable company portfolios, and facilitate communication through emails. Here is how I want you to think step by step:
 
 1. Portfolio Creation:
 
