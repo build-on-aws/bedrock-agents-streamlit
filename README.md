@@ -248,7 +248,7 @@ def lambda_handler(event, context):
 
 ### Step 4: Setup Bedrock Agent and Action Group 
 
-- Navigate to the Bedrock console. Go to the toggle on the left, and under ***Orchestration*** select ***Agents***. Provide an agent name, like ***PortfolioCreator*** then create the agent.
+- Navigate to the Bedrock console. Go to the toggle on the left, and under ***Builder tools*** select ***Agents***. Provide an agent name, like ***PortfolioCreator*** then create the agent.
 
 - The agent description is optional, and we will use the default new service role. For the model, select **Anthropic: Claude 3 Haiku**. Next, provide the following instruction for the agent:
 
@@ -455,7 +455,7 @@ You are an investment analyst. Your job is to assist in investment analysis, cre
 ![advance_prompt_btn](images/advance_prompt_btn.png)
 
 
-- Select the **Orchestration** tab. Toggle on the radio button  **Override orchestration template defaults**. Make sure  **Activate orchestration template** is enabled as well.
+- Select the **Builder tools** tab. Toggle on the radio button  **Override orchestration template defaults**. Make sure  **Activate orchestration template** is enabled as well.
 
 - In the ***Prompt template editor***, scroll down to line 22-23, then copy/paste in the following portfolio example and email format:
   
@@ -534,7 +534,7 @@ FOMC Report:
 
 ## Step 7: Testing the Setup
 ### Testing the Knowledge Base
-- While in the Bedrock console, select **Knowledge base** under the Orchestration tab, then the KB you created. Scroll down to the Data source section, and make sure to select the **Sync** button.
+- While in the Bedrock console, select ***Knowledge base*** under the **Builder tools** tab, then the KB you created. Scroll down to the Data source section, and make sure to select the **Sync** button.
 
 ![KB sync](images/kb_sync.png)
 
@@ -558,7 +558,7 @@ FOMC Report:
   ```
 
 ### Testing the Bedrock Agent
-- While in the Bedrock console, select **Agents** under the Orchestration tab, then the agent you created. You should be able to enter prompts in the user interface provided to test your knowledge base and action groups from the agent.
+- While in the Bedrock console, select ***Agents*** under the **Builder tools** tab, then the agent you created. You should be able to enter prompts in the user interface provided to test your knowledge base and action groups from the agent.
 
 ![Agent test](images/agent_test.png)
 
@@ -681,7 +681,7 @@ After completing the setup and testing of the Bedrock Agent and Streamlit app, f
 - Select the created agent, then choose 'Delete'.
 
 4.	Deregister Knowledge Base in Bedrock:
-- Access the Bedrock console, then navigate to “Knowledge base” under the Orchestration tab.
+- Access the Bedrock console, then navigate to “Knowledge base” under the Builder tools tab.
 - Select, then delete the created knowledge base.
 
 5.	Clean Up Cloud9 Environment:
