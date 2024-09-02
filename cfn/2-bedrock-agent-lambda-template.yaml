@@ -28,8 +28,7 @@ Resources:
               Service: lambda.amazonaws.com
             Action: 'sts:AssumeRole'
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonAthenaFullAccess
-        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AWSLambdaExecute
         - !Ref CloudWatchLogsPolicy
       Policies:
         - PolicyName: 'LambdaCustomPolicy'
@@ -213,7 +212,7 @@ Resources:
     Type: "AWS::Bedrock::Agent"
     DependsOn: LambdaInvokePermission
     Properties:
-      AgentName: !Sub 'AthenaAgent-${AWS::AccountId}'
+      AgentName: !Sub 'PortfolioCreator-${AWS::AccountId}'
       AgentResourceRoleArn: !GetAtt BedrockAgentExecutionRole.Arn
       AutoPrepare: 'True'
       FoundationModel: 'anthropic.claude-3-haiku-20240307-v1:0'
@@ -507,7 +506,7 @@ Outputs:
     Description: 'Name of the Bedrock Agent created'
     Value: !Ref BedrockAgent
   ActionCallArn:
-    Description: 'ARN of the Athena Query Lambda function'
+    Description: 'ARN of the invoke Lambda function'
     Value: !GetAtt ActionCall.Arn
 
 
