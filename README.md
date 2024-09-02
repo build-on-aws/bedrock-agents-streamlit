@@ -87,7 +87,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![KB setup](images/KB_setup.png)
 
-- For the embedding model, choose **Titan Embeddings G1 - Text v1.2**. Leave the other options as default, and scroll down to select **Next**.
+- For the embedding model, choose **Titan Text Embedding V2**. Leave the other options as default, and scroll down to select **Next**.
  
 ![Vector Store Config](/static/vector_store_config.gif)
 
