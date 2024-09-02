@@ -10,6 +10,10 @@ Parameters:
       - t3.small
       - t3.medium
       - t3.large
+  RegionIP:
+    Description: Allowed CIDR range for specific region. Defaulted to us-west-2 AWS CIDR range
+    Type: String
+    Default: 18.237.140.160/29 #us-west-2 CIDR
 
 Resources:
   # Create a VPC
@@ -86,7 +90,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: 18.237.140.160/29
+          CidrIp: !Ref RegionIP # us-west-2 region
 
   # Create an IAM Role for the EC2 instance to use SSM and Amazon Bedrock
   EC2Role:
