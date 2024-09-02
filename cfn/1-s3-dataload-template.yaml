@@ -1,0 +1,185 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template that creates an s3 bucket, then loads data'
+
+Parameters:
+  Alias:
+    Type: String
+    Description: The alias to append to the S3 bucket name.
+
+Resources:
+  # S3 Bucket
+  KnowledgeBaseBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'knowledgebase-bedrock-agent-${Alias}'
+
+  # IAM Role for Lambda Execution
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaS3Policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:ListBucket
+                Resource:
+                  - !Sub 'arn:aws:s3:::knowledgebase-bedrock-agent-${Alias}'
+                  - !Sub 'arn:aws:s3:::knowledgebase-bedrock-agent-${Alias}/*'
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                Resource: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:GitHubToS3Lambda-${Alias}'
+
+  # GitHubToS3 Lambda Function
+  GitHubToS3Lambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'GitHubToS3Lambda-${Alias}'
+      Handler: index.handler
+      Runtime: python3.12
+      Role: !GetAtt LambdaExecutionRole.Arn
+      MemorySize: 1024
+      Timeout: 300
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref KnowledgeBaseBucket
+      Code:
+        ZipFile: |
+          import boto3
+          import os
+          import zipfile
+          import tempfile
+          import urllib.request
+
+          s3 = boto3.client('s3')
+          bucket_name = os.environ['BUCKET_NAME']
+
+          def handler(event, context):
+              url = "https://github.com/build-on-aws/bedrock-agents-streamlit/archive/refs/heads/main.zip"
+              with tempfile.TemporaryDirectory() as tmpdir:
+                  local_zip_path = os.path.join(tmpdir, 'main.zip')
+                  
+                  # Download the file using urllib
+                  with urllib.request.urlopen(url) as response:
+                      with open(local_zip_path, 'wb') as out_file:
+                          out_file.write(response.read())
+
+                  # Extract and upload to S3
+                  with zipfile.ZipFile(local_zip_path, 'r') as zip_ref:
+                      zip_ref.extractall(tmpdir)
+
+                  s3docs_path = os.path.join(tmpdir, 'bedrock-agents-streamlit-main', 'S3docs')
+                  for root, dirs, files in os.walk(s3docs_path):
+                      for file in files:
+                          file_path = os.path.join(root, file)
+                          s3_key = os.path.relpath(file_path, s3docs_path)
+                          s3.upload_file(file_path, bucket_name, s3_key)
+
+  # InvokeGitHubToS3Lambda Lambda Function
+  InvokeGitHubToS3Lambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'InvokeGitHubToS3Lambda-${Alias}'
+      Handler: index.handler
+      Runtime: python3.12
+      Role: !GetAtt LambdaExecutionRole.Arn
+      MemorySize: 128
+      Timeout: 300
+      Environment:
+        Variables:
+          FUNCTION_NAME: !Ref GitHubToS3Lambda
+      Code:
+        ZipFile: |
+          import boto3
+          import os
+          import time
+          import urllib.request
+          import json
+
+          lambda_client = boto3.client('lambda')
+
+          def send_response(event, context, response_status, response_data, physical_resource_id=None):
+              response_url = event['ResponseURL']
+              response_body = {
+                  'Status': response_status,
+                  'Reason': f'See the details in CloudWatch Log Stream: {context.log_stream_name}',
+                  'PhysicalResourceId': physical_resource_id or context.log_stream_name,
+                  'StackId': event['StackId'],
+                  'RequestId': event['RequestId'],
+                  'LogicalResourceId': event['LogicalResourceId'],
+                  'Data': response_data
+              }
+
+              json_response_body = json.dumps(response_body)
+              json_response_body_bytes = json_response_body.encode('utf-8')
+
+              headers = {
+                  'content-type': '',
+                  'content-length': str(len(json_response_body_bytes))
+              }
+
+              req = urllib.request.Request(
+                  url=response_url,
+                  data=json_response_body_bytes,
+                  headers=headers,
+                  method='PUT'
+              )
+
+              try:
+                  with urllib.request.urlopen(req) as response:
+                      print(f"Status code: {response.getcode()}")
+                      print(f"Response: {response.read().decode('utf-8')}")
+              except Exception as e:
+                  print(f"send_response failed: {e}")
+
+          def handler(event, context):
+              try:
+                  # Wait for 10 seconds
+                  time.sleep(10)
+
+                  # Retrieve the function name from the environment variable
+                  function_name = os.environ['FUNCTION_NAME']
+
+                  # Invoke the GitHubToS3Lambda function
+                  lambda_client.invoke(
+                      FunctionName=function_name,
+                      InvocationType='Event'  # Invoke asynchronously
+                  )
+
+                  # Send success signal back to CloudFormation
+                  send_response(event, context, "SUCCESS", {})
+              except Exception as e:
+                  print(f"Error: {e}")
+                  send_response(event, context, "FAILED", {"Message": str(e)})
+
+  WaitAndInvokeLambda:
+    Type: Custom::InvokeGitHubToS3Lambda
+    Properties:
+      ServiceToken: !GetAtt InvokeGitHubToS3Lambda.Arn
+      PhysicalResourceId: !Ref KnowledgeBaseBucket
+
+Outputs:
+  KnowledgeBaseBucketName:
+    Description: "The name of the S3 bucket for the Knowledge Base"
+    Value: !Ref KnowledgeBaseBucket
+
+  KnowledgeBaseBucketArn:
+    Description: "The ARN of the S3 bucket for the Knowledge Base"
+    Value: !GetAtt KnowledgeBaseBucket.Arn
