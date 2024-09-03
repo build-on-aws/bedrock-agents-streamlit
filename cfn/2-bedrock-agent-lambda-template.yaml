@@ -501,12 +501,23 @@ Resources:
             PromptState: "ENABLED"
             PromptType: "ORCHESTRATION"
 
+  # Bedrock Agent Alias Resource
+  BedrockAgentAlias:
+    Type: 'AWS::Bedrock::AgentAlias'
+    DependsOn: BedrockAgent
+    Properties:
+      AliasName: !Sub 'PortfolioCreatorAlias1'
+      TargetAgentArn: !GetAtt BedrockAgent.Arn
+
 Outputs:
   BedrockAgentName:
     Description: 'Name of the Bedrock Agent created'
     Value: !Ref BedrockAgent
+  BedrockAgentAliasName:
+    Description: 'Name of the Bedrock Agent Alias created'
+    Value: !Ref BedrockAgentAlias
   ActionCallArn:
     Description: 'ARN of the invoke Lambda function'
     Value: !GetAtt ActionCall.Arn
-
+    
 
