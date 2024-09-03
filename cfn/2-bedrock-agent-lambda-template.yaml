@@ -506,8 +506,8 @@ Resources:
     Type: 'AWS::Bedrock::AgentAlias'
     DependsOn: BedrockAgent
     Properties:
-      AliasName: !Sub 'PortfolioCreatorAlias1'
-      TargetAgentArn: !GetAtt BedrockAgent.Arn
+      AgentAliasName: !Sub 'Alias-1'
+      AgentId: !GetAtt BedrockAgent.AgentId
 
 Outputs:
   BedrockAgentName:
@@ -519,5 +519,4 @@ Outputs:
   ActionCallArn:
     Description: 'ARN of the invoke Lambda function'
     Value: !GetAtt ActionCall.Arn
-    
 
