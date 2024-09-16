@@ -492,7 +492,7 @@ Resources:
               }
             InferenceConfiguration:
               MaximumLength: 2048
-              StopSequences: [ "</function_calls>", "</guidelines>", "</thinking>" ]
+              StopSequences: [ "</invoke>", "</answer>", "</error>" ]
               Temperature: 0
               TopK: 250
               TopP: 1
