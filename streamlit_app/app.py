@@ -147,7 +147,6 @@ st.write("## Test Action Group Prompts")
 action_group_prompts = [
     {"Prompt": "Create a portfolio with 3 companies in the real estate industry"},
     {"Prompt": "Create a portfolio of 4 companies that are in the technology industry"},
-    {"Prompt": "Create a new investment portfolio of companies"},
     {"Prompt": "Return me information on the company on TechStashNova Inc."}
 ]
 
