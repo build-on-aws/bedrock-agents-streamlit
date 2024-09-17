@@ -13,7 +13,7 @@ Parameters:
   MapPublicIpOnLaunch:
     Description: Disabled by default. Enable for public IP assignment for EC2 instance connect
     Type: String
-    Default: false
+    Default: true
     AllowedValues:
       - false
       - true
