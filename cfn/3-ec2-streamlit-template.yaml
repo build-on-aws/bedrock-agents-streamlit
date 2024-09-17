@@ -11,7 +11,7 @@ Parameters:
       - t3.medium
       - t3.large
   MapPublicIpOnLaunch:
-    Description: Disabled by default. Enable for public IP assignment for EC2 instance connect
+    Description: Enabled by default. Keep enabled for public IP assignment for EC2 instance connect
     Type: String
     Default: true
     AllowedValues:
@@ -42,7 +42,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       CidrBlock: !Ref VPCSubnet
-      MapPublicIpOnLaunch: !Ref MapPublicIpOnLaunch # Disable/Enables public IP to EC2
+      MapPublicIpOnLaunch: !Ref MapPublicIpOnLaunch
       Tags:
         - Key: Name
           Value: Bedrock-Subnet
@@ -77,8 +77,7 @@ Resources:
     DependsOn: AttachGateway
     Properties:
       RouteTableId: !Ref RouteTable
-      # This is a specific AWS IP range
-      DestinationCidrBlock: 50.19.0.0/16  # Example for us-east-1 region, EC2 service
+      DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
 
   # Associate the Subnet with the Route Table
@@ -98,18 +97,18 @@ Resources:
         - IpProtocol: tcp
           FromPort: 8501
           ToPort: 8501
-          CidrIp: 18.237.140.160/32
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: 18.206.107.24/29
+          CidrIp: 18.237.140.160/29  # Restrict SSH access to a specific IP (CIDR for us-west-2)
 
   # Security Group Egress Rule
   InstanceSecurityGroupEgress:
     Type: 'AWS::EC2::SecurityGroupEgress'
     Properties:
       GroupId: !Ref InstanceSecurityGroup
-      IpProtocol: -1  # Allows all outbound traffic
+      IpProtocol: -1
       FromPort: -1
       ToPort: -1
       CidrIp: 0.0.0.0/0
@@ -127,9 +126,9 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonBedrockFullAccess
-        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore  # Managed policy for SSM permissions
-        - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess  # Managed policy for S3 read access
-        - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess  # Managed policy for EC2 read access
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
 
   # Create an Instance Profile for the EC2 instance
   InstanceProfile:
@@ -148,8 +147,8 @@ Resources:
       SecurityGroupIds:
         - !Ref InstanceSecurityGroup
       SubnetId: !Ref Subnet
-      EbsOptimized: true  # Enable EBS optimization
-      Monitoring: true  # Enable detailed monitoring
+      EbsOptimized: true
+      Monitoring: true
       Tags:
         - Key: Name
           Value: EC2-Streamlit-App
@@ -159,7 +158,7 @@ Resources:
           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
           apt-get update -y
           apt-get upgrade -y
-          apt-get install -y python3-pip git
+          apt-get install -y python3-pip git ec2-instance-connect
           git clone https://github.com/build-on-aws/bedrock-agents-streamlit.git /home/ubuntu/app
           pip3 install -r /home/ubuntu/app/streamlit_app/requirements.txt
           cd /home/ubuntu/app/streamlit_app
@@ -168,3 +167,7 @@ Outputs:
   InstanceId:
     Description: InstanceId of the newly created EC2 instance
     Value: !Ref EC2Instance
+  
+  PublicDnsName:
+    Description: The public DNS name of the EC2 instance
+    Value: !GetAtt EC2Instance.PublicDnsName
