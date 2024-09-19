@@ -82,7 +82,7 @@ Resources:
       Role: !GetAtt LambdaExecutionRole.Arn
       Runtime: python3.12
       MemorySize: 1024
-      Timeout: 120
+      Timeout: 60
       DeadLetterConfig:
         TargetArn: !GetAtt ActionCallDLQ.Arn
       Code:
