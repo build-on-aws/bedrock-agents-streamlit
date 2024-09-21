@@ -15,7 +15,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 ## Configuration and Setup
 
 ### Step 1: Creating S3 Buckets
-- Please make sure that you are in the **us-west-2** region. If another region is required, you will need to update the region variable `theRegion` in the `InvokeAgent.py` file code. 
+- Please make sure that you are in the **us-west-2** region. If another region is required, you will need to update the region variable `theRegion` in the `invoke_agent.py` file code. 
 - **Domain Data Bucket**: Create an S3 bucket to store the domain data. For example, call the S3 bucket `knowledgebase-bedrock-agent-{alias}`. We will use the default settings. 
 
 ![Bucket create 1](images/bucket_pic_1.png)
@@ -637,9 +637,9 @@ FOMC Report:
   ![ec2 ssh error](images/ec2_ssh_error.gif)
 
   
-   - Next, use the following command  to edit the InvokeAgent.py file:
+   - Next, use the following command  to edit the invoke_agent.py file:
      ```bash
-     sudo vi app/streamlit_app/InvokeAgent.py
+     sudo vi app/streamlit_app/invoke_agent.py
      ```
 
    - Press ***i*** to go into edit mode. Then, update the ***AGENT ID*** and ***Agent ALIAS ID*** values. 
