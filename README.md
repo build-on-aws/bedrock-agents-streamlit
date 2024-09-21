@@ -632,6 +632,11 @@ FOMC Report:
 
    ![ec2 connect clip](images/ec2_connect.gif)
 
+  - If you see a message that says **EC2 Instance Connect service IP addresses are not authorized**, then you will need to re-deploy the template and select the correct CIDR range for the EC2 based on the region you are in. This will allow you to cannect to the EC2 instance via SSH. By default, it is the allowed CIDR range for **us-west-2** region. However, if you are in the **us-east-1** region for example, the CIDR range will need to be **18.206.107.24/29** when deploying the AWS Cloudformation template. Additional CIDR ranges for each region can be found [here](https://raw.githubusercontent.com/joetek/aws-ip-ranges-json/refs/heads/master/ip-ranges-ec2-instance-connect.json).  
+
+  ![ec2 ssh error](images/ec2_ssh_error.gif)
+
+  
    - Next, use the following command  to edit the InvokeAgent.py file:
      ```bash
      sudo vi app/streamlit_app/InvokeAgent.py
