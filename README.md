@@ -66,7 +66,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![Model access](images/model_access.png)
 
-- Select the checkbox for the base model columns **Amazon: Titan Text Embedding V2** and **Anthropic: Claude 3 Haiku**. This will provide you access to the required models. After, scroll down to the bottom right and select **Request model access**.
+- Select the checkbox for the base model columns **Amazon: Titan Embeddings G1 - Text** and **Anthropic: Claude 3 Haiku**. This will provide you access to the required models. After, scroll down to the bottom right and select **Request model access**.
 
 
 - After, verify that the Access status of the Models are green with **Access granted**.
@@ -87,7 +87,7 @@ This guide details the setup process for an Amazon Bedrock agent on AWS, which w
 
 ![KB setup](images/KB_setup.png)
 
-- For the embedding model, choose **Titan Text Embedding V2**. Leave the other options as default, and scroll down to select **Next**.
+- For the embedding model, choose **Amazon: Titan Embeddings G1 - Text**. Leave the other options as default, and scroll down to select **Next**.
  
 ![Vector Store Config](/static/vector_store_config.gif)
 
