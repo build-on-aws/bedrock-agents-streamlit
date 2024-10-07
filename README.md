@@ -1,6 +1,26 @@
 
 # Setup Amazon Bedrock agent, knowledge base, and action group with Streamlit
 
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Prerequisites](#prerequisites)
+3. [Diagram](#diagram)
+4. [Configuration and Setup](#configuration-and-setup)
+   - [Step 1: Creating S3 Buckets](#step-1-creating-s3-buckets)
+   - [Step 2: Knowledge Base Setup in Bedrock Agent](#step-2-knowledge-base-setup-in-bedrock-agent)
+   - [Step 3: Lambda Function Configuration](#step-3-lambda-function-configuration)
+   - [Step 4: Setup Bedrock Agent and Action Group](#step-4-setup-bedrock-agent-and-action-group)
+5. [Step 5: Setup Knowledge Base with Bedrock Agent](#step-5-setup-knowledge-base-with-bedrock-agent)
+6. [Step 6: Create an Alias](#step-6-create-an-alias)
+7. [Step 7: Testing the Setup](#step-7-testing-the-setup)
+   - [Testing the Knowledge Base](#testing-the-knowledge-base)
+   - [Testing the Bedrock Agent](#testing-the-bedrock-agent)
+8. [Step 8: Setup and Run Streamlit App on EC2 (Optional)](#step-8-setup-and-run-streamlit-app-on-ec2-optional)
+9. [Cleanup](#cleanup)
+10. [Security](#security)
+11. [License](#license)
+
+
 ## Introduction
 In this project, we will set up an Amazon Bedrock agent with an action group that dynamically creates an investment company portfolio based on specific parameters. The agent also has Q&A capabilities for Federal Open Market Committee (FOMC) reports, leveraging a Streamlit framework for the user interface. Additionally, this exercise includes a method for sending emails, although the email functionality will not be fully configured.
 
