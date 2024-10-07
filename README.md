@@ -655,13 +655,9 @@ FOMC Report:
      :wq!
      ```   
 
-   - Now, start the streamlit app by running the following two commands:
+   - Now, start the streamlit app by running the following command:
      ```bash
-     cd app/streamlit_app
-     ```
-
-     ```bash
-     streamlit run app.py
+     streamlit run app/streamlit_app/app.py
      ```
   
    - You should see an external URL. Copy & paste the URL into a web browser to start the streamlit application.
