@@ -21,7 +21,7 @@
 11. [License](#license)
 
 
-## Introduction
+## Overview
 In this project, we will set up an Amazon Bedrock agent with an action group that dynamically creates an investment company portfolio based on specific parameters. The agent also has Q&A capabilities for Federal Open Market Committee (FOMC) reports, leveraging a Streamlit framework for the user interface. Additionally, this exercise includes a method for sending emails, although the email functionality will not be fully configured.
 
 For those who prefer an Infrastructure-as-Code (IaC) solution, we provide an AWS CloudFormation template that will deploy most of the necessary resources, including S3 buckets, an action group, and a Lambda function. You will still need to manually create the knowledge base with the already provided resources, but the steps are relatively straightforward. If you would like to deploy this workflow via **AWS CloudFormation**, please refer to the workshop guide [here](https://catalog.us-east-1.prod.workshops.aws/workshops/f8a7a3f8-1603-4b10-95cb-0b471db272d8/en-US/module7-deploy-cfn/index-en-9).
