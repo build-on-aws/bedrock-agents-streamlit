@@ -269,6 +269,14 @@ def lambda_handler(event, context):
 
 - Once your configurations look similar to the above screenshot, select ***Save*** at the bottom.
 
+- Next, we will adjust the configuration on the Lambda so that it has enough time, and CPU to handle the request. Navigate back to the Lambda function screen, go to the ***Configurations*** tab, then ***General configuration*** and select Edit.
+
+![Lambda config 1](images/lambda_config_1.png)
+
+
+- Update ***Memory*** to **1024MB**, and ***Timeout*** to **1 minute**. Leave the other settings as default, then select ***Save***.
+
+![Lambda config 2](images/lambda_config_2.png)
 
 ### Step 4: Setup Bedrock Agent and Action Group 
 
