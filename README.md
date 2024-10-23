@@ -271,7 +271,7 @@ def lambda_handler(event, context):
 
 - Next, we will adjust the configuration on the Lambda so that it has enough time, and CPU to handle the request. Navigate back to the Lambda function screen, go to the ***Configurations*** tab, then ***General configuration*** and select Edit.
 
-![Lambda config 1](images/lambda_config_1.png)
+![Lambda config 1](images/lambda_config.png)
 
 
 - Update ***Memory*** to **1024MB**, and ***Timeout*** to **1 minute**. Leave the other settings as default, then select ***Save***.
