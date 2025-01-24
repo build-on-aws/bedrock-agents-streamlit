@@ -324,6 +324,7 @@ You are an investment analyst. Your job is to assist in investment analysis, cre
     "/companyResearch": {
       "post": {
         "description": "Get financial data for a company by name",
+        "operationId": "companyResearch",
         "parameters": [
           {
             "name": "name",
@@ -352,6 +353,7 @@ You are an investment analyst. Your job is to assist in investment analysis, cre
     "/createPortfolio": {
       "post": {
         "description": "Create a company portfolio of top profit earners by specifying number of companies and industry",
+        "operationId": "createPortfolio",
         "parameters": [
           {
             "name": "numCompanies",
@@ -390,6 +392,7 @@ You are an investment analyst. Your job is to assist in investment analysis, cre
     "/sendEmail": {
       "post": {
         "description": "Send an email with FOMC search summary and created portfolio",
+        "operationId": "sendEmail",
         "parameters": [
           {
             "name": "emailAddress",
