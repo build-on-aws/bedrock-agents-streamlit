@@ -109,7 +109,7 @@ for index, chat in enumerate(reversed(st.session_state['history'])):
         st.image(circular_human_image, width=125)
     with col2_q:
         # Generate a unique key for each question text area
-        st.text_area("Q:", value=chat["question"], height=50, key=f"question_{index}", disabled=True)
+        st.text_area("Q:", value=chat["question"], height=68, key=f"question_{index}", disabled=True)
 
     # Creating columns for Answer
     col1_a, col2_a = st.columns([2, 10])
