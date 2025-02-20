@@ -3,6 +3,7 @@ import json
 import base64
 import io
 import sys
+import boto3
 
 from boto3.session import Session
 from botocore.auth import SigV4Auth
