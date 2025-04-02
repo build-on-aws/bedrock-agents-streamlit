@@ -4,6 +4,7 @@ import base64
 import io
 import sys
 import boto3
+import requests
 
 from boto3.session import Session
 from botocore.auth import SigV4Auth
@@ -11,7 +12,50 @@ from botocore.awsrequest import AWSRequest
 from botocore.credentials import Credentials
 from requests import request
 
-ssm = boto3.client('ssm')
+# ---------------------------------------------------------------------
+# REGION CONFIGURATION - Dynamic detection with fallback:
+# ---------------------------------------------------------------------
+def get_current_region():
+    """
+    Attempt to dynamically determine the current AWS region with multiple fallback options.
+    """
+    # Try to get region from instance metadata (works on EC2)
+    try:
+        r = requests.get('http://169.254.169.254/latest/meta-data/placement/region', timeout=0.5)
+        if r.status_code == 200:
+            return r.text
+    except:
+        pass
+    
+    # Try to get region from environment variables
+    if 'AWS_REGION' in os.environ:
+        return os.environ['AWS_REGION']
+    if 'AWS_DEFAULT_REGION' in os.environ:
+        return os.environ['AWS_DEFAULT_REGION']
+    
+    # Try to get region from boto3 session
+    try:
+        session = boto3.session.Session()
+        if session.region_name:
+            return session.region_name
+    except:
+        pass
+    
+    # Default to us-west-2 if all else fails
+    return "us-west-2"
+
+# Set the region dynamically
+theRegion = get_current_region()
+print(f"Using AWS region: {theRegion}")
+
+# Set environment variable for other AWS services
+os.environ["AWS_REGION"] = theRegion
+
+# Configure boto3 to use the specified region
+boto3.setup_default_session(region_name=theRegion)
+
+# Now create the SSM client with the region explicitly specified
+ssm = boto3.client('ssm', region_name=theRegion)
 
 # ---------------------------------------------------------------------
 # Replace with your actual Agent ID and Alias ID below:
@@ -24,13 +68,6 @@ agentAliasId = "<YOUR ALIAS ID>" #INPUT YOUR ALIAS ID HERE.
 #agentId = ssm.get_parameter(Name='/agent-id', WithDecryption=True)['Parameter']['Value'] #valid if CFN infrastructure templates were ran
 #agentAliasId = ssm.get_parameter(Name='/alias-id', WithDecryption=True)['Parameter']['Value'] #valid if CFN infrastructure templates were ran
 
-
-# ---------------------------------------------------------------------
-# REGION CONFIGURATION:
-# ---------------------------------------------------------------------
-theRegion = "us-west-2"
-os.environ["AWS_REGION"] = theRegion
-
 # ---------------------------------------------------------------------
 # HELPER FUNCTION TO GET AWS CREDENTIALS SAFELY
 # ---------------------------------------------------------------------
@@ -39,7 +76,7 @@ def get_frozen_credentials():
     Safely obtain frozen AWS credentials from the current Boto3 Session.
     Raise an error if credentials are not found to clarify what's missing.
     """
-    session = Session()
+    session = Session(region_name=theRegion)
     creds = session.get_credentials()
     if not creds:
         raise EnvironmentError(
@@ -78,7 +115,7 @@ def sigv4_request(
         The HTTP response (requests.Response object).
     """
     if region is None:
-        region = os.environ.get("AWS_REGION", "us-west-2")
+        region = theRegion
     if credentials is None:
         credentials = get_frozen_credentials()
 
@@ -226,4 +263,3 @@ def lambda_handler(event, context):
             "status_code": 500,
             "body": json.dumps({"error": str(e)})
         }
-
