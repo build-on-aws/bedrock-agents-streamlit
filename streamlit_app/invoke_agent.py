@@ -11,7 +11,17 @@ from botocore.awsrequest import AWSRequest
 from botocore.credentials import Credentials
 from requests import request
 
-ssm = boto3.client('ssm')
+# ---------------------------------------------------------------------
+# REGION CONFIGURATION:
+# ---------------------------------------------------------------------
+theRegion = "us-west-2"
+os.environ["AWS_REGION"] = theRegion
+
+# Configure boto3 to use the specified region
+boto3.setup_default_session(region_name=theRegion)
+
+# Now create the SSM client with the region explicitly specified
+ssm = boto3.client('ssm', region_name=theRegion)
 
 # ---------------------------------------------------------------------
 # Replace with your actual Agent ID and Alias ID below:
@@ -24,13 +34,6 @@ agentAliasId = "<YOUR ALIAS ID>" #INPUT YOUR ALIAS ID HERE.
 #agentId = ssm.get_parameter(Name='/agent-id', WithDecryption=True)['Parameter']['Value'] #valid if CFN infrastructure templates were ran
 #agentAliasId = ssm.get_parameter(Name='/alias-id', WithDecryption=True)['Parameter']['Value'] #valid if CFN infrastructure templates were ran
 
-
-# ---------------------------------------------------------------------
-# REGION CONFIGURATION:
-# ---------------------------------------------------------------------
-theRegion = "us-west-2"
-os.environ["AWS_REGION"] = theRegion
-
 # ---------------------------------------------------------------------
 # HELPER FUNCTION TO GET AWS CREDENTIALS SAFELY
 # ---------------------------------------------------------------------
@@ -39,7 +42,7 @@ def get_frozen_credentials():
     Safely obtain frozen AWS credentials from the current Boto3 Session.
     Raise an error if credentials are not found to clarify what's missing.
     """
-    session = Session()
+    session = Session(region_name=theRegion)
     creds = session.get_credentials()
     if not creds:
         raise EnvironmentError(
@@ -226,4 +229,3 @@ def lambda_handler(event, context):
             "status_code": 500,
             "body": json.dumps({"error": str(e)})
         }
-
