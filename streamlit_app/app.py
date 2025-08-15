@@ -70,12 +70,26 @@ if submit_button and prompt:
         response_data = None 
     
     try:
-        # Extract the response and trace data
-        all_data = format_response(response_data['response'])
-        the_response = response_data['trace_data']
-    except:
+        # Check if response_data is None or contains error
+        if response_data is None:
+            all_data = "No response data"
+            the_response = "Failed to get response from agent"
+        elif 'error' in response_data:
+            all_data = "Error occurred"
+            the_response = f"Agent error: {response_data['error']}"
+        elif 'response' in response_data and 'trace_data' in response_data:
+            # Extract the response and trace data
+            all_data = format_response(response_data['response'])
+            the_response = response_data['trace_data']
+        else:
+            all_data = f"Unexpected response format: {list(response_data.keys()) if response_data else 'None'}"
+            the_response = f"Response data: {response_data}"
+    except Exception as e:
+        print(f"Error extracting response data: {e}")
+        print(f"Response data: {response_data}")
+        print(f"Full response: {response}")
         all_data = "..." 
-        the_response = "Apologies, but an error occurred. Please rerun the application" 
+        the_response = f"Error occurred: {str(e)}" 
 
     # Use trace_data and formatted_response as needed
     st.sidebar.text_area("", value=all_data, height=300)
