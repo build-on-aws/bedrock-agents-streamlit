@@ -1,11 +1,16 @@
 import invoke_agent as agenthelper
 import streamlit as st
 import json
+import re
 import pandas as pd
 from PIL import Image, ImageOps, ImageDraw
+import pathlib
 
 # Streamlit page configuration
 st.set_page_config(page_title="Co. Portfolio Creator", page_icon=":robot_face:", layout="wide")
+
+# Resolve app directory for image paths
+_app_dir = pathlib.Path(__file__).parent
 
 # Function to crop image into a circle
 def crop_to_circle(image):
@@ -16,150 +21,238 @@ def crop_to_circle(image):
     result.putalpha(mask)
     return result
 
+# Load images once
+human_image = Image.open(_app_dir / 'human_face.png')
+robot_image = Image.open(_app_dir / 'robot_face.jpg')
+circular_human_image = crop_to_circle(human_image)
+circular_robot_image = crop_to_circle(robot_image)
+
 # Title
 st.title("Co. Portfolio Creator")
 
-# Display a text box for input
-prompt = st.text_input("Please enter your query?", max_chars=2000)
-prompt = prompt.strip()
+# -------------------------------------------------------------------
+# Sidebar: Tabs for Configuration, Example Prompts, Trace Data
+# -------------------------------------------------------------------
+sidebar_tab1, sidebar_tab2, sidebar_tab3 = st.sidebar.tabs(["⚙️ Config", "💡 Prompts", "📊 Trace"])
 
-# Display a primary button for submission
-submit_button = st.button("Submit", type="primary")
+# --- Tab 1: Agent Configuration ---
+with sidebar_tab1:
+    if 'agent_id' not in st.session_state:
+        st.session_state['agent_id'] = ""
+    if 'agent_alias_id' not in st.session_state:
+        st.session_state['agent_alias_id'] = ""
 
-# Display a button to end the session
-end_session_button = st.button("End Session")
+    agent_id = st.text_input("Agent ID", value=st.session_state['agent_id'], placeholder="e.g. ABCDEF1234")
+    agent_alias_id = st.text_input("Agent Alias ID", value=st.session_state['agent_alias_id'], placeholder="e.g. ZYXWVU9876")
 
-# Sidebar for user input
-st.sidebar.title("Trace Data")
+    st.session_state['agent_id'] = agent_id
+    st.session_state['agent_alias_id'] = agent_alias_id
+
+if not agent_id or not agent_alias_id:
+    st.warning("Please enter your **Agent ID** and **Agent Alias ID** in the sidebar to get started.")
+
+# --- Tab 2: Example Prompts ---
+with sidebar_tab2:
+    st.markdown("**Knowledge Base**")
+    st.markdown("""
+- Give me a summary of financial market developments and open market operations in January 2023
+- Tell me the participants view on economic conditions and economic outlook
+- Provide any important information I should know about consumer inflation, or rising prices
+- Tell me about the Staff Review of the Economic & financial Situation
+    """)
+
+    st.markdown("**Action Group**")
+    st.markdown("""
+- Create a portfolio with 3 companies in the real estate industry
+- Create a portfolio of 4 companies that are in the technology industry
+- Return me information on the company on TechStashNova Inc.
+    """)
+
+    st.markdown("**KB + AG + Email**")
+    st.markdown("""
+- Send an email to test@example.com that includes the summary and portfolio report
+    """)
+    st.caption("Note: Replace with your verified SES email address")
+
+# --- Tab 3: Trace Data ---
+with sidebar_tab3:
+    # Full-screen trace dialog
+    @st.dialog("Trace Data", width="large")
+    def show_full_trace():
+        trace = st.session_state.get('last_trace', 'No trace data yet.')
+        if isinstance(trace, pd.DataFrame):
+            st.dataframe(trace, use_container_width=True)
+        else:
+            st.code(trace, language=None)
+
+    if st.button("Expand Full View"):
+        show_full_trace()
 
 # Session State Management
 if 'history' not in st.session_state:
     st.session_state['history'] = []
+if 'last_trace' not in st.session_state:
+    st.session_state['last_trace'] = ""
 
-# Function to parse and format response
+# -------------------------------------------------------------------
+# Helper: Clean up raw trace data for display
+# -------------------------------------------------------------------
+def clean_trace_data(raw_trace):
+    """Extract meaningful trace steps from the raw debug output."""
+    if not raw_trace or not isinstance(raw_trace, str):
+        return "No trace data available."
+
+    lines = raw_trace.strip().split('\n')
+    cleaned = []
+    for line in lines:
+        line = line.strip()
+        # Skip raw binary/encoded data and internal debug noise
+        if not line:
+            continue
+        if line.startswith("Decoded response:"):
+            continue
+        if line.startswith("Split Response:"):
+            continue
+        if line.startswith("Length of split:"):
+            continue
+        if line.startswith("Last Response:"):
+            continue
+        if line.startswith("No bytes at index"):
+            continue
+        if line.startswith("Bytes in last response"):
+            continue
+        if "message-type" in line and len(line) > 200:
+            continue
+        if re.match(r'^[A-Za-z0-9+/=]{50,}$', line):
+            continue
+        # Keep meaningful decoded content
+        cleaned.append(line)
+
+    if not cleaned:
+        return "No trace details captured."
+
+    return '\n'.join(cleaned)
+
+
+# -------------------------------------------------------------------
+# Helper: Format response body
+# -------------------------------------------------------------------
 def format_response(response_body):
     try:
-        # Try to load the response as JSON
         data = json.loads(response_body)
-        # If it's a list, convert it to a DataFrame for better visualization
         if isinstance(data, list):
             return pd.DataFrame(data)
         else:
             return response_body
     except json.JSONDecodeError:
-        # If response is not JSON, return as is
         return response_body
 
-# Handling user input and responses
+# -------------------------------------------------------------------
+# Input area
+# -------------------------------------------------------------------
+prompt = st.text_input("Please enter your query?", max_chars=2000)
+prompt = prompt.strip()
+
+submit_button = st.button("Submit", type="primary")
+end_session_button = st.button("End Session")
+
+# -------------------------------------------------------------------
+# Handle submit
+# -------------------------------------------------------------------
 if submit_button and prompt:
-    event = {
-        "sessionId": "MYSESSION",
-        "question": prompt
-    }
-    response = agenthelper.lambda_handler(event, None)
-    
-    try:
-        # Parse the JSON string
-        if response and 'body' in response and response['body']:
-            response_data = json.loads(response['body'])
-            print("TRACE & RESPONSE DATA ->  ", response_data)
+    if not agent_id or not agent_alias_id:
+        st.error("Please enter your Agent ID and Agent Alias ID in the sidebar before submitting a query.")
+    else:
+        event = {
+            "sessionId": "MYSESSION",
+            "question": prompt,
+            "agentId": agent_id,
+            "agentAliasId": agent_alias_id
+        }
+        response = agenthelper.lambda_handler(event, None)
+
+        trace_raw = ""
+        the_response = ""
+
+        try:
+            if response and 'body' in response and response['body']:
+                response_data = json.loads(response['body'])
+            else:
+                response_data = None
+        except json.JSONDecodeError:
+            response_data = None
+
+        try:
+            if response_data is None:
+                trace_raw = "No response data"
+                the_response = "Failed to get response from agent"
+            elif 'error' in response_data:
+                trace_raw = "Error occurred"
+                the_response = f"Agent error: {response_data['error']}"
+            elif 'response' in response_data and 'trace_data' in response_data:
+                trace_raw = format_response(response_data['response'])
+                the_response = response_data['trace_data']
+            else:
+                trace_raw = str(response_data)
+                the_response = "Unexpected response format"
+        except Exception as e:
+            trace_raw = "..."
+            the_response = f"Error occurred: {str(e)}"
+
+        # Display cleaned trace data in sidebar and store for full view
+        if isinstance(trace_raw, str):
+            cleaned_trace = clean_trace_data(trace_raw)
+            st.session_state['last_trace'] = cleaned_trace
+            with sidebar_tab3:
+                st.text_area("", value=cleaned_trace, height=300, label_visibility="collapsed")
         else:
-            print("Invalid or empty response received")
-    except json.JSONDecodeError as e:
-        print("JSON decoding error:", e)
-        response_data = None 
-    
-    try:
-        # Extract the response and trace data
-        all_data = format_response(response_data['response'])
-        the_response = response_data['trace_data']
-    except:
-        all_data = "..." 
-        the_response = "Apologies, but an error occurred. Please rerun the application" 
+            st.session_state['last_trace'] = trace_raw
+            with sidebar_tab3:
+                st.dataframe(trace_raw)
 
-    # Use trace_data and formatted_response as needed
-    st.sidebar.text_area("", value=all_data, height=300)
-    st.session_state['history'].append({"question": prompt, "answer": the_response})
-    st.session_state['trace_data'] = the_response
-  
+        # Add to history (newest will be rendered first)
+        st.session_state['history'].append({"question": prompt, "answer": the_response})
 
+# -------------------------------------------------------------------
+# Handle end session
+# -------------------------------------------------------------------
 if end_session_button:
     st.session_state['history'].append({"question": "Session Ended", "answer": "Thank you for using AnyCompany Support Agent!"})
     event = {
         "sessionId": "MYSESSION",
         "question": "placeholder to end session",
-        "endSession": True
+        "endSession": True,
+        "agentId": agent_id,
+        "agentAliasId": agent_alias_id
     }
     agenthelper.lambda_handler(event, None)
     st.session_state['history'].clear()
 
-# Display conversation history
+# -------------------------------------------------------------------
+# Conversation History (newest first)
+# -------------------------------------------------------------------
 st.write("## Conversation History")
 
-# Load images outside the loop to optimize performance
-human_image = Image.open('/home/ubuntu/app/streamlit_app/human_face.png')
-robot_image = Image.open('/home/ubuntu/app/streamlit_app/robot_face.jpg')
-circular_human_image = crop_to_circle(human_image)
-circular_robot_image = crop_to_circle(robot_image)
-
 for index, chat in enumerate(reversed(st.session_state['history'])):
-    # Creating columns for Question
-    col1_q, col2_q = st.columns([2, 10])
+    # Question
+    col1_q, col2_q = st.columns([1, 11])
     with col1_q:
-        st.image(circular_human_image, width=125)
+        st.image(circular_human_image, width=50)
     with col2_q:
-        # Generate a unique key for each question text area
-        st.text_area("Q:", value=chat["question"], height=68, key=f"question_{index}", disabled=True)
+        st.text(f"You: {chat['question']}")
 
-    # Creating columns for Answer
-    col1_a, col2_a = st.columns([2, 10])
+    # Answer
+    col1_a, col2_a = st.columns([1, 11])
     if isinstance(chat["answer"], pd.DataFrame):
         with col1_a:
-            st.image(circular_robot_image, width=100)
+            st.image(circular_robot_image, width=50)
         with col2_a:
-            # Generate a unique key for each answer dataframe
             st.dataframe(chat["answer"], key=f"answer_df_{index}")
     else:
         with col1_a:
-            st.image(circular_robot_image, width=150)
+            st.image(circular_robot_image, width=50)
         with col2_a:
-            # Generate a unique key for each answer text area
-            st.text_area("A:", value=chat["answer"], height=100, key=f"answer_{index}")
+            with st.container(border=True):
+                st.write(chat['answer'])
 
-# Example Prompts Section
-st.write("## Test Knowledge Base Prompts")
-
-# Creating a list of prompts for the Knowledge Base section
-knowledge_base_prompts = [
-    {"Prompt": "Give me a summary of financial market developments and open market operations in January 2023"},
-    {"Prompt": "Tell me the participants view on economic conditions and economic outlook"},
-    {"Prompt": "Provide any important information I should know about consumer inflation, or rising prices"},
-    {"Prompt": "Tell me about the Staff Review of the Economic & financial Situation"}
-]
-
-# Displaying the Knowledge Base prompts as a table
-st.table(knowledge_base_prompts)
-
-# Test Action Group Prompts
-st.write("## Test Action Group Prompts")
-
-# Creating a list of prompts for the Action Group section
-action_group_prompts = [
-    {"Prompt": "Create a portfolio with 3 companies in the real estate industry"},
-    {"Prompt": "Create a portfolio of 4 companies that are in the technology industry"},
-    {"Prompt": "Return me information on the company on TechStashNova Inc."}
-]
-
-# Displaying the Action Group prompts as a table
-st.table(action_group_prompts)
-
-st.write("## Test KB, AG, History Prompt")
-
-# Creating a list of prompts for the specific task
-task_prompts = [
-    {"Task": "Send an email to test@example.com that includes the summary and portfolio report.", 
-     "Note": "The logic for this method is not implemented to send emails"}
-]
-
-# Displaying the task prompt as a table
-st.table(task_prompts)
+    st.divider()

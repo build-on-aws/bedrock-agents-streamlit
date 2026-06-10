@@ -70,6 +70,8 @@ Resources:
     Type: 'AWS::EC2::VPC'
     Properties:
       CidrBlock: !Ref VPCCIDR
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
       Tags:
         - Key: Name
           Value: Bedrock-VPC
@@ -197,15 +199,40 @@ Resources:
           apt-get update -y
           apt-get upgrade -y
           apt-get install -y python3-pip git ec2-instance-connect
-          git clone https://github.com/build-on-aws/bedrock-agents-streamlit.git /home/ubuntu/app
+          git clone https://github.com/jossai87/bedrock-agents-streamlit-1.git /home/ubuntu/app
           pip3 install -r /home/ubuntu/app/streamlit_app/requirements.txt
-          cd /home/ubuntu/app/streamlit_app
+
+          # Create a systemd service to auto-start Streamlit
+          cat > /etc/systemd/system/streamlit.service << 'EOF'
+          [Unit]
+          Description=Streamlit Portfolio Creator App
+          After=network.target
+
+          [Service]
+          Type=simple
+          User=ubuntu
+          WorkingDirectory=/home/ubuntu/app/streamlit_app
+          ExecStart=/usr/local/bin/streamlit run app.py --server.port=8501 --server.address=0.0.0.0 --server.headless=true
+          Restart=always
+          RestartSec=5
+
+          [Install]
+          WantedBy=multi-user.target
+          EOF
+
+          systemctl daemon-reload
+          systemctl enable streamlit
+          systemctl start streamlit
 
 Outputs:
   InstanceId:
     Description: InstanceId of the newly created EC2 instance
     Value: !Ref EC2Instance
   
-  PublicDnsName:
-    Description: The public DNS name of the EC2 instance
-    Value: !GetAtt EC2Instance.PublicDnsName
+  PublicIp:
+    Description: The public IP address of the EC2 instance
+    Value: !GetAtt EC2Instance.PublicIp
+
+  StreamlitAppURL:
+    Description: URL to access the Streamlit application
+    Value: !Sub "http://${EC2Instance.PublicIp}:8501"

@@ -30,7 +30,7 @@ Alternatively, this README will walk you through the step-by-step process to set
 
 ## Prerequisites
 - An active AWS Account.
-- Familiarity with AWS services like Amazon Bedrock, S3, Lambda, and Cloud9.
+- Familiarity with AWS services like Amazon Bedrock, S3, and Lambda.
 
 ## Diagram
 
@@ -86,32 +86,27 @@ Alternatively, this README will walk you through the step-by-step process to set
 
 ### Step 2: Knowledge Base Setup in Bedrock Agent
 
-- Before we setup the knowledge base, we will need to grant access to the models that will be needed for our Bedrock agent. Navigate to the Amazon Bedrock console, then on the left of the screen, scroll down and select **Model access**. On the right, select the orange **Manage model access** button.
-
-![Model access](images/model_access.png)
-
-- Select the checkbox for the base model columns **Amazon: Titan Embeddings G1 - Text** and **Anthropic: Claude 3 Haiku**. This will provide you access to the required models. After, scroll down to the bottom right and select **Request model access**.
-
-
-- After, verify that the Access status of the Models are green with **Access granted**.
+- All Amazon Bedrock models are enabled by default. To verify, navigate to the Amazon Bedrock console, then on the left of the screen, scroll down and select **Model access**. Confirm that the **Amazon: Titan Text Embeddings V2** and **Amazon: Nova Pro** models show **Access granted**.
 
 ![Access granted](images/access_granted.png)
 
 
-- Now, we will create a knowledge base by selecting **Knowledge base** on the left, then selecting the orange button **Create knowledge base**.  
+- Now, we will create a knowledge base that uses **Amazon S3 Vectors** as the vector store. S3 Vectors is a cost-optimized vector store built directly into Amazon S3, purpose-built to store and query embeddings for RAG workloads at a fraction of the cost of provisioned vector databases. Select **Knowledge Bases** on the left under **Builder tools**, then select **Create** and choose **Knowledge Base with vector store**.  
 
 ![create_kb_btn](images/create_kb_btn.png)
 
-- You can use the default name, or enter in your own. Then, select **Next** at the bottom right of the screen.
+- You can use the default name, or enter in your own. Make sure **Amazon S3** is selected as the data source, then select **Next** at the bottom right of the screen.
 
 ![KB details](images/kb_details.gif)
 
 
-- Sync S3 bucket `knowledgebase-bedrock-agent-{alias}` to this knowledge base.
+- On the **Configure data source** page, point the **S3 URI** to the bucket `knowledgebase-bedrock-agent-{alias}` using **Browse S3**. Leave parsing and chunking at their defaults, then select **Next**.
 
 ![KB setup](images/KB_setup.png)
 
-- For the embedding model, choose **Amazon: Titan Embeddings G1 - Text**. Leave the other options as default, and scroll down to select **Next**.
+- For the embedding model, choose **Amazon: Titan Text Embeddings V2**. S3 Vectors requires **floating-point** vector embeddings, so under **Additional configurations** confirm the embeddings type is **Floating-point vector embeddings**.
+
+- In the **Vector store** section, choose **S3 vector bucket** as the vector store type, then select **Quick create a new vector store** to let Amazon Bedrock automatically create and configure the S3 vector bucket and index. Leave the other options as default, and scroll down to select **Next**.
  
 ![Vector Store Config](/static/vector_store_config.gif)
 
@@ -407,8 +402,8 @@ You are an investment analyst. Your job is to assist in investment analysis, cre
           {
             "name": "fomcSummary",
             "in": "query",
-            "description": "Summary of FOMC search results",
-            "required": true,
+            "description": "Summary of FOMC search results. Populate from the most recent FOMC summary in the conversation, or retrieve from the knowledge base if available.",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -723,9 +718,9 @@ After completing the setup and testing of the Bedrock Agent and Streamlit app, f
 - In the Bedrock console, navigate to 'Agents'.
 - Select the created agent, then choose 'Delete'.
 
-4.	Deregister Knowledge Base in Bedrock:
-- Access the Bedrock console, then navigate to “Knowledge base” under the Builder tools tab.
-- Select, then delete the created knowledge base.
+4.	Delete the Knowledge Base in Bedrock:
+- Access the Bedrock console, then navigate to “Knowledge Bases” under the Builder tools tab.
+- Select the created knowledge base, then choose 'Delete'. Keep the default **Delete** data deletion policy so the associated S3 vector bucket and vector index are automatically removed. You can confirm removal under **Vector buckets** in the S3 console.
 
 5.	Clean Up EC2 Environment:
 - Navigate to the EC2 management console.
